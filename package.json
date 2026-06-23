@@ -14,7 +14,9 @@
     "install:circom": "bash scripts/install-circom.sh",
     "identities": "tsx scripts/setup-identities.ts",
     "gate:a": "tsx scripts/gate-a.ts",
-    "gate:b": "tsx scripts/gate-b.ts"
+    "gate:b": "tsx scripts/gate-b.ts",
+    "circuit:build": "bash circuits/scripts/build-poolpass.sh",
+    "circuit:prove": "bash circuits/scripts/prove-example.sh"
   },
   "dependencies": {
     "@stellar/stellar-sdk": "16.0.1",

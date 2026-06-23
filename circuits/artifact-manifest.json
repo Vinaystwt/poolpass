@@ -1,0 +1,43 @@
+{
+  "circuit": "poolpass",
+  "circom": "2.2.2",
+  "snarkjs": "0.7.6",
+  "curve": "bn128",
+  "protocol": "groth16",
+  "publicInputOrder": [
+    "merkle_root",
+    "amount",
+    "nullifier",
+    "epoch"
+  ],
+  "artifacts": {
+    "circuits/build/poolpass/poolpass.r1cs": {
+      "sha256": "aa25e65bd579f04dea6df5620e7cf84522e1ea44c33db6552e7f8e8c15e2ee21",
+      "bytes": 372276
+    },
+    "circuits/build/poolpass/poolpass_js/poolpass.wasm": {
+      "sha256": "0daca7d6d73f49b68d49a4e1c9e9fbcd99f7fec00aa457f60970ed57b4e6a5db",
+      "bytes": 2177588
+    },
+    "circuits/build/poolpass/poolpass_final.zkey": {
+      "sha256": "9c4590d7130fe9c8e3fc9b312a690ac45177b9b0e33241301f694663209c4ded",
+      "bytes": 1264751
+    },
+    "circuits/verification_key.json": {
+      "sha256": "41cc4c82df0e286a225cd13b1b93d9e7a5f2fdb6e6858ada84da02009b639ca6",
+      "bytes": 3473
+    },
+    "circuits/proof.json": {
+      "sha256": "ce1a89757ee86d19128fe42f46978dca6c95f79d7167a5be0fff3e044900dc52",
+      "bytes": 801
+    },
+    "circuits/public.json": {
+      "sha256": "b7066f50f8060dae60346ff6307296a4cab0c634b1a0da7dc606a38d72ba5877",
+      "bytes": 187
+    },
+    "circuits/serialized-proof.json": {
+      "sha256": "5a97b4e1dab89f19855545918ab66ce00458e351839ec655cd8064eb293d2629",
+      "bytes": 843
+    }
+  }
+}
