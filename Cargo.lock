@@ -691,6 +691,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "gate-groth16"
+version = "0.1.0"
+dependencies = [
+ "hex-literal",
+ "soroban-sdk",
+]
+
+[[package]]
 name = "gate-poseidon"
 version = "0.1.0"
 dependencies = [

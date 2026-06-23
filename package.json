@@ -13,7 +13,8 @@
     "check:toolchain": "tsx scripts/check-toolchain.ts",
     "install:circom": "bash scripts/install-circom.sh",
     "identities": "tsx scripts/setup-identities.ts",
-    "gate:a": "tsx scripts/gate-a.ts"
+    "gate:a": "tsx scripts/gate-a.ts",
+    "gate:b": "tsx scripts/gate-b.ts"
   },
   "dependencies": {
     "@stellar/stellar-sdk": "16.0.1",
