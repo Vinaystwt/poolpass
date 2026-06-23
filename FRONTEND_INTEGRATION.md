@@ -104,6 +104,74 @@ Decode either `ContractError(n)` or `Error(Contract, #n)`. Wallet-auth failures 
 
 ## Events
 
+PoolPass uses the SDK 26 `#[contractevent]` API. Its generated `publish(&env)` method automatically prepends the snake-case event-name `Symbol` to the topic vector. Non-topic fields are encoded as a canonical `ScMap`, so they are named rather than positional.
+
+### `RootUpdated { root, leaf_count, epoch(topic), timestamp }`
+
+Exact call from `contracts/poolpass/src/lib.rs`:
+
+```rust
+RootUpdated {
+    root: root.clone(),
+    leaf_count: leaf_hashes.len(),
+    epoch,
+    timestamp: env.ledger().timestamp(),
+}
+.publish(&env);
+```
+
+- Topic vector, in order: `Symbol("root_updated")`, `epoch: u32`.
+- Data payload: canonical map `{ leaf_count: u32, root: BytesN<32>, timestamp: u64 }`; serialized map-key order is `leaf_count`, `root`, `timestamp`.
+
+### `Subscribed { investor(topic), amount, nullifier, commitment, epoch(topic), timestamp }`
+
+Exact call from `contracts/poolpass/src/lib.rs`:
+
+```rust
+Subscribed {
+    investor,
+    amount,
+    nullifier,
+    commitment: commitment.clone(),
+    epoch: proof_epoch,
+    timestamp: env.ledger().timestamp(),
+}
+.publish(&env);
+```
+
+- Topic vector, in order: `Symbol("subscribed")`, `investor: Address`, `epoch: u32` (the call supplies `proof_epoch`).
+- Data payload: canonical map `{ amount: i128, commitment: BytesN<32>, nullifier: BytesN<32>, timestamp: u64 }`; serialized map-key order is `amount`, `commitment`, `nullifier`, `timestamp`.
+
+### `EpochAdvanced { epoch(topic), timestamp }`
+
+Exact call from `contracts/poolpass/src/lib.rs`:
+
+```rust
+EpochAdvanced {
+    epoch,
+    timestamp: env.ledger().timestamp(),
+}
+.publish(&env);
+```
+
+- Topic vector, in order: `Symbol("epoch_advanced")`, `epoch: u32`.
+- Data payload: canonical map `{ timestamp: u64 }`.
+
+For Soroban RPC `getEvents`, filter by `type: "contract"`, the PoolPass contract ID, and the encoded first topic. Encode the event-name symbol with `nativeToScVal(name, { type: "symbol" }).toXDR("base64")`, then use it as the first element of a topic filter. For example:
+
+```ts
+const subscribed = nativeToScVal("subscribed", { type: "symbol" }).toXDR("base64");
+const filters = [{
+  type: "contract",
+  contractIds: [POOLPASS_CONTRACT_ID],
+  topics: [[subscribed, "*", "*"]],
+}];
+```
+
+Use `root_updated` with one trailing wildcard and `epoch_advanced` with one trailing wildcard for the other event types. The first topic is always exactly the event-name symbol, so these filters cannot confuse the three PoolPass events.
+
+For quick reference, the decoded shapes are:
+
 ```text
 RootUpdated { root, leaf_count, epoch(topic), timestamp }
 Subscribed { investor(topic), amount, nullifier, commitment, epoch(topic), timestamp }
