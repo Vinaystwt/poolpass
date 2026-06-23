@@ -1,0 +1,17 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.keys/
+*.secret
+node_modules/
+dist/
+coverage/
+target/
+*.wasm
+circuits/build/
+circuits/powersOfTau*.ptau
+circuits/*.zkey
+services/data/
+.stellar/
+
