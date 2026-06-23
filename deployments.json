@@ -116,6 +116,24 @@
       "ledger": 3244586,
       "status": "SUCCESS",
       "explorer": "https://stellar.expert/explorer/testnet/tx/e7114709a12bee69ce3d7548f511f6cc756f7390277b885832dbeff7b0cfbe6b"
+    },
+    "e2eRootUpdate": {
+      "hash": "bf68edd1fca52e9ccd7c51e0cbc0e2819e2c7b937812e71678340b26f05a8c8a",
+      "ledger": 3244675,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/bf68edd1fca52e9ccd7c51e0cbc0e2819e2c7b937812e71678340b26f05a8c8a"
+    },
+    "e2eSubscribe": {
+      "hash": "c0ed392e0aea922790676010e0a13e4a4d6f5de7b0878e1b08ae9d79b0bfaa51",
+      "ledger": 3244683,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/c0ed392e0aea922790676010e0a13e4a4d6f5de7b0878e1b08ae9d79b0bfaa51"
+    },
+    "e2eReplay": {
+      "hash": "9713c9fe80bb3737e308580bee8f45619be5ef0620f2cd6953b781c2900d7a36",
+      "ledger": 3244691,
+      "status": "FAILED",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/9713c9fe80bb3737e308580bee8f45619be5ef0620f2cd6953b781c2900d7a36"
     }
   }
 }

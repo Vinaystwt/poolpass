@@ -18,7 +18,8 @@
     "circuit:build": "bash circuits/scripts/build-poolpass.sh",
     "circuit:prove": "bash circuits/scripts/prove-example.sh",
     "deploy:testnet": "tsx scripts/deploy.ts",
-    "faucet": "tsx scripts/asset.ts"
+    "faucet": "tsx scripts/asset.ts",
+    "e2e:testnet": "tsx scripts/e2e.ts"
   },
   "dependencies": {
     "@stellar/stellar-sdk": "16.0.1",
