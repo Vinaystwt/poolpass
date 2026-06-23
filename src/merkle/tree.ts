@@ -34,6 +34,12 @@ export async function buildTree(records: readonly InvestorRecord[]): Promise<Mer
   const leaves = await Promise.all(normalized.map((record) => poseidon3(record.investorId, record.cap, record.investorSecret)));
   if (new Set(leaves.map(String)).size !== leaves.length) throw new Error("Duplicate leaf hash is not allowed");
 
+  return buildTreeFromLeaves(leaves);
+}
+
+export async function buildTreeFromLeaves(values: readonly (string | number | bigint)[]): Promise<MerkleTree> {
+  if (values.length !== 8) throw new RangeError(`PoolPass demo tree requires exactly 8 leaves; received ${values.length}`);
+  const leaves = values.map(parseField);
   const levels: bigint[][] = [leaves];
   while (levels.at(-1)!.length > 1) {
     const previous = levels.at(-1)!;

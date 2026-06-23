@@ -130,6 +130,19 @@ async function forceReplayTransaction(registry: Registry, successfulHash: string
 
 async function main(): Promise<void> {
   const registry = JSON.parse(await readFile("deployments.json", "utf8")) as Registry;
+  if (registry.transactions.e2eRootUpdate && registry.transactions.e2eSubscribe && registry.transactions.e2eReplay) {
+    const expected = [
+      [registry.transactions.e2eRootUpdate, "SUCCESS"],
+      [registry.transactions.e2eSubscribe, "SUCCESS"],
+      [registry.transactions.e2eReplay, "FAILED"],
+    ] as const;
+    for (const [evidence, status] of expected) {
+      const finalized = await waitForRpcTransaction((hash) => rpcTransaction(registry, hash), evidence.hash);
+      if (finalized.status !== status) throw new Error(`Recorded e2e transaction ${evidence.hash} is ${finalized.status}, expected ${status}`);
+    }
+    process.stdout.write(`E2E PASS (recorded evidence reverified)\nsubscribe=${registry.transactions.e2eSubscribe.hash}\nreplay=${registry.transactions.e2eReplay.hash} (FAILED, NullifierUsed)\n`);
+    return;
+  }
   const poolpass = registry.contracts.poolpass.contractId;
   const usdc = registry.contracts.mockUsdc.contractId;
   const poolToken = registry.contracts.poolToken.contractId;

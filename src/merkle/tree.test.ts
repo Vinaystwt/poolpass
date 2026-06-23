@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { BN254_FR_MODULUS } from "../crypto/field.js";
-import { buildTree, pathFor, verifyPath, type InvestorRecord } from "./tree.js";
+import { buildTree, buildTreeFromLeaves, pathFor, verifyPath, type InvestorRecord } from "./tree.js";
 
 const records: InvestorRecord[] = Array.from({ length: 8 }, (_, index) => ({
   investorId: BigInt(index + 1),
@@ -36,5 +36,11 @@ describe("PoolPass Merkle tree", () => {
   test("rejects invalid path indices", async () => {
     const tree = await buildTree(records);
     await expect(verifyPath(tree.leaves[0], { ...pathFor(tree, 0), indices: [2, 0, 0] })).rejects.toThrow(/bit/);
+  });
+
+  test("builds a padded leaf-only tree for self-serve accreditation", async () => {
+    const tree = await buildTree(records);
+    const padded = await buildTreeFromLeaves([tree.leaves[0], 0n, 0n, 0n, 0n, 0n, 0n, 0n]);
+    expect(await verifyPath(tree.leaves[0], pathFor(padded, 0))).toBe(padded.root);
   });
 });

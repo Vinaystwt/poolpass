@@ -134,6 +134,24 @@
       "ledger": 3244691,
       "status": "FAILED",
       "explorer": "https://stellar.expert/explorer/testnet/tx/9713c9fe80bb3737e308580bee8f45619be5ef0620f2cd6953b781c2900d7a36"
+    },
+    "selfServeAccredit": {
+      "hash": "b8394e5c4cb75db7689450c2fb96b979262b73241cacd5a310c3543746ca28fd",
+      "ledger": 3244824,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/b8394e5c4cb75db7689450c2fb96b979262b73241cacd5a310c3543746ca28fd"
+    },
+    "selfServeFaucet": {
+      "hash": "ad4110781978eff5b119234fec3d2ca00a0c0ab48902976ba921ba882bbdb58e",
+      "ledger": 3244827,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/ad4110781978eff5b119234fec3d2ca00a0c0ab48902976ba921ba882bbdb58e"
+    },
+    "selfServeSubscribe": {
+      "hash": "a3950d75ec2203d33949d4c7c05ba72b78d638361598060f8b9eac91d3baa0dd",
+      "ledger": 3244831,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/a3950d75ec2203d33949d4c7c05ba72b78d638361598060f8b9eac91d3baa0dd"
     }
   }
 }

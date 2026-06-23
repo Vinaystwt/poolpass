@@ -19,7 +19,11 @@
     "circuit:prove": "bash circuits/scripts/prove-example.sh",
     "deploy:testnet": "tsx scripts/deploy.ts",
     "faucet": "tsx scripts/asset.ts",
-    "e2e:testnet": "tsx scripts/e2e.ts"
+    "e2e:testnet": "tsx scripts/e2e.ts",
+    "api": "tsx services/api/cli.ts",
+    "api:smoke": "tsx scripts/api-smoke.ts",
+    "indexer:once": "tsx services/indexer/cli.ts",
+    "selfserve:smoke": "tsx scripts/self-serve-smoke.ts"
   },
   "dependencies": {
     "@stellar/stellar-sdk": "16.0.1",
