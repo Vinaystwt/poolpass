@@ -8,6 +8,7 @@ node_modules/
 dist/
 coverage/
 target/
+**/test_snapshots/
 *.wasm
 circuits/build/
 circuits/powersOfTau*.ptau

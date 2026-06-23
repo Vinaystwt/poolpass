@@ -1038,6 +1038,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "poolpass"
+version = "0.1.0"
+dependencies = [
+ "hex-literal",
+ "soroban-poseidon",
+ "soroban-sdk",
+]
+
+[[package]]
 name = "powerfmt"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
