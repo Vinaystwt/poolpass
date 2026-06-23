@@ -16,7 +16,9 @@
     "gate:a": "tsx scripts/gate-a.ts",
     "gate:b": "tsx scripts/gate-b.ts",
     "circuit:build": "bash circuits/scripts/build-poolpass.sh",
-    "circuit:prove": "bash circuits/scripts/prove-example.sh"
+    "circuit:prove": "bash circuits/scripts/prove-example.sh",
+    "deploy:testnet": "tsx scripts/deploy.ts",
+    "faucet": "tsx scripts/asset.ts"
   },
   "dependencies": {
     "@stellar/stellar-sdk": "16.0.1",
