@@ -11,7 +11,8 @@
     "test": "vitest run --pool=threads",
     "typecheck": "tsc --noEmit",
     "check:toolchain": "tsx scripts/check-toolchain.ts",
-    "install:circom": "bash scripts/install-circom.sh"
+    "install:circom": "bash scripts/install-circom.sh",
+    "identities": "tsx scripts/setup-identities.ts"
   },
   "dependencies": {
     "@stellar/stellar-sdk": "16.0.1",

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PoolPass deployments",
+  "type": "object",
+  "required": ["network", "accounts", "contracts", "transactions"],
+  "properties": {
+    "network": {
+      "type": "object",
+      "required": ["name", "rpcUrl", "passphrase", "protocolVersion"],
+      "properties": {
+        "name": { "const": "testnet" },
+        "rpcUrl": { "type": "string", "format": "uri" },
+        "passphrase": { "const": "Test SDF Network ; September 2015" },
+        "protocolVersion": { "type": "integer", "minimum": 25 }
+      },
+      "additionalProperties": false
+    },
+    "accounts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["publicKey"],
+        "properties": { "publicKey": { "type": "string", "pattern": "^G[A-Z2-7]{55}$" } },
+        "additionalProperties": false
+      }
+    },
+    "contracts": { "type": "object" },
+    "transactions": { "type": "object" }
+  },
+  "additionalProperties": false
+}
+

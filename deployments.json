@@ -1,0 +1,21 @@
+{
+  "network": {
+    "name": "testnet",
+    "rpcUrl": "https://soroban-testnet.stellar.org",
+    "passphrase": "Test SDF Network ; September 2015",
+    "protocolVersion": 27
+  },
+  "accounts": {
+    "deployer": {
+      "publicKey": "GCWTZ6UTCS4UMLQVI4DB72A6KYCHEYWFQ7M42VP2RAPK2TUV5WESZLIW"
+    },
+    "test-issuer": {
+      "publicKey": "GDCN6MQZWTZVPHG632RGUDAHHKXZN43XFFDKYTOFGE7PWAWA5REP5ISO"
+    },
+    "test-investor": {
+      "publicKey": "GCDJKMWI42NKQBYH4AC7RFKYS7A7YKJ3R7BHILOAEC2PF5VLE56BHHNK"
+    }
+  },
+  "contracts": {},
+  "transactions": {}
+}
