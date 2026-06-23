@@ -14,4 +14,4 @@ circuits/powersOfTau*.ptau
 circuits/*.zkey
 services/data/
 .stellar/
-
+.tools/

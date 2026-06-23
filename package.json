@@ -1,0 +1,30 @@
+{
+  "name": "poolpass-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "test": "vitest run --pool=threads",
+    "typecheck": "tsc --noEmit",
+    "check:toolchain": "tsx scripts/check-toolchain.ts",
+    "install:circom": "bash scripts/install-circom.sh"
+  },
+  "dependencies": {
+    "@stellar/stellar-sdk": "16.0.1",
+    "circomlib": "2.0.5",
+    "circomlibjs": "0.1.7",
+    "fastify": "5.8.5",
+    "snarkjs": "0.7.6",
+    "zod": "4.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.13",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "vitest": "3.2.4"
+  }
+}
