@@ -198,6 +198,16 @@ Request: `{ "address": "G...", "amount": "10000000000" }`. Amount is optional, i
 
 Request: `{ "input": { ...all circuit signals... } }`. Response: `{ "proof": <snarkjs proof>, "publicSignals": string[4] }`. The primary privacy-preserving path should prove in-browser; this server path necessarily receives private inputs and is only a compatibility fallback.
 
+### Proving path status
+
+The PoolPass privacy model assumes that the investor's `investor_id`, `cap`, and `investor_secret` never leave the investor's machine.
+
+The `/prove` HTTP endpoint exists as a compatibility fallback for clients that cannot run snarkjs in-browser fast enough, and it necessarily receives the private inputs in plaintext. Using `/prove` for a real subscription does not match the intended privacy story for a production user.
+
+The current testnet end-to-end runs exercised the fallback `/prove` path, not the in-browser proving path. The in-browser proving path has been unit-tested at the module level but has not been exercised end-to-end on testnet against the deployed PoolPass contract from a real browser.
+
+The Claude Code frontend is responsible for making the in-browser proving path the default user route. The `/prove` endpoint must be shown in the UI as an explicit fallback that the user opts into, not as the primary path.
+
 ### `POST /verify`
 
 Request: `{ "proof": <snarkjs proof>, "publicSignals": string[4] }`. Response: `{ "valid": boolean }`. The server always uses the committed PoolPass VK and ignores caller key substitution by schema.
