@@ -20,7 +20,7 @@ fn admin_mints_and_holders_transfer() {
         &String::from_str(&env, "mUSDC"),
     );
     client.mint(&alice, &100);
-    client.transfer(&alice, &MuxedAddress::from(&bob), &40);
+    client.transfer(&alice, MuxedAddress::from(&bob), &40);
     assert_eq!(client.balance(&alice), 60);
     assert_eq!(client.balance(&bob), 40);
     assert_eq!(client.decimals(), 7);
@@ -49,7 +49,7 @@ fn rejects_wrong_admin_and_invalid_amounts() {
     );
     assert_eq!(client.try_mint(&holder, &0), Err(Ok(Error::InvalidAmount)));
     assert_eq!(
-        client.try_transfer(&holder, &MuxedAddress::from(&admin), &1),
+        client.try_transfer(&holder, MuxedAddress::from(&admin), &1),
         Err(Ok(Error::InsufficientBalance))
     );
 }

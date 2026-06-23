@@ -7,3 +7,11 @@
 - Investor USDC after: 75000000000
 - Escrow USDC after: 25000000000
 - Investor pool tokens after: 25000000000
+
+## Self-serve path
+
+- Leaf-only accreditation/root update: https://stellar.expert/explorer/testnet/tx/b8394e5c4cb75db7689450c2fb96b979262b73241cacd5a310c3543746ca28fd
+- Faucet: https://stellar.expert/explorer/testnet/tx/ad4110781978eff5b119234fec3d2ca00a0c0ab48902976ba921ba882bbdb58e
+- Fresh-address fallback-proof subscription: https://stellar.expert/explorer/testnet/tx/a3950d75ec2203d33949d4c7c05ba72b78d638361598060f8b9eac91d3baa0dd
+
+The self-serve service received only the client-computed leaf. The investor ID, cap, and secret were supplied only to the fallback prover for this smoke test; the primary browser path keeps them client-side.
