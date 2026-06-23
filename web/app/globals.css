@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  PoolPass design tokens. Light theme is DESIGN.md verbatim (Stripe-inspired).
+  Dark theme is purpose-built — a deep on-brand navy shell, not an inversion.
+  --accent-proof is the single PoolPass addition, reserved for proof UI.
+*/
+:root {
+  --canvas: #ffffff;
+  --canvas-soft: #f6f9fc;
+  --canvas-cream: #f5e9d4;
+  --card: #ffffff;
+  --hairline: #e3e8ee;
+  --hairline-input: #a8c3de;
+
+  --ink: #0d253d;
+  --ink-secondary: #273951;
+  --ink-mute: #64748d;
+  --on-primary: #ffffff;
+
+  --primary: #533afd;
+  --primary-deep: #4434d4;
+  --primary-press: #2e2b8c;
+  --primary-soft: #665efd;
+  --primary-subdued: #b9b9f9;
+  --brand-dark: #1c1e54;
+
+  --accent-proof: #7c5cff;
+  --accent-proof-soft: rgba(124, 92, 255, 0.22);
+
+  --mesh-1: #f5e9d4;
+  --mesh-2: #f9c28a;
+  --mesh-3: #b9b9f9;
+  --mesh-4: #533afd;
+  --mesh-5: #f96bee;
+}
+
+.dark {
+  --canvas: #0a0e1f;
+  --canvas-soft: #0f1530;
+  --canvas-cream: #1d1a2e;
+  --card: #121935;
+  --hairline: #26304d;
+  --hairline-input: #34406a;
+
+  --ink: #e9eefb;
+  --ink-secondary: #b6c2da;
+  --ink-mute: #8595b4;
+  --on-primary: #ffffff;
+
+  --primary: #7b74ff;
+  --primary-deep: #665efd;
+  --primary-press: #b9b9f9;
+  --primary-soft: #8b86ff;
+  --primary-subdued: #2a2c63;
+  --brand-dark: #060a18;
+
+  --accent-proof: #9d8bff;
+  --accent-proof-soft: rgba(157, 139, 255, 0.26);
+
+  --mesh-1: #1a1430;
+  --mesh-2: #2a1d3d;
+  --mesh-3: #2e2a66;
+  --mesh-4: #4434d4;
+  --mesh-5: #6b2b6a;
+}
+
+* {
+  border-color: var(--hairline);
+}
+
+body {
+  color: var(--ink);
+  background: var(--canvas);
+  font-family: var(--font-sans), "SF Pro Display", system-ui, sans-serif;
+  font-weight: 300;
+  /* ss01 stylistic set globally — DESIGN.md brand signature */
+  font-feature-settings: "ss01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  /* tabular figures for money / numeric cells — DESIGN.md quiet financial signal */
+  .tnum {
+    font-feature-settings: "tnum", "ss01";
+  }
+  .mono {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-weight: 500;
+  }
+  /* The gradient mesh: the brand's primary depth medium. */
+  .mesh-bg {
+    background:
+      radial-gradient(60% 80% at 8% 0%, var(--mesh-1) 0%, transparent 60%),
+      radial-gradient(50% 70% at 30% 10%, var(--mesh-2) 0%, transparent 55%),
+      radial-gradient(60% 90% at 55% 0%, var(--mesh-3) 0%, transparent 60%),
+      radial-gradient(55% 85% at 78% 5%, var(--mesh-4) 0%, transparent 55%),
+      radial-gradient(50% 80% at 98% 0%, var(--mesh-5) 0%, transparent 55%);
+    filter: saturate(1.05);
+  }
+  .proof-text {
+    color: var(--accent-proof);
+  }
+}
+
+/* Honor prefers-reduced-motion globally — kill all motion, no exceptions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Thin, on-brand scrollbars in dark app surfaces */
+.dark ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--hairline-input);
+  border-radius: 9999px;
+}

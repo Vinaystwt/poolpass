@@ -1,0 +1,157 @@
+{
+  "network": {
+    "name": "testnet",
+    "rpcUrl": "https://soroban-testnet.stellar.org",
+    "passphrase": "Test SDF Network ; September 2015",
+    "protocolVersion": 27
+  },
+  "accounts": {
+    "deployer": {
+      "publicKey": "GCWTZ6UTCS4UMLQVI4DB72A6KYCHEYWFQ7M42VP2RAPK2TUV5WESZLIW"
+    },
+    "test-issuer": {
+      "publicKey": "GDCN6MQZWTZVPHG632RGUDAHHKXZN43XFFDKYTOFGE7PWAWA5REP5ISO"
+    },
+    "test-investor": {
+      "publicKey": "GCDJKMWI42NKQBYH4AC7RFKYS7A7YKJ3R7BHILOAEC2PF5VLE56BHHNK"
+    }
+  },
+  "contracts": {
+    "gatePoseidon": {
+      "contractId": "CDBKFLR5W4I6G5BTFNHMOKKEIKWOGCP6ONPMPZJHPGM7GTAPAZVIFUWD",
+      "wasmHash": "5a825f6cbc8c353bda86f3869b5029b0f82525877454be6048c6c8df0d4a96e8"
+    },
+    "gateGroth16": {
+      "contractId": "CALDSMCD6MMSKWALAYR7WTQLGRJMAXYVPWVJLSK3RQM7NVZKWJEI6UFX",
+      "wasmHash": "e64fd2cf01ed55de7e074a35f51d8d339c41244e6555086b58a20fd9301162dd"
+    },
+    "mockUsdc": {
+      "contractId": "CAX5YVXG6NQNCWKR5VANI7P7ZKGTAA2EUGWJY5WZZDEMNPFP6UI4KP77",
+      "wasmHash": "1dc05ce4f6c7a49542947a0e2c945c39efdfca968470cb27bd50f5a547664c80"
+    },
+    "poolToken": {
+      "contractId": "CCNFOLFIALOOURBI7P5ULEHSYJSTXUUUYYK3Y662M2OPBMLVVD53LDEH",
+      "wasmHash": "1dc05ce4f6c7a49542947a0e2c945c39efdfca968470cb27bd50f5a547664c80"
+    },
+    "poolpass": {
+      "contractId": "CA27AYHJ3IO4Y5W5BJEYLH5DUUKTICDBWFDYO2GFHXUM3NUCMSYZALKG",
+      "wasmHash": "4b139585d99a77d6c40cee119a112d56f09bfdeb327174055f065ce676edd3ea"
+    }
+  },
+  "transactions": {
+    "gateAUpload": {
+      "hash": "36b07715ff3a8e8c2addebf61ff18f5205368468fcd5ad2d675718243077af36",
+      "ledger": 3243896,
+      "status": "SUCCESS"
+    },
+    "gateADeploy": {
+      "hash": "ab6b8d95e5f1730a4f6ab49c35537daea94b84238d2eefb16f48a180bb482062",
+      "ledger": 3243965,
+      "status": "SUCCESS"
+    },
+    "gateAInvoke": {
+      "hash": "94e5d8b1a6161bea6581b305c522981d2674ac87db49bc6263126d7b3167e4d5",
+      "ledger": 3244062,
+      "status": "SUCCESS"
+    },
+    "gateBUpload": {
+      "hash": "67392e0a550204009a3095cdcaa1d9a7a73b1ef772d6c987df8bd86a2b02c2dd",
+      "ledger": 3244136,
+      "status": "SUCCESS"
+    },
+    "gateBDeploy": {
+      "hash": "ed6fe6bebfda8461134c564ddec233313ab3be79d68720dba9e14b5c394018d4",
+      "ledger": 3244138,
+      "status": "SUCCESS"
+    },
+    "gateBInvoke": {
+      "hash": "593c2516f1c8b431a0ff8cf09a82ba92eb467bfb0e6f1b72099bfb25d0490ee1",
+      "ledger": 3244148,
+      "status": "SUCCESS"
+    },
+    "mockUsdcDeploy": {
+      "hash": "ab147edc7d378015baf505c7c0eae5df0de3afb0dfc284c9b92629aaf5ce28f8",
+      "ledger": 3244547,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/ab147edc7d378015baf505c7c0eae5df0de3afb0dfc284c9b92629aaf5ce28f8"
+    },
+    "poolTokenDeploy": {
+      "hash": "d98a70050674672b1f9647934a355d6df72b45fde97707627e0cbe9f381ef00c",
+      "ledger": 3244550,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/d98a70050674672b1f9647934a355d6df72b45fde97707627e0cbe9f381ef00c"
+    },
+    "poolpassDeploy": {
+      "hash": "2c408d908ab9c787c62d6b92ea58ad0e8e9e829cfabd12f23ceff15f31ea7365",
+      "ledger": 3244555,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/2c408d908ab9c787c62d6b92ea58ad0e8e9e829cfabd12f23ceff15f31ea7365"
+    },
+    "mockUsdcInitialize": {
+      "hash": "b3d70a103d2b4f6e6eb72ecbe3084bf4be5c502e202ac9f7592438d1929e7dbd",
+      "ledger": 3244559,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/b3d70a103d2b4f6e6eb72ecbe3084bf4be5c502e202ac9f7592438d1929e7dbd"
+    },
+    "poolTokenInitialize": {
+      "hash": "7c9aeb03a3a8b3e5797960bef5375567171f2defbcf08073e0b083ffa4a0566e",
+      "ledger": 3244563,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/7c9aeb03a3a8b3e5797960bef5375567171f2defbcf08073e0b083ffa4a0566e"
+    },
+    "poolpassInitialize": {
+      "hash": "3002575c630ed2884189882f1e9e8e1d05ff408613a6e72e4ee360ca4aef5baa",
+      "ledger": 3244567,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/3002575c630ed2884189882f1e9e8e1d05ff408613a6e72e4ee360ca4aef5baa"
+    },
+    "poolTokenSetAdmin": {
+      "hash": "dcc4c7b549a38fb6c46eb7203e27f61fa887ad53240bb2203f0f42205034bce2",
+      "ledger": 3244571,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/dcc4c7b549a38fb6c46eb7203e27f61fa887ad53240bb2203f0f42205034bce2"
+    },
+    "mockUsdcInitialMint": {
+      "hash": "e7114709a12bee69ce3d7548f511f6cc756f7390277b885832dbeff7b0cfbe6b",
+      "ledger": 3244586,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/e7114709a12bee69ce3d7548f511f6cc756f7390277b885832dbeff7b0cfbe6b"
+    },
+    "e2eRootUpdate": {
+      "hash": "bf68edd1fca52e9ccd7c51e0cbc0e2819e2c7b937812e71678340b26f05a8c8a",
+      "ledger": 3244675,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/bf68edd1fca52e9ccd7c51e0cbc0e2819e2c7b937812e71678340b26f05a8c8a"
+    },
+    "e2eSubscribe": {
+      "hash": "c0ed392e0aea922790676010e0a13e4a4d6f5de7b0878e1b08ae9d79b0bfaa51",
+      "ledger": 3244683,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/c0ed392e0aea922790676010e0a13e4a4d6f5de7b0878e1b08ae9d79b0bfaa51"
+    },
+    "e2eReplay": {
+      "hash": "9713c9fe80bb3737e308580bee8f45619be5ef0620f2cd6953b781c2900d7a36",
+      "ledger": 3244691,
+      "status": "FAILED",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/9713c9fe80bb3737e308580bee8f45619be5ef0620f2cd6953b781c2900d7a36"
+    },
+    "selfServeAccredit": {
+      "hash": "b8394e5c4cb75db7689450c2fb96b979262b73241cacd5a310c3543746ca28fd",
+      "ledger": 3244824,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/b8394e5c4cb75db7689450c2fb96b979262b73241cacd5a310c3543746ca28fd"
+    },
+    "selfServeFaucet": {
+      "hash": "ad4110781978eff5b119234fec3d2ca00a0c0ab48902976ba921ba882bbdb58e",
+      "ledger": 3244827,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/ad4110781978eff5b119234fec3d2ca00a0c0ab48902976ba921ba882bbdb58e"
+    },
+    "selfServeSubscribe": {
+      "hash": "a3950d75ec2203d33949d4c7c05ba72b78d638361598060f8b9eac91d3baa0dd",
+      "ledger": 3244831,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/a3950d75ec2203d33949d4c7c05ba72b78d638361598060f8b9eac91d3baa0dd"
+    }
+  }
+}

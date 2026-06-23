@@ -1,0 +1,61 @@
+{
+  "cursor": 3245360,
+  "events": [
+    {
+      "id": "0013935773011173376-0000000000",
+      "name": "root_updated",
+      "contractId": "CA27AYHJ3IO4Y5W5BJEYLH5DUUKTICDBWFDYO2GFHXUM3NUCMSYZALKG",
+      "txHash": "bf68edd1fca52e9ccd7c51e0cbc0e2819e2c7b937812e71678340b26f05a8c8a",
+      "ledger": 3244675,
+      "closedAt": "2026-06-23T17:53:27Z",
+      "epoch": 1,
+      "data": {
+        "leaf_count": 8,
+        "root": "24fbc2a0b5c37685faca4d084b90fcfaf681eead239b47cf6418e2868183f5d9",
+        "timestamp": "1782237207"
+      }
+    },
+    {
+      "id": "0013935807370924032-0000000002",
+      "name": "subscribed",
+      "contractId": "CA27AYHJ3IO4Y5W5BJEYLH5DUUKTICDBWFDYO2GFHXUM3NUCMSYZALKG",
+      "txHash": "c0ed392e0aea922790676010e0a13e4a4d6f5de7b0878e1b08ae9d79b0bfaa51",
+      "ledger": 3244683,
+      "closedAt": "2026-06-23T17:54:07Z",
+      "data": {
+        "amount": "25000000000",
+        "commitment": "24d298fc0ae15c6a3868a89f6944298e92a7759ff773dbb37c7e4f13ccdc2eca",
+        "nullifier": "036820726f4029ae517cd5d561fb8a9825635202a8d453e072eda4705a56faaa",
+        "timestamp": "1782237247"
+      }
+    },
+    {
+      "id": "0013936412961284096-0000000000",
+      "name": "root_updated",
+      "contractId": "CA27AYHJ3IO4Y5W5BJEYLH5DUUKTICDBWFDYO2GFHXUM3NUCMSYZALKG",
+      "txHash": "b8394e5c4cb75db7689450c2fb96b979262b73241cacd5a310c3543746ca28fd",
+      "ledger": 3244824,
+      "closedAt": "2026-06-23T18:05:53Z",
+      "epoch": 2,
+      "data": {
+        "leaf_count": 8,
+        "root": "0fb80821d3b2289aedcf16ba2970dce1d1ef20f3698dfb66284365317b0293f2",
+        "timestamp": "1782237953"
+      }
+    },
+    {
+      "id": "0013936443026079744-0000000002",
+      "name": "subscribed",
+      "contractId": "CA27AYHJ3IO4Y5W5BJEYLH5DUUKTICDBWFDYO2GFHXUM3NUCMSYZALKG",
+      "txHash": "a3950d75ec2203d33949d4c7c05ba72b78d638361598060f8b9eac91d3baa0dd",
+      "ledger": 3244831,
+      "closedAt": "2026-06-23T18:06:28Z",
+      "data": {
+        "amount": "10000000000",
+        "commitment": "0f427beff96af59131907a3299ced3d918430a6dfb78729298fadbe5e4c20333",
+        "nullifier": "0a691b0c0e631d953a2764660b1f23270657e4fafc930244c807f1d43e424f1a",
+        "timestamp": "1782237988"
+      }
+    }
+  ]
+}
