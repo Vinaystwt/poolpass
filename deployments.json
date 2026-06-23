@@ -16,6 +16,27 @@
       "publicKey": "GCDJKMWI42NKQBYH4AC7RFKYS7A7YKJ3R7BHILOAEC2PF5VLE56BHHNK"
     }
   },
-  "contracts": {},
-  "transactions": {}
+  "contracts": {
+    "gatePoseidon": {
+      "contractId": "CDBKFLR5W4I6G5BTFNHMOKKEIKWOGCP6ONPMPZJHPGM7GTAPAZVIFUWD",
+      "wasmHash": "5a825f6cbc8c353bda86f3869b5029b0f82525877454be6048c6c8df0d4a96e8"
+    }
+  },
+  "transactions": {
+    "gateAUpload": {
+      "hash": "36b07715ff3a8e8c2addebf61ff18f5205368468fcd5ad2d675718243077af36",
+      "ledger": 3243896,
+      "status": "SUCCESS"
+    },
+    "gateADeploy": {
+      "hash": "ab6b8d95e5f1730a4f6ab49c35537daea94b84238d2eefb16f48a180bb482062",
+      "ledger": 3243965,
+      "status": "SUCCESS"
+    },
+    "gateAInvoke": {
+      "hash": "94e5d8b1a6161bea6581b305c522981d2674ac87db49bc6263126d7b3167e4d5",
+      "ledger": 3244062,
+      "status": "SUCCESS"
+    }
+  }
 }

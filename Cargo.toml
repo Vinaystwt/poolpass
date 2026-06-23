@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = []
+members = ["contracts/gate-poseidon"]
 
 [workspace.package]
 edition = "2021"
@@ -20,4 +20,3 @@ debug-assertions = false
 panic = "abort"
 codegen-units = 1
 lto = true
-

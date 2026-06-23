@@ -8,11 +8,12 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "test": "vitest run --pool=threads",
+    "test": "vitest run --pool=forks",
     "typecheck": "tsc --noEmit",
     "check:toolchain": "tsx scripts/check-toolchain.ts",
     "install:circom": "bash scripts/install-circom.sh",
-    "identities": "tsx scripts/setup-identities.ts"
+    "identities": "tsx scripts/setup-identities.ts",
+    "gate:a": "tsx scripts/gate-a.ts"
   },
   "dependencies": {
     "@stellar/stellar-sdk": "16.0.1",
