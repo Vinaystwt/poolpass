@@ -17,6 +17,8 @@ enum DataKey {
     TotalSubscribed,
     PoolName,
     PerInvestorCapPublic,
+    Nullifier(BytesN<32>),
+    Commitment(BytesN<32>),
 }
 
 fn bump(env: &Env) {
@@ -76,6 +78,55 @@ pub fn merkle_depth(env: &Env) -> Result<u32, Error> {
 
 pub fn epoch(env: &Env) -> Result<u32, Error> {
     get(env, &DataKey::Epoch)
+}
+
+pub fn merkle_root(env: &Env) -> Result<BytesN<32>, Error> {
+    get(env, &DataKey::MerkleRoot)
+}
+
+pub fn groth16_vk(env: &Env) -> Result<Bytes, Error> {
+    get(env, &DataKey::Groth16Vk)
+}
+
+pub fn usdc_sac(env: &Env) -> Result<Address, Error> {
+    get(env, &DataKey::UsdcSac)
+}
+
+pub fn pool_token(env: &Env) -> Result<Address, Error> {
+    get(env, &DataKey::PoolToken)
+}
+
+pub fn is_nullifier_used(env: &Env, nullifier: &BytesN<32>) -> bool {
+    env.storage()
+        .persistent()
+        .get(&DataKey::Nullifier(nullifier.clone()))
+        .unwrap_or(false)
+}
+
+pub fn mark_nullifier(env: &Env, nullifier: &BytesN<32>) {
+    let key = DataKey::Nullifier(nullifier.clone());
+    env.storage().persistent().set(&key, &true);
+    env.storage()
+        .persistent()
+        .extend_ttl(&key, TTL_THRESHOLD, TTL_EXTEND_TO);
+}
+
+pub fn mark_commitment(env: &Env, commitment: &BytesN<32>) {
+    let key = DataKey::Commitment(commitment.clone());
+    env.storage().persistent().set(&key, &true);
+    env.storage()
+        .persistent()
+        .extend_ttl(&key, TTL_THRESHOLD, TTL_EXTEND_TO);
+}
+
+pub fn add_subscribed(env: &Env, amount: i128) -> Result<(), Error> {
+    let current: i128 = get(env, &DataKey::TotalSubscribed)?;
+    let next = current.checked_add(amount).ok_or(Error::AmountInvalid)?;
+    env.storage()
+        .instance()
+        .set(&DataKey::TotalSubscribed, &next);
+    bump(env);
+    Ok(())
 }
 
 pub fn set_root_and_epoch(env: &Env, root: &BytesN<32>, epoch: u32) {

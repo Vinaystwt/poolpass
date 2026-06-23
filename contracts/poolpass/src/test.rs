@@ -1,10 +1,12 @@
 use hex_literal::hex;
 use soroban_sdk::{
     testutils::{Address as _, Events as _, Ledger},
+    token::{StellarAssetClient, TokenClient},
     vec, Address, Bytes, BytesN, Env, Event, String,
 };
 
-use crate::{Error, PoolPass, PoolPassClient, RootUpdated};
+use crate::test_fixtures::{AMOUNT, COMMITMENT, EPOCH, NULLIFIER, PROOF, ROOT, VK};
+use crate::{Error, PoolPass, PoolPassClient, RootUpdated, Subscribed};
 
 extern crate std;
 
@@ -52,6 +54,7 @@ struct Setup {
     issuer: Address,
     usdc: Address,
     pool_token: Address,
+    investor: Address,
 }
 
 impl Setup {
@@ -60,10 +63,16 @@ impl Setup {
         env.mock_all_auths();
         env.ledger().set_timestamp(1_750_000_000);
         let id = env.register(PoolPass, ());
+        let issuer = Address::generate(&env);
+        let usdc = env
+            .register_stellar_asset_contract_v2(issuer.clone())
+            .address();
+        let pool_token = env.register_stellar_asset_contract_v2(id.clone()).address();
         Self {
-            issuer: Address::generate(&env),
-            usdc: Address::generate(&env),
-            pool_token: Address::generate(&env),
+            issuer,
+            usdc,
+            pool_token,
+            investor: Address::generate(&env),
             env,
             id,
         }
@@ -78,10 +87,34 @@ impl Setup {
             &self.issuer,
             &self.usdc,
             &self.pool_token,
-            &Bytes::from_slice(&self.env, &[1, 2, 3]),
+            &Bytes::from_array(&self.env, &VK),
             &3,
             &String::from_str(&self.env, "Demo Credit Pool"),
         );
+    }
+
+    fn prepare_subscription(&self) {
+        self.initialize();
+        self.client()
+            .update_accredited_set(&self.issuer, &leaves(&self.env));
+    }
+
+    fn fund(&self, investor: &Address, amount: i128) {
+        StellarAssetClient::new(&self.env, &self.usdc).mint(investor, &amount);
+    }
+
+    fn public_inputs(&self) -> soroban_sdk::Vec<BytesN<32>> {
+        vec![
+            &self.env,
+            BytesN::from_array(&self.env, &ROOT),
+            BytesN::from_array(&self.env, &AMOUNT),
+            BytesN::from_array(&self.env, &NULLIFIER),
+            BytesN::from_array(&self.env, &EPOCH),
+        ]
+    }
+
+    fn proof(&self) -> Bytes {
+        Bytes::from_array(&self.env, &PROOF)
     }
 }
 
@@ -175,5 +208,142 @@ fn advance_epoch_is_issuer_only() {
             .client()
             .try_advance_epoch(&Address::generate(&setup.env)),
         Err(Ok(Error::Unauthorized))
+    );
+}
+
+#[test]
+fn subscribe_verifies_proof_settles_tokens_and_blocks_replay() {
+    let setup = Setup::new();
+    setup.prepare_subscription();
+    let amount = 25_000_000_000i128;
+    setup.fund(&setup.investor, amount * 2);
+
+    let commitment = setup.client().subscribe(
+        &setup.investor,
+        &amount,
+        &setup.proof(),
+        &setup.public_inputs(),
+    );
+    assert_eq!(commitment, BytesN::from_array(&setup.env, &COMMITMENT));
+    let expected_event = Subscribed {
+        investor: setup.investor.clone(),
+        amount,
+        nullifier: BytesN::from_array(&setup.env, &NULLIFIER),
+        commitment: commitment.clone(),
+        epoch: 1,
+        timestamp: 1_750_000_000,
+    };
+    assert_eq!(
+        setup.env.events().all().filter_by_contract(&setup.id),
+        std::vec![expected_event.to_xdr(&setup.env, &setup.id)]
+    );
+    assert_eq!(
+        TokenClient::new(&setup.env, &setup.usdc).balance(&setup.investor),
+        amount
+    );
+    assert_eq!(
+        TokenClient::new(&setup.env, &setup.usdc).balance(&setup.id),
+        amount
+    );
+    assert_eq!(
+        TokenClient::new(&setup.env, &setup.pool_token).balance(&setup.investor),
+        amount
+    );
+    assert_eq!(setup.client().get_pool_info().total_subscribed, amount);
+    assert_eq!(
+        setup.client().try_subscribe(
+            &setup.investor,
+            &amount,
+            &setup.proof(),
+            &setup.public_inputs()
+        ),
+        Err(Ok(Error::NullifierUsed))
+    );
+}
+
+#[test]
+fn subscribe_binds_root_epoch_and_amount() {
+    let setup = Setup::new();
+    setup.prepare_subscription();
+    setup.fund(&setup.investor, 50_000_000_000);
+    assert_eq!(
+        setup
+            .client()
+            .try_subscribe(&setup.investor, &1, &setup.proof(), &setup.public_inputs()),
+        Err(Ok(Error::AmountInvalid))
+    );
+
+    setup.client().advance_epoch(&setup.issuer);
+    assert_eq!(
+        setup.client().try_subscribe(
+            &setup.investor,
+            &25_000_000_000,
+            &setup.proof(),
+            &setup.public_inputs()
+        ),
+        Err(Ok(Error::EpochMismatch))
+    );
+
+    let other = Setup::new();
+    other.prepare_subscription();
+    let mut reordered = leaves(&other.env);
+    let first = reordered.get_unchecked(0);
+    let second = reordered.get_unchecked(1);
+    reordered.set(0, second);
+    reordered.set(1, first);
+    other
+        .client()
+        .update_accredited_set(&other.issuer, &reordered);
+    other.fund(&other.investor, 25_000_000_000);
+    assert_eq!(
+        other.client().try_subscribe(
+            &other.investor,
+            &25_000_000_000,
+            &other.proof(),
+            &other.public_inputs()
+        ),
+        Err(Ok(Error::RootMismatch))
+    );
+}
+
+#[test]
+fn subscribe_rejects_a_valid_point_tamper() {
+    let setup = Setup::new();
+    setup.prepare_subscription();
+    setup.fund(&setup.investor, 25_000_000_000);
+    let mut tampered = setup.proof();
+    for index in 0..64u32 {
+        tampered.set(index, VK[index as usize]);
+    }
+    assert_eq!(
+        setup.client().try_subscribe(
+            &setup.investor,
+            &25_000_000_000,
+            &tampered,
+            &setup.public_inputs()
+        ),
+        Err(Ok(Error::InvalidProof))
+    );
+}
+
+#[test]
+fn failed_payment_rolls_back_the_nullifier() {
+    let setup = Setup::new();
+    setup.prepare_subscription();
+    assert_eq!(
+        setup.client().try_subscribe(
+            &setup.investor,
+            &25_000_000_000,
+            &setup.proof(),
+            &setup.public_inputs()
+        ),
+        Err(Ok(Error::PaymentFailed))
+    );
+    setup.fund(&setup.investor, 25_000_000_000);
+    setup.client().subscribe(
+        &setup.investor,
+        &25_000_000_000,
+        &setup.proof(),
+        &setup.public_inputs(),
     );
 }

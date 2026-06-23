@@ -12,6 +12,24 @@ fn as_bytes(value: &U256) -> BytesN<32> {
     value.to_be_bytes().try_into().unwrap()
 }
 
+pub fn subscription_commitment(
+    env: &Env,
+    nullifier: &BytesN<32>,
+    amount: u64,
+    epoch: u32,
+) -> BytesN<32> {
+    let hash = poseidon_hash::<4, Bn254Fr>(
+        env,
+        &vec![
+            env,
+            as_field(env, nullifier),
+            U256::from_u128(env, amount as u128),
+            U256::from_u32(env, epoch),
+        ],
+    );
+    as_bytes(&hash)
+}
+
 pub fn recompute_root(env: &Env, leaves: Vec<BytesN<32>>, depth: u32) -> Result<BytesN<32>, Error> {
     let expected = 1u32.checked_shl(depth).ok_or(Error::RootMismatch)?;
     if leaves.len() != expected {

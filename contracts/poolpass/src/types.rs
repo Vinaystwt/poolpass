@@ -45,3 +45,16 @@ pub struct EpochAdvanced {
     pub epoch: u32,
     pub timestamp: u64,
 }
+
+#[contractevent]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Subscribed {
+    #[topic]
+    pub investor: Address,
+    pub amount: i128,
+    pub nullifier: BytesN<32>,
+    pub commitment: BytesN<32>,
+    #[topic]
+    pub epoch: u32,
+    pub timestamp: u64,
+}
