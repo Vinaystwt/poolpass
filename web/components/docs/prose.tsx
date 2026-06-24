@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export function Prose({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn("flex flex-col gap-lg", className)}>{children}</div>;
+  return <div className={cn("flex w-full min-w-0 flex-col gap-lg", className)}>{children}</div>;
 }
 
 export function H1({ children }: { children: React.ReactNode }) {
@@ -35,7 +35,7 @@ export function OL({ children }: { children: React.ReactNode }) {
   return <ol className="ml-lg flex max-w-[68ch] list-decimal flex-col gap-xs text-body-md text-ink-secondary">{children}</ol>;
 }
 export function Mono({ children }: { children: React.ReactNode }) {
-  return <span className="mono rounded-xs bg-ink/5 px-xxs py-px text-[0.85em] text-ink">{children}</span>;
+  return <span className="mono [overflow-wrap:anywhere] rounded-xs bg-ink/5 px-xxs py-px text-[0.85em] text-ink">{children}</span>;
 }
 
 export function CodeBlock({ children, lang }: { children: string; lang?: string }) {
