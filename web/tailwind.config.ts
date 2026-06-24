@@ -1,9 +1,9 @@
 import type { Config } from "tailwindcss";
 
-// Tokens mapped verbatim from DESIGN.md (Stripe-inspired). Values resolve to CSS
-// variables defined in app/globals.css so the same Tailwind class flips between
-// the light and dark themes. The --accent-proof variable is the one PoolPass
-// addition: a violet reserved exclusively for proof / verification UI.
+// PoolPass visual system. The violet --accent is reserved for proof UI and the
+// single primary CTA per page; generic interactive elements resolve through ink
+// and hairline. The legacy `primary` key is intentionally repointed to ink so any
+// stray generic usage stays neutral, never violet.
 const config: Config = {
   darkMode: "class",
   content: [
@@ -14,50 +14,60 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // surfaces / text are theme-aware via CSS vars
         canvas: "var(--canvas)",
         "canvas-soft": "var(--canvas-soft)",
-        "canvas-cream": "var(--canvas-cream)",
+        "canvas-sunken": "var(--canvas-sunken)",
+        "canvas-cream": "var(--canvas-soft)",
         card: "var(--card)",
         hairline: "var(--hairline)",
-        "hairline-input": "var(--hairline-input)",
+        "hairline-strong": "var(--hairline-strong)",
+        "hairline-input": "var(--hairline-strong)",
         ink: "var(--ink)",
         "ink-secondary": "var(--ink-secondary)",
         "ink-mute": "var(--ink-mute)",
-        "on-primary": "var(--on-primary)",
-        // brand
-        primary: "var(--primary)",
-        "primary-deep": "var(--primary-deep)",
-        "primary-press": "var(--primary-press)",
-        "primary-soft": "var(--primary-soft)",
-        "primary-subdued": "var(--primary-subdued)",
-        "brand-dark": "var(--brand-dark)",
-        ruby: "#ea2261",
-        magenta: "#f96bee",
-        lemon: "#9b6829",
-        // PoolPass ZK accent
-        "accent-proof": "var(--accent-proof)",
-        "accent-proof-soft": "var(--accent-proof-soft)",
+        "on-accent": "var(--on-accent)",
+        "on-primary": "var(--on-accent)",
+        // reserved proof accent
+        accent: "var(--accent)",
+        "accent-deep": "var(--accent-deep)",
+        "accent-press": "var(--accent-press)",
+        "accent-soft": "var(--accent-soft)",
+        "accent-ring": "var(--accent-ring)",
+        "accent-proof": "var(--accent)",
+        // semantic
+        positive: "var(--positive)",
+        warning: "var(--warning)",
+        danger: "var(--danger)",
+        ruby: "var(--danger)",
+        magenta: "var(--accent)",
+        lemon: "var(--warning)",
+        // legacy generic key -> ink (never violet)
+        primary: "var(--ink)",
+        "primary-deep": "var(--ink)",
+        "primary-press": "var(--ink)",
+        "primary-soft": "var(--ink-secondary)",
+        "primary-subdued": "var(--canvas-sunken)",
+        "brand-dark": "var(--ink)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "SF Pro Display", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "Inter Tight", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       fontSize: {
-        // [size, { lineHeight, letterSpacing }] — DESIGN.md typography scale
-        "display-xxl": ["56px", { lineHeight: "1.03", letterSpacing: "-1.4px", fontWeight: "300" }],
-        "display-xl": ["48px", { lineHeight: "1.15", letterSpacing: "-0.96px", fontWeight: "300" }],
-        "display-lg": ["32px", { lineHeight: "1.1", letterSpacing: "-0.64px", fontWeight: "300" }],
-        "display-md": ["26px", { lineHeight: "1.12", letterSpacing: "-0.26px", fontWeight: "300" }],
-        "heading-lg": ["22px", { lineHeight: "1.1", letterSpacing: "-0.22px", fontWeight: "300" }],
-        "heading-md": ["20px", { lineHeight: "1.4", letterSpacing: "-0.2px", fontWeight: "300" }],
-        "heading-sm": ["18px", { lineHeight: "1.4", letterSpacing: "0", fontWeight: "300" }],
-        "body-lg": ["16px", { lineHeight: "1.4", letterSpacing: "0" }],
-        "body-md": ["15px", { lineHeight: "1.4", letterSpacing: "0" }],
-        "body-tabular": ["14px", { lineHeight: "1.4", letterSpacing: "-0.42px" }],
-        caption: ["13px", { lineHeight: "1.4", letterSpacing: "-0.39px" }],
+        "display-xxl": ["56px", { lineHeight: "1.04", letterSpacing: "-1.6px", fontWeight: "500" }],
+        "display-xl": ["46px", { lineHeight: "1.08", letterSpacing: "-1px", fontWeight: "500" }],
+        "display-lg": ["32px", { lineHeight: "1.1", letterSpacing: "-0.6px", fontWeight: "500" }],
+        "display-md": ["25px", { lineHeight: "1.15", letterSpacing: "-0.3px", fontWeight: "500" }],
+        "heading-lg": ["21px", { lineHeight: "1.2", letterSpacing: "-0.2px", fontWeight: "500" }],
+        "heading-md": ["19px", { lineHeight: "1.35", letterSpacing: "-0.2px", fontWeight: "500" }],
+        "heading-sm": ["16px", { lineHeight: "1.4", letterSpacing: "-0.1px", fontWeight: "500" }],
+        "body-lg": ["17px", { lineHeight: "1.5", letterSpacing: "0" }],
+        "body-md": ["15px", { lineHeight: "1.55", letterSpacing: "0" }],
+        "body-tabular": ["14px", { lineHeight: "1.4", letterSpacing: "-0.2px" }],
+        caption: ["13px", { lineHeight: "1.45", letterSpacing: "0" }],
         micro: ["11px", { lineHeight: "1.4", letterSpacing: "0" }],
-        "micro-cap": ["10px", { lineHeight: "1.15", letterSpacing: "0.1px", fontWeight: "400" }],
+        "micro-cap": ["11px", { lineHeight: "1.2", letterSpacing: "0.06em", fontWeight: "500" }],
       },
       spacing: {
         xxs: "2px",
@@ -78,9 +88,9 @@ const config: Config = {
         pill: "9999px",
       },
       boxShadow: {
-        e1: "rgba(0,55,112,0.08) 0 1px 3px",
-        e2: "rgba(0,55,112,0.08) 0 8px 24px, rgba(0,55,112,0.04) 0 2px 6px",
-        "proof-glow": "0 0 0 1px var(--accent-proof-soft), 0 8px 32px rgba(124,92,255,0.18)",
+        e1: "rgba(20,24,28,0.05) 0 1px 2px, rgba(20,24,28,0.04) 0 2px 8px",
+        e2: "rgba(20,24,28,0.10) 0 10px 30px, rgba(20,24,28,0.05) 0 2px 8px",
+        "proof-glow": "0 0 0 1px var(--accent-soft), 0 10px 34px rgba(109,74,255,0.20)",
       },
       maxWidth: {
         container: "1200px",
@@ -90,17 +100,9 @@ const config: Config = {
           from: { opacity: "0", transform: "translateY(8px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
-        "pulse-ring": {
-          "0%, 100%": { opacity: "0.4" },
-          "50%": { opacity: "1" },
-        },
-        shimmer: {
-          "100%": { transform: "translateX(100%)" },
-        },
       },
       animation: {
         "fade-up": "fade-up 240ms ease-out both",
-        "pulse-ring": "pulse-ring 1.6s ease-in-out infinite",
       },
     },
   },

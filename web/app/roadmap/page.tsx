@@ -8,7 +8,7 @@ const QUARTERS = [
     q: "Q3 2026",
     theme: "Pool factory and depth scaling",
     icon: Layers,
-    accent: "var(--primary)",
+    accent: "var(--ink-secondary)",
     bullets: [
       "Multi-issuer pool factory contract",
       "Dynamic Merkle depth up to 20",
@@ -21,7 +21,7 @@ const QUARTERS = [
     q: "Q4 2026",
     theme: "Real assets and real USDC",
     icon: Banknote,
-    accent: "var(--accent-proof)",
+    accent: "var(--positive)",
     bullets: [
       "Mainnet deployment behind a feature flag",
       "Circle USDC integration via SAC, replacing Mock USDC",
@@ -33,7 +33,7 @@ const QUARTERS = [
     q: "Q1 2027",
     theme: "Composability",
     icon: Blocks,
-    accent: "var(--ruby)",
+    accent: "var(--warning)",
     bullets: [
       "PoolPass tokens accepted as collateral in Blend",
       "Secondary-market hooks for whitelist transfers",
@@ -44,7 +44,7 @@ const QUARTERS = [
     q: "Q2 2027",
     theme: "Recursive privacy and aggregation",
     icon: Repeat,
-    accent: "var(--magenta)",
+    accent: "var(--danger)",
     bullets: [
       "Recursive Groth16 batching to amortize verification across many subscriptions in one transaction",
       "Selective auditor disclosure — a regulator can request one nullifier's history without seeing others",

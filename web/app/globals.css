@@ -3,68 +3,80 @@
 @tailwind utilities;
 
 /*
-  PoolPass design tokens. Light theme is DESIGN.md verbatim (Stripe-inspired).
-  Dark theme is purpose-built — a deep on-brand navy shell, not an inversion.
-  --accent-proof is the single PoolPass addition, reserved for proof UI.
+  PoolPass visual system. Institutional trust with a restrained cryptographic edge.
+  The violet --accent is reserved for proof UI and the single primary CTA per page;
+  everything generic uses ink and hairline. Dark theme is purpose-built.
 */
 :root {
-  --canvas: #ffffff;
-  --canvas-soft: #f6f9fc;
-  --canvas-cream: #f5e9d4;
+  --canvas: #fbfaf8;          /* warm paper, not pure white */
+  --canvas-soft: #f3f1ec;     /* panel background */
+  --canvas-sunken: #ece8e1;   /* sunken wells, code backgrounds */
   --card: #ffffff;
-  --hairline: #e3e8ee;
-  --hairline-input: #a8c3de;
+  --hairline: #e2dcd2;        /* warm hairline */
+  --hairline-strong: #cfc7b8;
 
-  --ink: #0d253d;
-  --ink-secondary: #273951;
-  --ink-mute: #64748d;
-  --on-primary: #ffffff;
+  --ink: #14181c;             /* near-black slate, primary text */
+  --ink-secondary: #3a4048;
+  --ink-mute: #6b7280;
+  --on-accent: #ffffff;
 
-  --primary: #533afd;
-  --primary-deep: #4434d4;
-  --primary-press: #2e2b8c;
-  --primary-soft: #665efd;
-  --primary-subdued: #b9b9f9;
-  --brand-dark: #1c1e54;
+  --accent: #6d4aff;          /* the reserved proof violet */
+  --accent-deep: #5635e0;
+  --accent-press: #3f25b5;
+  --accent-soft: rgba(109, 74, 255, 0.12);
+  --accent-ring: rgba(109, 74, 255, 0.35);
 
-  --accent-proof: #7c5cff;
-  --accent-proof-soft: rgba(124, 92, 255, 0.22);
+  --positive: #1f7a55;        /* verify-success, muted institutional green */
+  --warning: #9a6a12;
+  --danger: #b23a3a;
 
-  --mesh-1: #f5e9d4;
-  --mesh-2: #f9c28a;
-  --mesh-3: #b9b9f9;
-  --mesh-4: #533afd;
-  --mesh-5: #f96bee;
+  /* compatibility aliases so legacy class names resolve to the new system */
+  --on-primary: var(--on-accent);
+  --hairline-input: var(--hairline-strong);
+  --accent-proof: var(--accent);
+  --accent-proof-soft: var(--accent-soft);
+
+  /* hero gradient bloom stops (one soft wash only) */
+  --mesh-1: #efe9dd;
+  --mesh-2: #e7ddff;
+  --mesh-3: #d6c9ff;
+  --mesh-4: #6d4aff;
+  --mesh-5: #c9a8ff;
 }
 
 .dark {
-  --canvas: #0a0e1f;
-  --canvas-soft: #0f1530;
-  --canvas-cream: #1d1a2e;
-  --card: #121935;
-  --hairline: #26304d;
-  --hairline-input: #34406a;
+  --canvas: #0b0f14;          /* warm off-black, not navy */
+  --canvas-soft: #11161d;
+  --canvas-sunken: #0d1217;
+  --card: #141a22;
+  --hairline: #232c36;
+  --hairline-strong: #33404d;
 
-  --ink: #e9eefb;
-  --ink-secondary: #b6c2da;
-  --ink-mute: #8595b4;
-  --on-primary: #ffffff;
+  --ink: #eceff3;
+  --ink-secondary: #b6c0cc;
+  --ink-mute: #7e8a98;
+  --on-accent: #ffffff;
 
-  --primary: #7b74ff;
-  --primary-deep: #665efd;
-  --primary-press: #b9b9f9;
-  --primary-soft: #8b86ff;
-  --primary-subdued: #2a2c63;
-  --brand-dark: #060a18;
+  --accent: #8a6bff;          /* lifted for dark contrast */
+  --accent-deep: #6d4aff;
+  --accent-press: #b9a8ff;
+  --accent-soft: rgba(138, 107, 255, 0.16);
+  --accent-ring: rgba(138, 107, 255, 0.4);
 
-  --accent-proof: #9d8bff;
-  --accent-proof-soft: rgba(157, 139, 255, 0.26);
+  --positive: #46b883;
+  --warning: #d2a24a;
+  --danger: #e2706e;
 
-  --mesh-1: #1a1430;
-  --mesh-2: #2a1d3d;
-  --mesh-3: #2e2a66;
-  --mesh-4: #4434d4;
-  --mesh-5: #6b2b6a;
+  --on-primary: var(--on-accent);
+  --hairline-input: var(--hairline-strong);
+  --accent-proof: var(--accent);
+  --accent-proof-soft: var(--accent-soft);
+
+  --mesh-1: #11151c;
+  --mesh-2: #1a1630;
+  --mesh-3: #241d44;
+  --mesh-4: #5635e0;
+  --mesh-5: #3a2a66;
 }
 
 * {
@@ -74,42 +86,46 @@
 body {
   color: var(--ink);
   background: var(--canvas);
-  font-family: var(--font-sans), "SF Pro Display", system-ui, sans-serif;
-  font-weight: 300;
-  /* ss01 stylistic set globally — DESIGN.md brand signature */
-  font-feature-settings: "ss01";
+  font-family: var(--font-sans), "Inter Tight", system-ui, sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Space Grotesk on headings carries the precise-engineering tone. */
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
+  letter-spacing: -0.01em;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
-  /* tabular figures for money / numeric cells — DESIGN.md quiet financial signal */
+  /* tabular figures for money / numeric cells */
   .tnum {
-    font-feature-settings: "tnum", "ss01";
+    font-feature-settings: "tnum";
   }
   .mono {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-weight: 500;
   }
-  /* The gradient mesh: the brand's primary depth medium. */
+  /* Hero gradient bloom: one soft accent-to-transparent wash. */
   .mesh-bg {
     background:
-      radial-gradient(60% 80% at 8% 0%, var(--mesh-1) 0%, transparent 60%),
-      radial-gradient(50% 70% at 30% 10%, var(--mesh-2) 0%, transparent 55%),
-      radial-gradient(60% 90% at 55% 0%, var(--mesh-3) 0%, transparent 60%),
-      radial-gradient(55% 85% at 78% 5%, var(--mesh-4) 0%, transparent 55%),
-      radial-gradient(50% 80% at 98% 0%, var(--mesh-5) 0%, transparent 55%);
-    filter: saturate(1.05);
-  }
-  .proof-text {
-    color: var(--accent-proof);
+      radial-gradient(55% 75% at 12% 0%, var(--mesh-1) 0%, transparent 60%),
+      radial-gradient(50% 70% at 40% 8%, var(--mesh-2) 0%, transparent 58%),
+      radial-gradient(55% 80% at 68% 0%, var(--mesh-3) 0%, transparent 58%),
+      radial-gradient(45% 75% at 88% 4%, var(--mesh-4) 0%, transparent 52%),
+      radial-gradient(45% 70% at 100% 0%, var(--mesh-5) 0%, transparent 55%);
   }
 }
 
-/* Honor prefers-reduced-motion globally — kill all motion, no exceptions. */
+/* Honor prefers-reduced-motion globally: kill all motion, no exceptions. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -121,12 +137,11 @@ body {
   }
 }
 
-/* Thin, on-brand scrollbars in dark app surfaces */
 .dark ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 .dark ::-webkit-scrollbar-thumb {
-  background: var(--hairline-input);
+  background: var(--hairline-strong);
   border-radius: 9999px;
 }

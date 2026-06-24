@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { AppShell } from "@/components/layout/app-shell";
 
-// DESIGN.md substitute stack: Inter at weight 300 with ss01 approximates Sohne.
-const inter = Inter({
+// Display: Space Grotesk (precise-engineering character). Body: Inter Tight at 400.
+// Mono: JetBrains Mono for every hash, address, and cryptographic statement.
+const display = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500"],
+  variable: "--font-display",
+  display: "swap",
+});
+const sans = Inter_Tight({
+  subsets: ["latin"],
+  weight: ["400", "500"],
   variable: "--font-sans",
   display: "swap",
 });
@@ -41,7 +48,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           }}
         />
       </head>
-      <body className={`${inter.variable} ${mono.variable}`}>
+      <body className={`${display.variable} ${sans.variable} ${mono.variable}`}>
         <Providers>
           <AppShell>{children}</AppShell>
         </Providers>
