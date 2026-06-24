@@ -22,7 +22,7 @@ export interface PoolInfo {
   issuer: string;
   merkle_depth: number;
   merkle_root: string; // hex
-  per_investor_cap_public: bigint;
+  per_investor_cap_public: bigint | null; // Option::None on-chain => null (no public cap)
   pool_name: string;
   pool_token: string;
   total_subscribed: bigint;
@@ -61,7 +61,10 @@ export async function getPoolInfo(): Promise<PoolInfo> {
     issuer: String(raw.issuer),
     merkle_depth: Number(raw.merkle_depth),
     merkle_root: toHex(raw.merkle_root),
-    per_investor_cap_public: BigInt(raw.per_investor_cap_public as string | number | bigint),
+    per_investor_cap_public:
+      raw.per_investor_cap_public == null
+        ? null
+        : BigInt(raw.per_investor_cap_public as string | number | bigint),
     pool_name: String(raw.pool_name),
     pool_token: String(raw.pool_token),
     total_subscribed: BigInt(raw.total_subscribed as string | number | bigint),

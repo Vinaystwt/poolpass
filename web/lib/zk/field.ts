@@ -39,6 +39,11 @@ export function bytesToHex(bytes: Uint8Array): string {
   return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+/** Field element -> 32-byte big-endian lowercase hex (no 0x). For /accredit leaf. */
+export function fieldToHex(value: bigint): string {
+  return assertCanonicalFr(value).toString(16).padStart(64, "0");
+}
+
 export function hexToField(hex: string): bigint {
   return assertCanonicalFr(BigInt(`0x${hex.startsWith("0x") ? hex.slice(2) : hex}`));
 }

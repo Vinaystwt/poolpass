@@ -74,7 +74,15 @@ function fieldAt(bytes: Uint8Array, i: number): string {
   return BigInt(`0x${bytesToHex(bytes.slice(i * 32, i * 32 + 32))}`).toString();
 }
 
-export function deserializeProof(bytes: Uint8Array): SnarkjsProof {
+export interface MutableSnarkProof {
+  pi_a: string[];
+  pi_b: string[][];
+  pi_c: string[];
+  protocol: string;
+  curve: string;
+}
+
+export function deserializeProof(bytes: Uint8Array): MutableSnarkProof {
   if (bytes.length !== 256) throw new Error(`Expected 256 proof bytes, received ${bytes.length}`);
   // A: words 0,1 ; B: 2..5 (c1,c0 per coord) ; C: 6,7
   return {
