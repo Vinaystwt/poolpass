@@ -1,6 +1,7 @@
 import { Prose, H1, Lead, H2, P, Mono, CodeBlock, Table } from "@/components/docs/prose";
 import { CONTRACTS } from "@/lib/backend-config";
 import { HashChip } from "@/components/shared/copy";
+import { ArchitectureDiagram } from "@/components/diagrams/architecture-diagram";
 
 export const metadata = { title: "PoolPass docs — Architecture" };
 
@@ -12,6 +13,8 @@ export default function Architecture() {
         A Soroban contract on testnet, a snarkjs circuit, three Node services, and this Next.js frontend. The private
         path runs entirely in the browser; the services hold only issuer-side state.
       </Lead>
+
+      <ArchitectureDiagram />
 
       <H2 id="contracts">Contracts</H2>
       <Table

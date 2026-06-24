@@ -114,6 +114,19 @@ h4,
     font-family: var(--font-mono), ui-monospace, monospace;
     font-weight: 500;
   }
+  /* Subtle hero bloom breathing; killed by prefers-reduced-motion below. */
+  @keyframes bloom {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 0.68;
+    }
+  }
+  .mesh-anim {
+    animation: bloom 9s ease-in-out infinite;
+  }
   /* Hero gradient bloom: one soft accent-to-transparent wash. */
   .mesh-bg {
     background:

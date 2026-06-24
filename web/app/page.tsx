@@ -8,6 +8,7 @@ import { MiniDemoLazy } from "@/components/landing/mini-demo-lazy";
 import { LiveStats } from "@/components/landing/live-stats";
 import { TrustStrip } from "@/components/landing/trust-strip";
 import { StepFlow } from "@/components/landing/step-flow";
+import { WorkflowDiagram } from "@/components/diagrams/workflow-diagram";
 
 const PROBLEMS = [
   {
@@ -38,7 +39,7 @@ export default function LandingPage() {
     <div>
       {/* ── Hero: H1 left, live proof demo right, above the fold ── */}
       <section className="relative overflow-hidden">
-        <div className="mesh-bg pointer-events-none absolute inset-x-0 top-0 h-[460px] opacity-60" />
+        <div className="mesh-bg mesh-anim pointer-events-none absolute inset-x-0 top-0 h-[460px]" />
         <div className="relative mx-auto max-w-container px-lg pb-xxl pt-xxl">
           <div className="grid items-center gap-xl lg:grid-cols-[1fr_0.92fr]">
             <div>
@@ -116,6 +117,11 @@ export default function LandingPage() {
           </p>
         </Reveal>
         <div className="mt-xl">
+          <Reveal>
+            <WorkflowDiagram />
+          </Reveal>
+        </div>
+        <div className="mt-lg">
           <StepFlow />
         </div>
       </section>

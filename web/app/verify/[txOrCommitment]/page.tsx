@@ -215,7 +215,7 @@ function VerdictTile({
   return (
     <div
       className={`rounded-lg border p-lg ${
-        verdict ? (verdict.valid ? "border-emerald-500/40 bg-emerald-500/5" : "border-ruby/40 bg-ruby/5") : "border-hairline"
+        verdict ? (verdict.valid ? "border-positive/40 bg-positive/5" : "border-danger/40 bg-danger/5") : "border-hairline"
       }`}
     >
       <div className="flex items-center gap-sm">
@@ -223,14 +223,14 @@ function VerdictTile({
         <p className="text-body-md text-ink">{title}</p>
       </div>
       {verdict ? (
-        <div className="mt-md">
+        <div className="mt-md animate-fade-up">
           <div className="flex items-center gap-sm">
             {verdict.valid ? (
-              <ShieldCheck className="h-6 w-6 text-emerald-500" />
+              <ShieldCheck className="h-6 w-6 text-positive" />
             ) : (
-              <ShieldX className="h-6 w-6 text-ruby" />
+              <ShieldX className="h-6 w-6 text-danger" />
             )}
-            <span className={`text-heading-md ${verdict.valid ? "text-emerald-600 dark:text-emerald-400" : "text-ruby"}`}>
+            <span className={`text-heading-md ${verdict.valid ? "text-positive" : "text-danger"}`}>
               {verdict.valid ? "Valid proof" : "Invalid proof"}
             </span>
           </div>

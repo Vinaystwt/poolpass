@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Term } from "@/components/shared/term";
 import { StepFlow } from "@/components/landing/step-flow";
+import { WorkflowDiagram } from "@/components/diagrams/workflow-diagram";
 
 export const metadata = { title: "PoolPass: how it works" };
 
@@ -24,6 +25,9 @@ export default function HowPage() {
         <p className="mt-xs text-body-md text-ink-mute">
           Three steps. Plain language first, with the exact cryptography one click away.
         </p>
+        <div className="mt-lg">
+          <WorkflowDiagram />
+        </div>
         <div className="mt-lg">
           <StepFlow />
         </div>
