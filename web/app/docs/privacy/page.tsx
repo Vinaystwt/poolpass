@@ -1,6 +1,7 @@
 import { Prose, H1, Lead, H2, P, UL, Mono, Callout, Table } from "@/components/docs/prose";
+import { Toc } from "@/components/docs/toc";
 
-export const metadata = { title: "PoolPass docs — Privacy & security" };
+export const metadata = { title: "PoolPass docs: Privacy & security" };
 
 export default function Privacy() {
   return (
@@ -11,25 +12,27 @@ export default function Privacy() {
         It does not hide the amount, the timing, or the on-chain wallet.
       </Lead>
 
+      <Toc />
+
       <H2 id="who-sees">Who sees what</H2>
       <Table
         head={["Value", "Investor", "Issuer", "Contract", "Public observer"]}
         rows={[
-          ["investor_id", "✓", "✓", "—", "—"],
-          ["cap", "✓", "✓", "—", "—"],
-          ["investor_secret", "✓", "—", "—", "—"],
-          ["leaf", "✓", "✓", "via root", "—"],
+          ["investor_id", "✓", "✓", "·", "·"],
+          ["cap", "✓", "✓", "·", "·"],
+          ["investor_secret", "✓", "·", "·", "·"],
+          ["leaf", "✓", "✓", "via root", "·"],
           ["merkle_root", "✓", "✓", "✓", "✓"],
           ["amount", "✓", "✓", "✓", "✓"],
-          ["nullifier", "✓", "—", "✓", "✓"],
-          ["commitment", "✓", "—", "✓", "✓"],
+          ["nullifier", "✓", "·", "✓", "✓"],
+          ["commitment", "✓", "·", "✓", "✓"],
           ["subscribing wallet", "✓", "✓", "✓", "✓"],
         ]}
       />
 
       <Callout tone="warn" title="What is NOT hidden">
         <p>
-          The <Mono>amount</Mono> is a public input — the commitment over the amount does not hide it. The timing of a
+          The <Mono>amount</Mono> is a public input, the commitment over the amount does not hide it. The timing of a
           subscription is observable. The on-chain identity of the subscribing wallet is visible to everyone. If a wallet
           is already linked to a real-world identity, the subscription is too.
         </p>
@@ -45,7 +48,7 @@ export default function Privacy() {
       <H2 id="linkability">Cross-epoch linkability</H2>
       <P>
         The nullifier is <Mono>Poseidon2(investor_secret, epoch)</Mono>. Because the secret is folded in with the epoch,
-        an investor&rsquo;s nullifier in epoch 1 and epoch 2 are unlinkable without the secret — a public observer cannot
+        an investor&rsquo;s nullifier in epoch 1 and epoch 2 are unlinkable without the secret, a public observer cannot
         tell that the same investor subscribed in two different epochs. Within one epoch, the nullifier prevents a double
         subscription: a replay finalizes <Mono>FAILED</Mono> with <Mono>NullifierUsed</Mono>.
       </P>
@@ -54,7 +57,7 @@ export default function Privacy() {
       <UL>
         <li>
           <strong>Discrete log on BN254.</strong> Groth16 soundness rests on the hardness of the discrete logarithm in
-          the BN254 pairing groups. BN254 targets roughly 100-bit security — adequate for a testnet build, and a known
+          the BN254 pairing groups. BN254 targets roughly 100-bit security, adequate for a testnet build, and a known
           consideration for a mainnet curve choice.
         </li>
         <li>

@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { MOCK_USDC, CONTRACTS } from "@/lib/backend-config";
 import { HashChip } from "@/components/shared/copy";
 
-export const metadata = { title: "PoolPass docs — Introduction" };
+export const metadata = { title: "PoolPass docs: Introduction" };
 
 export default function DocsIntro() {
   return (
@@ -12,7 +12,7 @@ export default function DocsIntro() {
       <H1>PoolPass</H1>
       <Lead>
         PoolPass lets an investor subscribe to a gated real-world-asset pool on Stellar by proving they belong to an
-        issuer&rsquo;s accredited set — without revealing who they are, how much they hold, or who else is on the list.
+        issuer&rsquo;s accredited set, without revealing who they are, how much they hold, or who else is on the list.
         The proof is a 256-byte Groth16 proof, verified natively on chain.
       </Lead>
 
@@ -35,7 +35,7 @@ export default function DocsIntro() {
       <H2 id="does">What it does, and does not, do</H2>
       <UL>
         <li>It proves Merkle membership in a committed accredited set, a range bound on the amount, and a per-epoch nullifier.</li>
-        <li>It does not hide the subscription amount — the amount is a public input by design.</li>
+        <li>It does not hide the subscription amount, the amount is a public input by design.</li>
         <li>It does not hide the timing of a subscription or the on-chain wallet that submits it.</li>
         <li>It does not yet run a multi-issuer pool factory; one verified demo pool runs the full loop today.</li>
       </UL>
@@ -43,7 +43,7 @@ export default function DocsIntro() {
       <H2 id="testnet">Testnet and Mock USDC</H2>
       <P>
         Everything here runs on Stellar testnet, protocol 27. Settlement uses{" "}
-        <strong>{MOCK_USDC.labelLong}</strong> — a custom 7-decimal token deployed for this build, not Circle USDC. No
+        <strong>{MOCK_USDC.labelLong}</strong>, a custom 7-decimal token deployed for this build, not Circle USDC. No
         real money moves. After the first mention we call it <Mono>{MOCK_USDC.labelShort}</Mono> or{" "}
         <Mono>{MOCK_USDC.ticker}</Mono>. Mainnet Circle USDC integration is on the roadmap.
       </P>

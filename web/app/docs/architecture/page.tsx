@@ -2,8 +2,9 @@ import { Prose, H1, Lead, H2, P, Mono, CodeBlock, Table } from "@/components/doc
 import { CONTRACTS } from "@/lib/backend-config";
 import { HashChip } from "@/components/shared/copy";
 import { ArchitectureDiagram } from "@/components/diagrams/architecture-diagram";
+import { Toc } from "@/components/docs/toc";
 
-export const metadata = { title: "PoolPass docs — Architecture" };
+export const metadata = { title: "PoolPass docs: Architecture" };
 
 export default function Architecture() {
   return (
@@ -15,6 +16,8 @@ export default function Architecture() {
       </Lead>
 
       <ArchitectureDiagram />
+
+      <Toc />
 
       <H2 id="contracts">Contracts</H2>
       <Table

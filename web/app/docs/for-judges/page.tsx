@@ -1,13 +1,13 @@
 import { Prose, H1, Lead, H2, P, Mono, CodeBlock, Callout } from "@/components/docs/prose";
 
-export const metadata = { title: "PoolPass docs — For judges" };
+export const metadata = { title: "PoolPass docs: For judges" };
 
 const PARITY = "115cc0f5e7d690413df64c6b9662e9cf2a3617f2743245519e19607a4417189a";
 const LINKS: { label: string; tx: string }[] = [
-  { label: "Gate A — Poseidon parity (forced host invocation)", tx: "94e5d8b1a6161bea6581b305c522981d2674ac87db49bc6263126d7b3167e4d5" },
-  { label: "Gate B — native BN254 Groth16 verification", tx: "593c2516f1c8b431a0ff8cf09a82ba92eb467bfb0e6f1b72099bfb25d0490ee1" },
+  { label: "Gate A, Poseidon parity (forced host invocation)", tx: "94e5d8b1a6161bea6581b305c522981d2674ac87db49bc6263126d7b3167e4d5" },
+  { label: "Gate B, native BN254 Groth16 verification", tx: "593c2516f1c8b431a0ff8cf09a82ba92eb467bfb0e6f1b72099bfb25d0490ee1" },
   { label: "Real subscription with exact balance assertions", tx: "c0ed392e0aea922790676010e0a13e4a4d6f5de7b0878e1b08ae9d79b0bfaa51" },
-  { label: "Same-nullifier replay — finalized FAILED, code 5", tx: "9713c9fe80bb3737e308580bee8f45619be5ef0620f2cd6953b781c2900d7a36" },
+  { label: "Same-nullifier replay, finalized FAILED, code 5", tx: "9713c9fe80bb3737e308580bee8f45619be5ef0620f2cd6953b781c2900d7a36" },
   { label: "Leaf-only self-serve accreditation", tx: "b8394e5c4cb75db7689450c2fb96b979262b73241cacd5a310c3543746ca28fd" },
   { label: "Fresh-address subscription", tx: "a3950d75ec2203d33949d4c7c05ba72b78d638361598060f8b9eac91d3baa0dd" },
 ];
@@ -39,7 +39,7 @@ pnpm selfserve:smoke`}</CodeBlock>
 /docs/host-functions    the Gate A parity witness, verbatim`}</CodeBlock>
 
       <H2 id="parity">One hex string to check</H2>
-      <Callout tone="proof" title="Poseidon parity — three identical outputs">
+      <Callout tone="proof" title="Poseidon parity, three identical outputs">
         <p>
           For the input pair <Mono>&quot;1&quot;, &quot;2&quot;</Mono>, the off-chain library, the Circom witness, and the
           Soroban host all return:
@@ -50,7 +50,7 @@ pnpm selfserve:smoke`}</CodeBlock>
         <p>Byte-identical across all three. No contract contains userland Poseidon or BN254 arithmetic.</p>
       </Callout>
 
-      <H2 id="explorer">Explorer links — verified on-chain runs</H2>
+      <H2 id="explorer">Explorer links, verified on-chain runs</H2>
       <div className="flex flex-col gap-xs">
         {LINKS.map((l) => (
           <a

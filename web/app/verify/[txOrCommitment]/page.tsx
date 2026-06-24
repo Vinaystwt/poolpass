@@ -97,7 +97,7 @@ export default function VerifyPage({ params }: { params: { txOrCommitment: strin
       <Badge variant="proof">Public verification</Badge>
       <h1 className="mt-md text-display-lg text-ink">Verify this subscription.</h1>
       <p className="mt-sm max-w-[60ch] text-body-lg text-ink-secondary">
-        We do not ask you to trust us; we ask you to run the math. Anyone — no wallet required — can confirm this
+        We do not ask you to trust us; we ask you to run the math. Anyone, no wallet required, can confirm this
         subscription against the proof recorded on Stellar.
       </p>
 

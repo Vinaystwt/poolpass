@@ -40,7 +40,7 @@ export function Mono({ children }: { children: React.ReactNode }) {
 
 export function CodeBlock({ children, lang }: { children: string; lang?: string }) {
   return (
-    <pre className="overflow-x-auto rounded-lg border border-hairline bg-canvas-soft p-lg">
+    <pre className="block w-full min-w-0 max-w-full overflow-x-auto rounded-lg border border-hairline bg-canvas-sunken p-lg">
       {lang && <span className="mb-xs block text-micro-cap uppercase tracking-wide text-ink-mute">{lang}</span>}
       <code className="mono whitespace-pre text-[12.5px] leading-relaxed text-ink-secondary">{children}</code>
     </pre>

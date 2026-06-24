@@ -1,4 +1,4 @@
-// Poseidon-free helpers — safe to import without pulling circomlibjs into a bundle.
+// Poseidon-free helpers, safe to import without pulling circomlibjs into a bundle.
 import { PUBLIC_INPUT_ORDER } from "../backend-config";
 import type { DecodedPublicInputs, ProofPackage } from "./types";
 

@@ -81,7 +81,7 @@ export function Footer() {
       </div>
       <div className="border-t border-hairline">
         <div className="mx-auto flex max-w-container flex-col items-start justify-between gap-xs px-lg py-lg text-micro text-ink-mute md:flex-row md:items-center">
-          <span>© {new Date().getFullYear()} PoolPass · Deon Labs. A solo hackathon build on Stellar testnet.</span>
+          <span>© {new Date().getFullYear()} PoolPass. A solo build on Stellar testnet.</span>
           <span>Mock USDC is a 7-decimal testnet token, not Circle USDC.</span>
         </div>
       </div>

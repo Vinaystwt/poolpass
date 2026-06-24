@@ -18,7 +18,7 @@ export function MySubscriptions() {
     <section>
       <h2 className="text-display-md text-ink">Recent subscriptions</h2>
       <p className="mt-xxs text-body-md text-ink-mute">
-        Live from the indexer. Every row is a real testnet subscription — verify any of them.
+        Live from the indexer. Every row is a real testnet subscription, verify any of them.
       </p>
       <div className="mt-lg overflow-x-auto rounded-lg border border-hairline">
         <table className="w-full min-w-[640px] text-left">

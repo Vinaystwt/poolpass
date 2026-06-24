@@ -39,7 +39,7 @@ export default function ProvePage() {
       <Badge variant="proof">Standalone prover</Badge>
       <h1 className="mt-md text-display-lg text-ink">Generate a proof.</h1>
       <p className="mt-sm max-w-[62ch] text-body-lg text-ink-secondary">
-        Drop a proof package from an issuer, or use the baked demo input. The proof runs in your browser — no wallet,
+        Drop a proof package from an issuer, or use the baked demo input. The proof runs in your browser, no wallet,
         no account. Watch the witness, prove, and verify stages run on your own machine.
       </p>
 

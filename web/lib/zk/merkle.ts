@@ -1,4 +1,4 @@
-// Browser Merkle tree — mirrors src/merkle/tree.ts (depth-3, 8-leaf demo tree).
+// Browser Merkle tree, mirrors src/merkle/tree.ts (depth-3, 8-leaf demo tree).
 import { parseField } from "./field";
 import { poseidon2, poseidon3 } from "./poseidon";
 

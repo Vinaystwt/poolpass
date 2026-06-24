@@ -64,7 +64,7 @@ export function decodeError(error: unknown): FriendlyError {
     return { title: "Network error", message: "Could not reach the network. Check your connection and retry." };
   }
 
-  // Fallback — never leak a raw contract error
+  // Fallback, never leak a raw contract error
   return { title: "Something went wrong", message: "The action could not be completed. Please retry." };
 }
 

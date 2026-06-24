@@ -174,10 +174,10 @@ export default function IssuerPage() {
       <Card className="mt-xl p-xl">
         <h2 className="text-heading-md text-ink">{pool?.pool_name ?? "Loading pool…"}</h2>
         <dl className="mt-md grid grid-cols-2 gap-lg md:grid-cols-4">
-          <Stat label="Epoch" value={pool ? String(pool.epoch) : "—"} />
-          <Stat label="Total subscribed" value={pool ? `${formatMockUsdc(pool.total_subscribed)} ${MOCK_USDC.ticker}` : "—"} />
-          <Stat label="Merkle depth" value={pool ? `${pool.merkle_depth} · 8 leaves` : "—"} />
-          <Stat label="Per-investor cap" value={pool ? (pool.per_investor_cap_public ? formatMockUsdc(pool.per_investor_cap_public) : "none") : "—"} />
+          <Stat label="Epoch" value={pool ? String(pool.epoch) : "·"} />
+          <Stat label="Total subscribed" value={pool ? `${formatMockUsdc(pool.total_subscribed)} ${MOCK_USDC.ticker}` : "·"} />
+          <Stat label="Merkle depth" value={pool ? `${pool.merkle_depth} · 8 leaves` : "·"} />
+          <Stat label="Per-investor cap" value={pool ? (pool.per_investor_cap_public ? formatMockUsdc(pool.per_investor_cap_public) : "none") : "·"} />
         </dl>
         {pool && (
           <div className="mt-md">
@@ -283,9 +283,9 @@ export default function IssuerPage() {
                       {rows.map((r, i) => (
                         <tr key={i} className="border-b border-hairline/60 last:border-0">
                           <td className="px-md py-sm tnum text-body-md text-ink-mute">{i}</td>
-                          <td className="px-md py-sm mono text-[12px] text-ink">{r.investorId ?? "—"}</td>
+                          <td className="px-md py-sm mono text-[12px] text-ink">{r.investorId ?? "·"}</td>
                           <td className="px-md py-sm tnum text-body-md text-ink">
-                            {r.cap ? formatMockUsdc(r.cap) : "—"}
+                            {r.cap ? formatMockUsdc(r.cap) : "·"}
                           </td>
                           <td className="px-md py-sm"><HashChip value={fieldToHex(r.leaf)} copy={false} /></td>
                           <td className="px-md py-sm">
@@ -343,7 +343,7 @@ export default function IssuerPage() {
                 <Coins className="h-4 w-4 text-primary" />
                 <h2 className="text-heading-md text-ink">Faucet</h2>
               </div>
-              <p className="mt-xs text-body-md text-ink-mute">Send Mock USDC to any address — useful mid-demo.</p>
+              <p className="mt-xs text-body-md text-ink-mute">Send Mock USDC to any address, useful mid-demo.</p>
               <div className="mt-md flex gap-sm">
                 <Input placeholder="G..." value={faucetAddr} onChange={(e) => setFaucetAddr(e.target.value)} />
                 <Button

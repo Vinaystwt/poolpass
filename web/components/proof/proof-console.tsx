@@ -146,7 +146,7 @@ export function ProofConsole({
         <>
           {usedFallback && (
             <div className="rounded-md border border-ruby/30 bg-ruby/5 px-md py-sm text-caption text-ruby">
-              Generated via the server fallback — private inputs left your device.
+              Generated via the server fallback, private inputs left your device.
             </div>
           )}
           <ProofResult out={out} />

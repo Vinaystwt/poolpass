@@ -1,4 +1,4 @@
-// Browser Poseidon — mirrors src/crypto/poseidon.ts exactly (circomlibjs, BN254 Fr,
+// Browser Poseidon, mirrors src/crypto/poseidon.ts exactly (circomlibjs, BN254 Fr,
 // two-input t=3/RF=8/RP=57, three-input t=4/RF=8/RP=56). Shared by the investor
 // self-serve flow and the issuer Merkle builder.
 import { buildPoseidon } from "circomlibjs";

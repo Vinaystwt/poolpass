@@ -1,6 +1,6 @@
 import type { ProofPackage } from "./types";
 
-// Baked test input — mirrors circuits/example_input.json + circuits/fixtures/proof-package.json.
+// Baked test input, mirrors circuits/example_input.json + circuits/fixtures/proof-package.json.
 // This is a circuit test fixture (not a deployment value), used by the landing mini-demo and
 // as the default package on /prove so a visitor can feel a real proof with no wallet.
 export const DEMO_PROOF_PACKAGE: ProofPackage = {

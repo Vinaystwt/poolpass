@@ -17,7 +17,7 @@ export interface Identity {
 /**
  * Generate a fresh investor identity locally. investor_id and investor_secret are
  * random BN254 Fr values; cap is a generous test ceiling. None of these leave the
- * device — only the resulting leaf hash is sent to /accredit.
+ * device, only the resulting leaf hash is sent to /accredit.
  */
 export function generateIdentity(capBaseUnits = 100_000_000_000n): Identity {
   return { investorId: randomFr(), cap: capBaseUnits, investorSecret: randomFr() };

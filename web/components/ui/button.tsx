@@ -5,7 +5,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-// Pill buttons, tight 8px/16px padding — DESIGN.md transactional feel.
+// Pill buttons, tight 8px/16px padding, DESIGN.md transactional feel.
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-sm whitespace-nowrap rounded-pill text-[15px] font-medium leading-none transition-[background,color,box-shadow,transform] duration-[120ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-ring disabled:pointer-events-none disabled:opacity-50 active:scale-[0.985] active:duration-[80ms]",
   {

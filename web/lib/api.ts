@@ -32,7 +32,7 @@ export function verifyBackend(
   return postJson("/api/verify", { proof, publicSignals });
 }
 
-/** FALLBACK path — sends private inputs in plaintext. Requires explicit opt-in. */
+/** FALLBACK path, sends private inputs in plaintext. Requires explicit opt-in. */
 export function proveBackend(input: CircuitInput): Promise<SnarkProofResult> {
   return postJson("/api/prove", { input });
 }

@@ -1,6 +1,7 @@
 import { Prose, H1, Lead, H2, P, UL, Mono, Callout, CodeBlock } from "@/components/docs/prose";
+import { Toc } from "@/components/docs/toc";
 
-export const metadata = { title: "PoolPass docs — Protocol 25/26 host functions" };
+export const metadata = { title: "PoolPass docs: Protocol 25/26 host functions" };
 
 const PARITY_HASH = "115cc0f5e7d690413df64c6b9662e9cf2a3617f2743245519e19607a4417189a";
 const GATE_A_TX = "94e5d8b1a6161bea6581b305c522981d2674ac87db49bc6263126d7b3167e4d5";
@@ -16,6 +17,8 @@ export default function HostFunctions() {
         cheap enough to be practical.
       </Lead>
 
+      <Toc />
+
       <H2 id="why">Why native host functions matter</H2>
       <P>
         A Groth16 verification is a handful of elliptic-curve pairings on BN254. Implemented in WASM, the pairings blow
@@ -24,10 +27,10 @@ export default function HostFunctions() {
       </P>
       <UL>
         <li>
-          <strong>CAP-0074 — BN254.</strong> Native BN254 curve operations and pairing, used by the Groth16 verifier.
+          <strong>CAP-0074, BN254.</strong> Native BN254 curve operations and pairing, used by the Groth16 verifier.
         </li>
         <li>
-          <strong>CAP-0075 — Poseidon.</strong> Native Poseidon hashing over BN254 Fr, used for leaves, the Merkle tree,
+          <strong>CAP-0075, Poseidon.</strong> Native Poseidon hashing over BN254 Fr, used for leaves, the Merkle tree,
           the nullifier, and the commitment.
         </li>
       </UL>
@@ -37,14 +40,14 @@ export default function HostFunctions() {
         BN254 implementation.
       </P>
 
-      <H2 id="gate-a">Gate A — Poseidon parity equality</H2>
+      <H2 id="gate-a">Gate A, Poseidon parity equality</H2>
       <P>
         The parity gate proves the on-chain Poseidon agrees, byte for byte, with the off-chain library and the Circom
         circuit. This is the single most important piece of evidence in these docs, reproduced verbatim from{" "}
         <Mono>docs/e2e-transcript.md</Mono>:
       </P>
 
-      <Callout tone="proof" title="Gate A — Poseidon parity equality">
+      <Callout tone="proof" title="Gate A, Poseidon parity equality">
         <ul className="ml-lg list-disc space-y-xs">
           <li>
             Input pair, as BN254 Fr decimal strings: <Mono>&quot;1&quot;</Mono>, <Mono>&quot;2&quot;</Mono>.
@@ -78,7 +81,7 @@ export default function HostFunctions() {
         <Mono>R_P=56</Mono>.
       </P>
 
-      <H2 id="gate-b">Gate B — native BN254 Groth16 verification</H2>
+      <H2 id="gate-b">Gate B, native BN254 Groth16 verification</H2>
       <P>
         Gate B forces a native BN254 Groth16 verification on chain, proving the verifier path works against the host
         pairing function rather than a userland fallback:

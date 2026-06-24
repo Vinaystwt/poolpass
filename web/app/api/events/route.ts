@@ -69,7 +69,7 @@ export async function GET() {
     const merged = await liveMerge(base);
     return NextResponse.json({ ...merged, source: "live" });
   } catch (err) {
-    // RPC outside retention window or unreachable — serve the committed snapshot.
+    // RPC outside retention window or unreachable, serve the committed snapshot.
     return NextResponse.json({ ...base, source: "snapshot", note: String(err) });
   }
 }

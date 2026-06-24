@@ -1,7 +1,7 @@
 import { Layers, Banknote, Blocks, Repeat } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-export const metadata = { title: "PoolPass — Roadmap" };
+export const metadata = { title: "PoolPass: Roadmap" };
 
 const QUARTERS = [
   {
@@ -37,7 +37,7 @@ const QUARTERS = [
     bullets: [
       "PoolPass tokens accepted as collateral in Blend",
       "Secondary-market hooks for whitelist transfers",
-      "Nested proofs for delegated subscription — a wealth manager subscribes for N accredited clients with one proof",
+      "Nested proofs for delegated subscription, a wealth manager subscribes for N accredited clients with one proof",
     ],
   },
   {
@@ -47,7 +47,7 @@ const QUARTERS = [
     accent: "var(--danger)",
     bullets: [
       "Recursive Groth16 batching to amortize verification across many subscriptions in one transaction",
-      "Selective auditor disclosure — a regulator can request one nullifier's history without seeing others",
+      "Selective auditor disclosure, a regulator can request one nullifier's history without seeing others",
       "First external audit and bug bounty",
     ],
   },

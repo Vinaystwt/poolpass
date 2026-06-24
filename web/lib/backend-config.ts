@@ -5,7 +5,7 @@
  * constant, event name, and HTTP endpoint is sourced from deployments.json
  * (the machine-readable source of truth) and from FRONTEND_INTEGRATION.md.
  *
- * Component code MUST import from here — never hardcode a contract id, a field
+ * Component code MUST import from here, never hardcode a contract id, a field
  * modulus, or a public-signal index inline. If a value is missing from the JSON
  * it is missing here too; do not invent it.
  */
@@ -96,7 +96,7 @@ export const API_BASE =
 export const API = {
   accredit: `${API_BASE}/accredit`,
   faucet: `${API_BASE}/faucet`,
-  prove: `${API_BASE}/prove`, // FALLBACK ONLY — see proving-path status
+  prove: `${API_BASE}/prove`, // FALLBACK ONLY, see proving-path status
   verify: `${API_BASE}/verify`,
   poolDemo: `${API_BASE}/pool/demo`,
 } as const;

@@ -1,6 +1,6 @@
 import { Prose, H1, Lead, H2, OL, Mono, Callout } from "@/components/docs/prose";
 
-export const metadata = { title: "PoolPass docs — How it works" };
+export const metadata = { title: "PoolPass docs: How it works" };
 
 export default function HowItWorks() {
   return (
@@ -21,8 +21,8 @@ export default function HowItWorks() {
           <Mono>update_accredited_set</Mono>. That emits <Mono>RootUpdated</Mono> with the new root and epoch.
         </li>
         <li>
-          <strong>Prove.</strong> The investor assembles the circuit input — their private identity plus the Merkle path
-          — and runs snarkjs in a Web Worker. Out comes a 256-byte proof and four public inputs:{" "}
+          <strong>Prove.</strong> The investor assembles the circuit input, their private identity plus the Merkle path,
+          and runs snarkjs in a Web Worker. Out comes a 256-byte proof and four public inputs:{" "}
           <Mono>[merkle_root, amount, nullifier, epoch]</Mono>. The private inputs never leave the browser.
         </li>
         <li>
@@ -39,7 +39,7 @@ export default function HowItWorks() {
       <Callout title="What the ledger sees">
         <p>
           A passive observer sees the subscribing wallet, the amount, a nullifier, and a commitment. They do not see
-          which leaf was used, the investor&rsquo;s id, their cap, or their secret — and so cannot link the subscription
+          which leaf was used, the investor&rsquo;s id, their cap, or their secret, and so cannot link the subscription
           to a real-world identity or to the same investor across epochs.
         </p>
       </Callout>

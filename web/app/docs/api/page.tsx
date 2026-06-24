@@ -1,6 +1,6 @@
 import { Prose, H1, Lead, H2, P, Mono, CodeBlock, Callout } from "@/components/docs/prose";
 
-export const metadata = { title: "PoolPass docs — API" };
+export const metadata = { title: "PoolPass docs: API" };
 
 export default function ApiDocs() {
   return (
@@ -34,7 +34,7 @@ export default function ApiDocs() {
 
 # -> { "valid": true }`}</CodeBlock>
 
-      <H2 id="prove">POST /prove — fallback only</H2>
+      <H2 id="prove">POST /prove, fallback only</H2>
       <Callout tone="warn" title="This endpoint is the fallback, not the default">
         <p>
           <Mono>/prove</Mono> necessarily receives <Mono>investor_id</Mono>, <Mono>cap</Mono>, and{" "}

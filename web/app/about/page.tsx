@@ -2,7 +2,7 @@ import { Github, Twitter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { TrustStrip } from "@/components/landing/trust-strip";
 
-export const metadata = { title: "PoolPass — About" };
+export const metadata = { title: "PoolPass: About" };
 
 export default function AboutPage() {
   return (
@@ -12,7 +12,7 @@ export default function AboutPage() {
       <section className="mt-lg">
         <h1 className="text-display-lg text-ink">Real-world money deserves real-world privacy.</h1>
         <p className="mt-lg text-body-lg text-ink-secondary">
-          PoolPass lets an investor join a gated real-world-asset pool on Stellar by proving they qualify — not by
+          PoolPass lets an investor join a gated real-world-asset pool on Stellar by proving they qualify, not by
           surrendering their identity and their balance sheet. We built it because the gate between a regulated issuer
           and a private subscriber is unsolved, and because Stellar just shipped the host functions that make solving it
           on chain cheap.
@@ -49,12 +49,12 @@ export default function AboutPage() {
             </span>
             <div>
               <p className="text-heading-md text-ink">Vinay</p>
-              <p className="text-caption text-ink-mute">Deon Labs · solo hackathon build</p>
+              <p className="text-caption text-ink-mute">Solo hackathon build</p>
             </div>
           </div>
           <p className="mt-md text-body-md text-ink-secondary">
             One builder, one pass: the Soroban contracts, the Circom circuit and trusted-setup artifacts, the indexer and
-            services, and this frontend. Honest framing — this is a hackathon build on testnet, with mainnet plans laid
+            services, and this frontend. Honest framing, this is a hackathon build on testnet, with mainnet plans laid
             out on the roadmap, not a finished product pretending to be one.
           </p>
           <div className="mt-md flex gap-sm">

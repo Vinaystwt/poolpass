@@ -1,4 +1,4 @@
-// Browser Groth16 serializer — mirrors src/serialization/groth16.ts byte layout:
+// Browser Groth16 serializer, mirrors src/serialization/groth16.ts byte layout:
 //   G1: x[32] || y[32]
 //   G2: x.c1[32] || x.c0[32] || y.c1[32] || y.c0[32]   (snarkjs emits [c0,c1]; we reverse)
 //   Proof: A G1 || B G2 || C G1  (exactly 256 bytes)

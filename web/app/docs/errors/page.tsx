@@ -1,7 +1,7 @@
 import { Prose, H1, Lead, H2, P, UL, Mono, Table, Callout } from "@/components/docs/prose";
 import { ERROR_TABLE } from "@/lib/errors";
 
-export const metadata = { title: "PoolPass docs — Errors" };
+export const metadata = { title: "PoolPass docs: Errors" };
 
 const REMEDIATION: Record<number, string> = {
   1: "Only the pool issuer can update the accredited set or advance the epoch. Connect the issuer wallet.",
@@ -19,7 +19,7 @@ export default function Errors() {
     <Prose>
       <H1>Errors</H1>
       <Lead>
-        Every contract error decodes to a human message in the UI — a raw <Mono>Error(Contract, #N)</Mono> never reaches
+        Every contract error decodes to a human message in the UI, a raw <Mono>Error(Contract, #N)</Mono> never reaches
         a user. The full table, with likely cause and remediation:
       </Lead>
       <Table

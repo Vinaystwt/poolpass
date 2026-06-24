@@ -53,8 +53,8 @@ export default function InvestPage() {
         <div className="mt-xl rounded-xl border border-primary/20 bg-primary/[0.04] p-xl">
           <h2 className="text-heading-md text-ink">New here? Two minutes, one device.</h2>
           <p className="mt-xs max-w-[60ch] text-body-md text-ink-secondary">
-            PoolPass on testnet uses {MOCK_USDC.labelLong}, a 7-decimal token — not Circle USDC. Get a wallet, get test
-            funds, and try the demo pool. You will accredit yourself, prove in the browser, and subscribe — without
+            PoolPass on testnet uses {MOCK_USDC.labelLong}, a 7-decimal token, not Circle USDC. Get a wallet, get test
+            funds, and try the demo pool. You will accredit yourself, prove in the browser, and subscribe, without
             revealing your identity.
           </p>
           <div className="mt-md flex flex-wrap gap-sm">
@@ -87,8 +87,10 @@ export default function InvestPage() {
       {/* Pool grid */}
       <div className="mt-xl grid gap-lg md:grid-cols-2 lg:grid-cols-3">
         <PoolCard pool={pool} loading={isLoading} onSubscribe={() => setOpen(true)} />
-        <ComingSoonPool />
       </div>
+
+      {/* Coming-soon band (full width, not a mismatched grid sibling) */}
+      <ComingSoonPool />
 
       {/* Subscriptions */}
       <div className="mt-huge">
@@ -102,14 +104,16 @@ export default function InvestPage() {
 
 function ComingSoonPool() {
   return (
-    <div className="flex flex-col items-start justify-center rounded-lg border border-dashed border-hairline p-xl">
-      <Badge variant="neutral">Coming soon</Badge>
-      <h3 className="mt-md text-heading-md text-ink">Multi-issuer pools</h3>
-      <p className="mt-xs text-body-md text-ink-mute">
-        A pool factory and regulated-issuer onboarding land on the roadmap. Today, one verified demo pool runs the full
-        zero-knowledge loop.
-      </p>
-      <Button asChild variant="ghost" size="sm" className="mt-md">
+    <div className="mt-lg flex flex-col items-start gap-md rounded-lg border border-dashed border-hairline p-xl md:flex-row md:items-center md:justify-between">
+      <div>
+        <Badge variant="neutral">Coming soon</Badge>
+        <h3 className="mt-sm text-heading-md text-ink">Multi-issuer pools</h3>
+        <p className="mt-xs max-w-[60ch] text-body-md text-ink-mute">
+          A pool factory and regulated-issuer onboarding land on the roadmap. Today, one verified demo pool runs the full
+          zero-knowledge loop.
+        </p>
+      </div>
+      <Button asChild variant="secondary" size="sm" className="shrink-0">
         <a href="/roadmap">
           See the roadmap <ArrowRight className="h-4 w-4" />
         </a>

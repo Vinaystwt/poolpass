@@ -1,6 +1,7 @@
 import { Prose, H1, Lead, H2, H3, P, Mono, CodeBlock, Callout, Table } from "@/components/docs/prose";
+import { Toc } from "@/components/docs/toc";
 
-export const metadata = { title: "PoolPass docs — Mathematics" };
+export const metadata = { title: "PoolPass docs: Mathematics" };
 
 export default function Mathematics() {
   return (
@@ -10,6 +11,8 @@ export default function Mathematics() {
         Every value below is a canonical element of the BN254 scalar field Fr. The circuit proves four statements at
         once and reveals four public inputs: <Mono>[merkle_root, amount, nullifier, epoch]</Mono>.
       </Lead>
+
+      <Toc />
 
       <H2 id="field">The field</H2>
       <P>The scalar field modulus, where all witness and public values live:</P>
@@ -87,15 +90,15 @@ L7 14659279386437270083870174181804470449226118232359344769161099059579350216344
       </P>
       <CodeBlock lang="membership trace, leaf index 2">{`h0 = L2 = 12893205181829035144918275392963016566095938447231477489571980199106169905498
 
-# level 0 — b=0, sibling = L3
+# level 0, b=0, sibling = L3
 h1 = Poseidon2(L2, L3)
    = 12890551834249873553577838208612920974524018745806333979994876329805909211689
 
-# level 1 — b=1, sibling = node[1,0]
+# level 1, b=1, sibling = node[1,0]
 h2 = Poseidon2(15433287407569847909368511689487787902083850118714026812950920625613019578967, h1)
    = 2494936514636011527722204016798649733204020281115724428000404920469392127035
 
-# level 2 — b=0, sibling = node[2,1]
+# level 2, b=0, sibling = node[2,1]
 root = Poseidon2(h2, 4876111224302462558615753393385604022409636210284542432896015278460659644565)
      = 16728084433781642160513578623962861653988778837989211022411042828625333450201`}</CodeBlock>
       <Callout title="The root">
