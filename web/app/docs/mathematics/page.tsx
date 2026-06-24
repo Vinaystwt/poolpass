@@ -132,10 +132,10 @@ root = Poseidon2(h2, 48761112243024625586157533933856040224096362102845424328960
       <Table
         head={["Stage", "Where", "Observed"]}
         rows={[
-          ["Witness", "browser Web Worker", "~120–210 ms"],
-          ["Prove (Groth16)", "browser Web Worker", "~600–880 ms"],
+          ["Witness", "browser Web Worker", "~120 to 210 ms"],
+          ["Prove (Groth16)", "browser Web Worker", "~600 to 880 ms"],
           ["Verify (local)", "browser Web Worker", "~40 ms"],
-          ["End-to-end", "browser, warm", "~0.8–1.1 s"],
+          ["End-to-end", "browser, warm", "~0.8 to 1.1 s"],
           ["Verify (on chain)", "native BN254 host call", "single priced host call"],
         ]}
       />
