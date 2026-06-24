@@ -3,7 +3,7 @@ import { ArrowRight, FileLock2, Clock4, Globe2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/shared/reveal";
-import { MiniDemo } from "@/components/landing/mini-demo";
+import { MiniDemoLazy } from "@/components/landing/mini-demo-lazy";
 import { LiveStats } from "@/components/landing/live-stats";
 import { TrustStrip } from "@/components/landing/trust-strip";
 import { StepFlow } from "@/components/landing/step-flow";
@@ -95,7 +95,7 @@ export default function LandingPage() {
                 ))}
               </dl>
             </div>
-            <MiniDemo />
+            <MiniDemoLazy />
           </div>
         </Reveal>
       </section>

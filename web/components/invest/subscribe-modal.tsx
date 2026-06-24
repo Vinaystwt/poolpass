@@ -174,13 +174,13 @@ export function SubscribeModal({
         ) : (
           <Tabs value={step} onValueChange={(v) => setStep(v as Step)}>
             <TabsList className="w-full">
-              <TabsTrigger value="accredit" className="flex-1">
+              <TabsTrigger value="accredit" className="flex-1 px-sm text-[13px]">
                 {pkg ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : "1"} Accredit
               </TabsTrigger>
-              <TabsTrigger value="prove" disabled={!pkg} className="flex-1">
+              <TabsTrigger value="prove" disabled={!pkg} className="flex-1 px-sm text-[13px]">
                 {proofHandle ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : "2"} Prove
               </TabsTrigger>
-              <TabsTrigger value="subscribe" disabled={!proofHandle} className="flex-1">
+              <TabsTrigger value="subscribe" disabled={!proofHandle} className="flex-1 px-sm text-[13px]">
                 3 Subscribe
               </TabsTrigger>
             </TabsList>

@@ -14,20 +14,24 @@ const STORAGE_KEY = "poolpass-theme";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = React.useState<Theme>("light");
+  const [mounted, setMounted] = React.useState(false);
 
+  // Read the stored preference once on mount.
   React.useEffect(() => {
     const stored = (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? null;
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initial = stored ?? (prefersDark ? "dark" : "light");
-    setThemeState(initial);
+    setThemeState(stored ?? (prefersDark ? "dark" : "light"));
+    setMounted(true);
   }, []);
 
+  // Apply + persist only after the initial read, so we never clobber storage first.
   React.useEffect(() => {
+    if (!mounted) return;
     const root = document.documentElement;
     root.classList.toggle("dark", theme === "dark");
     root.style.colorScheme = theme;
     localStorage.setItem(STORAGE_KEY, theme);
-  }, [theme]);
+  }, [theme, mounted]);
 
   const value = React.useMemo<ThemeContextValue>(
     () => ({

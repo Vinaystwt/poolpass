@@ -12,7 +12,7 @@ import { fetchEvents, verifyBackend } from "@/lib/api";
 import { findSubscription } from "@/lib/indexer";
 import { deserializeProof } from "@/lib/zk/serialize";
 import { hexToBytes } from "@/lib/zk/field";
-import { decodePublicInputs } from "@/lib/zk/assemble";
+import { decodePublicInputs } from "@/lib/zk/decode";
 import { formatMockUsdc, stellarExpertTx, truncate } from "@/lib/utils";
 import { MOCK_USDC } from "@/lib/backend-config";
 

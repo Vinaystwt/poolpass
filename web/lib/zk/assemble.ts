@@ -1,8 +1,10 @@
-// Pure helpers: turn a ProofPackage + chosen amount into the exact circuit input,
-// and decode public signals for human display. No snarkjs here (cheap, UI-thread safe).
+// Assemble the exact circuit input from a ProofPackage. This module imports
+// Poseidon (circomlibjs); poseidon-free decode helpers live in ./decode.
 import { computeNullifier } from "./poseidon";
-import type { CircuitInput, DecodedPublicInputs, ProofPackage } from "./types";
-import { PUBLIC_INPUT_ORDER } from "../backend-config";
+import type { CircuitInput, ProofPackage } from "./types";
+
+// Re-exported for back-compat; defined in the poseidon-free ./decode module.
+export { decodePublicInputs, isProofPackage } from "./decode";
 
 export async function assembleCircuitInput(pkg: ProofPackage, amountBaseUnits: string): Promise<CircuitInput> {
   const secret = BigInt(pkg.investor_secret);
@@ -21,28 +23,3 @@ export async function assembleCircuitInput(pkg: ProofPackage, amountBaseUnits: s
   };
 }
 
-/** Public signals are emitted in PUBLIC_INPUT_ORDER: [merkle_root, amount, nullifier, epoch]. */
-export function decodePublicInputs(publicSignals: string[]): DecodedPublicInputs {
-  const map = Object.fromEntries(PUBLIC_INPUT_ORDER.map((name, i) => [name, publicSignals[i]]));
-  return {
-    merkle_root: map.merkle_root,
-    amount: map.amount,
-    nullifier: map.nullifier,
-    epoch: map.epoch,
-  };
-}
-
-export function isProofPackage(value: unknown): value is ProofPackage {
-  if (!value || typeof value !== "object") return false;
-  const v = value as Record<string, unknown>;
-  return (
-    typeof v.investor_id === "string" &&
-    typeof v.cap === "string" &&
-    typeof v.investor_secret === "string" &&
-    typeof v.root === "string" &&
-    Array.isArray(v.merkle_path) &&
-    (v.merkle_path as unknown[]).length === 3 &&
-    Array.isArray(v.merkle_indices) &&
-    (v.merkle_indices as unknown[]).length === 3
-  );
-}
