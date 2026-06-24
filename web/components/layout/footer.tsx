@@ -10,7 +10,7 @@ const COLS: { title: string; links: { label: string; href: string; external?: bo
       { label: "Invest", href: "/invest" },
       { label: "Issuer console", href: "/issuer" },
       { label: "Generate a proof", href: "/prove" },
-      { label: "Demo", href: "/demo" },
+      { label: "Start here", href: "/how" },
     ],
   },
   {

@@ -188,20 +188,60 @@ export default function IssuerPage() {
       </Card>
 
       {!isIssuer ? (
-        <Card className="mt-lg p-xl">
-          <Lock className="h-5 w-5 text-ink-mute" />
-          <h2 className="mt-md text-heading-md text-ink">Read-only view</h2>
-          <p className="mt-xs max-w-[60ch] text-body-md text-ink-secondary">
-            Connect the demo issuer wallet to manage accreditation, commit roots, and advance epochs. Launching your own
-            pool from the frontend is on the roadmap — the contract supports a pool factory; the deploy flow is out of
-            scope for this build.
-          </p>
-          <Button asChild variant="ghost" size="sm" className="mt-md">
-            <a href="/roadmap">
-              See the roadmap <ArrowRight className="h-4 w-4" />
-            </a>
-          </Button>
-        </Card>
+        <>
+          <Card className="mt-lg p-xl">
+            <Lock className="h-5 w-5 text-ink-mute" />
+            <h2 className="mt-md text-heading-md text-ink">What an issuer does here</h2>
+            <p className="mt-xs max-w-[64ch] text-body-md text-ink-secondary">
+              This console is the issuer side of PoolPass. You are viewing the live demo pool in read-only mode. Connect
+              the demo issuer wallet to run the full set of actions below. The pool state above is real and on chain.
+            </p>
+            <div className="mt-lg grid gap-md md:grid-cols-2">
+              {[
+                {
+                  title: "Accredit investors",
+                  body: "Upload a CSV of approved investors. The Merkle tree is built in the browser; only leaf hashes are committed on chain. The raw list never leaves this device.",
+                },
+                {
+                  title: "Commit the root",
+                  body: "Publish the tree root with update_accredited_set. Every investor proves membership against this single value, and the on-chain state stays one hash.",
+                },
+                {
+                  title: "Monitor subscriptions",
+                  body: "Watch subscriptions stream in from the indexer: amount, commitment, nullifier, and time. Click any row to open the public verification page.",
+                },
+                {
+                  title: "Advance epochs",
+                  body: "Open a new round. Nullifiers are scoped to an epoch, so a new round resets eligibility without exposing or linking past subscribers.",
+                },
+              ].map((c) => (
+                <div key={c.title} className="rounded-lg border border-hairline bg-canvas-soft p-lg">
+                  <h3 className="text-heading-sm text-ink">{c.title}</h3>
+                  <p className="mt-xs text-body-md text-ink-secondary">{c.body}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-lg max-w-[64ch] text-caption text-ink-mute">
+              Launching your own pool from the frontend is on the roadmap. The contract supports a pool factory; the
+              deploy flow is out of scope for this build.
+            </p>
+            <Button asChild variant="ghost" size="sm" className="mt-sm">
+              <a href="/roadmap">
+                See the roadmap <ArrowRight className="h-4 w-4" />
+              </a>
+            </Button>
+          </Card>
+
+          <Card className="mt-lg p-xl">
+            <h2 className="text-heading-md text-ink">Subscription monitor</h2>
+            <p className="mt-xs text-body-md text-ink-mute">
+              Live from the indexer, visible to anyone. This is the same stream the issuer watches.
+            </p>
+            <div className="mt-md">
+              <MySubscriptions />
+            </div>
+          </Card>
+        </>
       ) : (
         <>
           {/* Accreditation management */}

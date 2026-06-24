@@ -1,23 +1,28 @@
 "use client";
 
+import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { GitCommitVertical, Cpu, Unlock } from "lucide-react";
+import { GitCommitVertical, Cpu, Unlock, Sigma } from "lucide-react";
+import { Term } from "@/components/shared/term";
 
 const STEPS = [
   {
     icon: GitCommitVertical,
     title: "Issuer commits",
-    body: "The issuer builds a Merkle tree of accredited leaves and commits the root on-chain. Each leaf is Poseidon3(investor_id, cap, secret).",
+    plain: "The issuer confirms who qualifies and publishes a single fingerprint of that list on Stellar. Your details are not in it.",
+    math: "Each member becomes a leaf = Poseidon3(investor_id, cap, secret). The leaves fold into one Merkle root, committed by update_accredited_set.",
   },
   {
     icon: Cpu,
-    title: "Investor proves",
-    body: "You prove membership in the tree and that your amount fits your cap — in the browser. Only a 256-byte proof and four public inputs leave your device.",
+    title: "You prove",
+    plain: "In your browser, you prove you are on the list and that your amount fits your limit. Nothing private leaves the page.",
+    math: "A Groth16 proof shows a Merkle path to the root and amount ≤ cap. Only a 256-byte proof and four public inputs leave the device.",
   },
   {
     icon: Unlock,
-    title: "Pool unlocks",
-    body: "The contract verifies the proof natively on Stellar, records a nullifier and a commitment, and settles your Mock USDC. No identity touches the ledger.",
+    title: "The pool unlocks",
+    plain: "Stellar checks the proof and settles your subscription. The ledger never learns who you are.",
+    math: "The contract verifies the proof with the native BN254 host function, records a nullifier and a commitment, and settles the transfer.",
   },
 ];
 
@@ -32,7 +37,7 @@ export function StepFlow() {
           whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.26, delay: i * 0.08, ease: "easeOut" }}
-          className="relative rounded-lg border border-hairline bg-card p-xl shadow-e1"
+          className="relative flex flex-col rounded-lg border border-hairline bg-card p-xl shadow-e1"
         >
           <span className="absolute right-lg top-lg tnum text-display-md font-light text-hairline">
             0{i + 1}
@@ -41,9 +46,18 @@ export function StepFlow() {
             <s.icon className="h-5 w-5 text-primary" />
           </span>
           <h3 className="mt-md text-heading-md text-ink">{s.title}</h3>
-          <p className="mt-sm text-body-md text-ink-secondary">{s.body}</p>
+          <p className="mt-sm flex-1 text-body-md text-ink-secondary">{s.plain}</p>
+          <details className="group mt-md border-t border-hairline pt-sm">
+            <summary className="flex cursor-pointer list-none items-center gap-xs text-caption text-ink-mute transition-colors hover:text-ink">
+              <Sigma className="h-3.5 w-3.5" /> the math
+            </summary>
+            <p className="mt-xs mono text-[12px] leading-relaxed text-ink-secondary">{s.math}</p>
+          </details>
         </motion.div>
       ))}
     </div>
   );
 }
+
+// Re-exported so the landing can reference a glossary term inline without importing twice.
+export { Term };

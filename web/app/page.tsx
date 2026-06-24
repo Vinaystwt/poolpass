@@ -3,6 +3,7 @@ import { ArrowRight, FileLock2, Clock4, Globe2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/shared/reveal";
+import { Term } from "@/components/shared/term";
 import { MiniDemoLazy } from "@/components/landing/mini-demo-lazy";
 import { LiveStats } from "@/components/landing/live-stats";
 import { TrustStrip } from "@/components/landing/trust-strip";
@@ -35,76 +36,54 @@ const PROBLEMS = [
 export default function LandingPage() {
   return (
     <div>
-      {/* ── Hero ─────────────────────────────────────────────── */}
+      {/* ── Hero: H1 left, live proof demo right, above the fold ── */}
       <section className="relative overflow-hidden">
-        <div className="mesh-bg pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-70" />
-        <div className="relative mx-auto max-w-container px-lg pb-huge pt-huge">
-          <Reveal>
-            <Badge variant="soft">Real-world ZK on Stellar</Badge>
-          </Reveal>
-          <Reveal delay={0.04}>
-            <h1 className="mt-lg max-w-[14ch] text-display-xxl text-balance text-ink">
-              Prove you qualify. Reveal nothing.
-            </h1>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <p className="mt-lg max-w-[58ch] text-body-lg text-ink-secondary">
-              Subscribe to gated real-world-asset pools on Stellar without exposing your identity, your wealth, or
-              the issuer&rsquo;s investor list. The proof runs in your browser in seconds.
-            </p>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <div className="mt-xl flex flex-wrap items-center gap-md">
-              <Button asChild size="lg">
-                <Link href="/invest">
-                  Try the demo pool <ArrowRight className="h-4 w-4" />
+        <div className="mesh-bg pointer-events-none absolute inset-x-0 top-0 h-[460px] opacity-60" />
+        <div className="relative mx-auto max-w-container px-lg pb-xxl pt-xxl">
+          <div className="grid items-center gap-xl lg:grid-cols-[1fr_0.92fr]">
+            <div>
+              <Badge variant="soft">Real-world ZK on Stellar</Badge>
+              <h1 className="mt-lg text-display-xxl text-balance text-ink">
+                Prove you qualify. Reveal nothing.
+              </h1>
+              <p className="mt-lg max-w-[52ch] text-body-lg text-ink-secondary">
+                Subscribe to gated real-world-asset pools on Stellar without exposing your identity, your wealth, or
+                the issuer&rsquo;s investor list. The proof runs in your browser in seconds.
+              </p>
+              <div className="mt-xl flex flex-wrap items-center gap-md">
+                <Button asChild size="lg">
+                  <Link href="/invest">
+                    Try the demo pool <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="secondary">
+                  <Link href="/issuer">For issuers</Link>
+                </Button>
+              </div>
+              <p className="mt-md text-caption text-ink-mute">
+                New to this?{" "}
+                <Link href="/how" className="text-primary underline-offset-2 hover:underline">
+                  Start here
                 </Link>
-              </Button>
-              <Button asChild size="lg" variant="secondary">
-                <Link href="/issuer">For issuers</Link>
-              </Button>
+                . Testnet only, uses Mock USDC (testnet), a 7-decimal token, not Circle USDC. No real money moves.
+              </p>
             </div>
-            <p className="mt-md text-caption text-ink-mute">
-              Testnet only · uses Mock USDC (testnet), a 7-decimal token, not Circle USDC. No real money moves.
-            </p>
-          </Reveal>
+
+            <Reveal delay={0.08}>
+              <MiniDemoLazy />
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* ── The proof moment (the single most important section) ── */}
-      <section className="mx-auto max-w-container px-lg pb-huge">
-        <Reveal>
-          <div className="grid gap-xl lg:grid-cols-[1.1fr_1fr] lg:items-center">
-            <div>
-              <h2 className="text-display-lg text-ink">Feel the proof, not the pitch.</h2>
-              <p className="mt-md max-w-[46ch] text-body-lg text-ink-secondary">
-                Most zero-knowledge demos ask you to trust a screenshot. This one runs a real Groth16 proof on your
-                machine — about 1,350 constraints, a 256-byte proof — and verifies it locally. Watch the witness,
-                prove, and verify stages happen for real.
-              </p>
-              <dl className="mt-xl grid grid-cols-3 gap-md">
-                {[
-                  ["256", "byte proof"],
-                  ["4", "public inputs"],
-                  ["8", "leaf demo tree"],
-                ].map(([n, l]) => (
-                  <div key={l} className="rounded-lg border border-hairline bg-canvas-soft p-md">
-                    <p className="tnum text-display-md font-light text-ink">{n}</p>
-                    <p className="text-caption text-ink-mute">{l}</p>
-                  </div>
-                ))}
-              </dl>
-            </div>
-            <MiniDemoLazy />
-          </div>
-        </Reveal>
-      </section>
-
-      {/* ── The problem ──────────────────────────────────────── */}
+      {/* ── The problem, immediately after the hero ── */}
       <section className="border-y border-hairline bg-canvas-soft">
         <div className="mx-auto max-w-container px-lg py-huge">
           <Reveal>
             <h2 className="text-display-lg text-ink">Accreditation costs you your privacy.</h2>
+            <p className="mt-md max-w-[52ch] text-body-lg text-ink-secondary">
+              The proof in the hero solves a real problem. Here is the problem.
+            </p>
           </Reveal>
           <div className="mt-xl grid gap-lg md:grid-cols-3">
             {PROBLEMS.map((p, i) => (
@@ -128,12 +107,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── The product (3-step) ─────────────────────────────── */}
-      <section className="mx-auto max-w-container px-lg py-huge">
+      {/* ── How it works, plain first with "the math" behind a toggle ── */}
+      <section id="the-loop" className="mx-auto max-w-container px-lg py-huge">
         <Reveal>
           <h2 className="text-display-lg text-ink">Issuer commits. You prove. The pool unlocks.</h2>
           <p className="mt-md max-w-[52ch] text-body-lg text-ink-secondary">
-            Three steps. The issuer never sees your secret. The ledger never sees your identity.
+            Three steps in plain language. Open &ldquo;the math&rdquo; on any step to see the exact cryptography.
           </p>
         </Reveal>
         <div className="mt-xl">
@@ -141,10 +120,46 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Live stats ───────────────────────────────────────── */}
+      {/* ── The proof moment, explained ── */}
+      <section className="border-y border-hairline bg-canvas-soft">
+        <div className="mx-auto max-w-container px-lg py-huge">
+          <Reveal>
+            <div className="grid gap-xl lg:grid-cols-[1fr_1fr] lg:items-center">
+              <div>
+                <Badge variant="proof">What just happened</Badge>
+                <h2 className="mt-md text-display-lg text-ink">You proved you belong, and showed nothing else.</h2>
+                <p className="mt-md max-w-[48ch] text-body-lg text-ink-secondary">
+                  The demo in the hero ran a real{" "}
+                  <Term define="proof">proof</Term> on your machine. It convinced anyone checking that your entry is on
+                  the issuer&rsquo;s list and your amount fits your limit. It revealed only four{" "}
+                  <Term define="public inputs">public inputs</Term>, never your identity.
+                </p>
+              </div>
+              <div className="rounded-xl border border-hairline bg-card p-xl shadow-e1">
+                <ul className="flex flex-col gap-md">
+                  {[
+                    ["Stays private", "Who you are, your wealth, which list entry is yours."],
+                    ["Goes public", "A 256-byte proof and four values: list root, amount, a one-time tag, the round."],
+                    ["Anyone can check", "The same math runs in any browser, against the published verifying key."],
+                  ].map(([k, v]) => (
+                    <li key={k} className="flex gap-md">
+                      <span className="mt-[3px] h-2 w-2 shrink-0 rounded-full bg-accent-proof" />
+                      <span className="text-body-md text-ink-secondary">
+                        <strong className="text-ink">{k}.</strong> {v}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── Live stats ── */}
       <LiveStats />
 
-      {/* ── Trust strip ──────────────────────────────────────── */}
+      {/* ── Trust strip ── */}
       <section className="mx-auto max-w-container px-lg py-huge">
         <Reveal>
           <p className="text-micro-cap uppercase tracking-wide text-ink-mute">Built on, credited to</p>
@@ -152,21 +167,24 @@ export default function LandingPage() {
         </Reveal>
       </section>
 
-      {/* ── Final CTA ────────────────────────────────────────── */}
+      {/* ── Final CTA, folds in the old /demo "see the loop" intent ── */}
       <section className="relative overflow-hidden border-t border-hairline">
-        <div className="mesh-bg pointer-events-none absolute inset-0 opacity-40" />
+        <div className="mesh-bg pointer-events-none absolute inset-0 opacity-30" />
         <div className="relative mx-auto max-w-container px-lg py-huge text-center">
           <Reveal>
-            <h2 className="mx-auto max-w-[20ch] text-display-xl text-ink">Try the demo pool from one device.</h2>
-            <p className="mx-auto mt-md max-w-[44ch] text-body-lg text-ink-secondary">
-              Accredit yourself, prove in the browser, subscribe on testnet, and verify it independently. No real
-              money is involved.
+            <h2 className="mx-auto max-w-[20ch] text-display-xl text-ink">Run the whole loop from one device.</h2>
+            <p className="mx-auto mt-md max-w-[46ch] text-body-lg text-ink-secondary">
+              Accredit yourself, prove in the browser, subscribe on testnet, and verify it independently. No real money
+              is involved.
             </p>
-            <div className="mt-xl flex justify-center">
+            <div className="mt-xl flex flex-wrap justify-center gap-md">
               <Button asChild size="lg">
                 <Link href="/invest">
                   Launch the app <ArrowRight className="h-4 w-4" />
                 </Link>
+              </Button>
+              <Button asChild size="lg" variant="secondary">
+                <Link href="/how">See the loop</Link>
               </Button>
             </div>
           </Reveal>

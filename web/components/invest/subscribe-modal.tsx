@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { toast } from "sonner";
-import { Check, Loader2, ShieldCheck, Upload, Wand2, Coins, ExternalLink, ArrowRight } from "lucide-react";
+import { Check, Loader2, ShieldCheck, Upload, Coins, ExternalLink, Wallet } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -16,15 +16,12 @@ import { Input, Textarea } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { HashChip } from "@/components/shared/copy";
 import { ProofConsole, type ProofConsoleHandle } from "@/components/proof/proof-console";
+import { AccreditPanel } from "@/components/invest/accredit-panel";
 import { useWallet } from "@/lib/stellar/wallet";
 import { useMockUsdcBalance } from "@/lib/hooks/use-pool";
-import {
-  generateIdentity,
-  requestSelfServeAccreditation,
-  savePackage,
-  type Identity,
-} from "@/lib/accreditation";
+import { savePackage } from "@/lib/accreditation";
 import { isProofPackage } from "@/lib/zk/assemble";
+import { EXTERNAL_LINKS } from "@/lib/backend-config";
 import { subscribe } from "@/lib/stellar/client";
 import { faucet } from "@/lib/api";
 import { decodeError } from "@/lib/errors";
@@ -48,11 +45,10 @@ export function SubscribeModal({
   const { data: balance, refetch: refetchBalance } = useMockUsdcBalance(address);
 
   const [step, setStep] = React.useState<Step>("accredit");
-  const identityRef = React.useRef<Identity | null>(null);
   const [pkg, setPkg] = React.useState<ProofPackage | null>(null);
-  const [accrediting, setAccrediting] = React.useState(false);
   const [amountHuman, setAmountHuman] = React.useState("2500");
   const [proofHandle, setProofHandle] = React.useState<ProofConsoleHandle | null>(null);
+  const [proofStale, setProofStale] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
   const [result, setResult] = React.useState<{ hash: string; commitment: string; nullifier: string } | null>(null);
   const [pasteValue, setPasteValue] = React.useState("");
@@ -72,29 +68,11 @@ export function SubscribeModal({
 
   const reset = () => {
     setStep("accredit");
-    identityRef.current = null;
     setPkg(null);
     setProofHandle(null);
+    setProofStale(false);
     setResult(null);
     setPasteValue("");
-  };
-
-  const onSelfServe = async () => {
-    setAccrediting(true);
-    try {
-      const identity = identityRef.current ?? generateIdentity();
-      identityRef.current = identity;
-      const newPkg = await requestSelfServeAccreditation(identity, amountBaseUnits);
-      setPkg(newPkg);
-      savePackage(newPkg);
-      toast.success("Accredited", { description: `Root committed at epoch ${newPkg.epoch}` });
-      setStep("prove");
-    } catch (e) {
-      const f = decodeError(e);
-      toast.error(f.title, { description: f.message });
-    } finally {
-      setAccrediting(false);
-    }
   };
 
   const onImport = (raw: string) => {
@@ -173,6 +151,26 @@ export function SubscribeModal({
           <SuccessPanel result={result} amount={amountBaseUnits} onClose={() => onOpenChange(false)} />
         ) : (
           <Tabs value={step} onValueChange={(v) => setStep(v as Step)}>
+            {/* Pre-warn the wallet gate up front so Subscribe is an expected step, not a dead end. */}
+            <div className="mb-md flex flex-col gap-sm rounded-lg border border-hairline bg-canvas-soft p-md sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-caption text-ink-mute">
+                Steps 1 and 2 need no wallet. Step 3 (subscribe) needs a Freighter wallet and testnet funds.
+              </p>
+              <div className="flex shrink-0 gap-xs">
+                {available === false && (
+                  <Button asChild size="sm" variant="outline">
+                    <a href={EXTERNAL_LINKS.freighterInstall} target="_blank" rel="noreferrer">
+                      <Wallet className="h-3.5 w-3.5" /> Get Freighter
+                    </a>
+                  </Button>
+                )}
+                {address && (
+                  <Button size="sm" variant="outline" onClick={onFaucet}>
+                    <Coins className="h-3.5 w-3.5" /> Get test funds
+                  </Button>
+                )}
+              </div>
+            </div>
             <TabsList className="w-full">
               <TabsTrigger value="accredit" className="flex-1 px-sm text-[13px]">
                 {pkg ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : "1"} Accredit
@@ -188,41 +186,15 @@ export function SubscribeModal({
             {/* ── Accredit ── */}
             <TabsContent value="accredit">
               <div className="flex flex-col gap-lg">
-                <div className="rounded-lg border border-hairline bg-canvas-soft p-lg">
-                  <div className="flex items-center gap-sm">
-                    <Wand2 className="h-4 w-4 text-primary" />
-                    <p className="text-heading-sm text-ink">Request test accreditation</p>
-                  </div>
-                  <p className="mt-xs text-body-md text-ink-mute">
-                    We generate an <span className="mono text-[12px]">investor_id</span> and{" "}
-                    <span className="mono text-[12px]">investor_secret</span> on this device, compute your leaf, and
-                    send <em>only the leaf hash</em> to the demo issuer. The issuer commits all 8 leaves on-chain and
-                    returns your Merkle path.
-                  </p>
-                  <Button className="mt-md" onClick={onSelfServe} disabled={accrediting}>
-                    {accrediting ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldCheck className="h-4 w-4" />}
-                    {accrediting ? "Committing root…" : "Request test accreditation"}
-                  </Button>
-                </div>
-
-                {pkg && (
-                  <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-lg">
-                    <p className="text-caption text-ink-mute">Accreditation returned</p>
-                    <dl className="mt-sm grid grid-cols-[auto_1fr] items-center gap-x-md gap-y-xs">
-                      <dt className="mono text-[12px] text-ink-mute">root</dt>
-                      <dd><HashChip value={pkg.root} /></dd>
-                      <dt className="mono text-[12px] text-ink-mute">epoch</dt>
-                      <dd className="tnum text-body-md text-ink">{pkg.epoch}</dd>
-                      <dt className="mono text-[12px] text-ink-mute">index</dt>
-                      <dd className="tnum text-body-md text-ink">{pkg.index}</dd>
-                      <dt className="mono text-[12px] text-ink-mute">indices</dt>
-                      <dd className="tnum text-body-md text-ink">[{pkg.merkle_indices.join(", ")}]</dd>
-                    </dl>
-                    <Button variant="ghost" size="sm" className="mt-sm" onClick={() => setStep("prove")}>
-                      Continue to prove <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                )}
+                <AccreditPanel
+                  amountBaseUnits={amountBaseUnits}
+                  onAccredited={(p) => {
+                    setPkg(p);
+                    setProofHandle(null);
+                    setProofStale(false);
+                    setStep("prove");
+                  }}
+                />
 
                 <details className="rounded-lg border border-hairline p-lg">
                   <summary className="flex cursor-pointer items-center gap-sm text-body-md text-ink">
@@ -264,12 +236,19 @@ export function SubscribeModal({
                         inputMode="decimal"
                         onChange={(e) => {
                           setAmountHuman(e.target.value);
-                          setProofHandle(null); // amount is a public input — changing it invalidates the proof
+                          // amount is a public input, so changing it means the proof must be regenerated
+                          if (proofHandle) setProofStale(true);
+                          setProofHandle(null);
                         }}
                         className="max-w-[200px] tnum"
                       />
                       <span className="text-body-md text-ink-mute">{MOCK_USDC.labelShort}</span>
                     </div>
+                    {proofStale && !capExceeded && !poolCapExceeded && (
+                      <p className="mt-xs text-caption text-ink-mute">
+                        The amount is part of the proof, so changing it needs a fresh proof. Generate it again below.
+                      </p>
+                    )}
                     {(capExceeded || poolCapExceeded) && (
                       <p className="mt-xs text-caption text-ruby">
                         Amount exceeds {capExceeded ? "your cap" : "the pool's per-investor cap"} (
