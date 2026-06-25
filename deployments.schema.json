@@ -25,8 +25,36 @@
       }
     },
     "contracts": { "type": "object" },
+    "pools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "contractId",
+          "poolToken",
+          "merkleDepth",
+          "perInvestorCapPublic",
+          "issuer",
+          "vk",
+          "gateDescription"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "contractId": { "type": "string", "pattern": "^C[A-Z2-7]{55}$" },
+          "poolToken": { "type": "string", "pattern": "^C[A-Z2-7]{55}$" },
+          "merkleDepth": { "type": "integer", "minimum": 1, "maximum": 16 },
+          "perInvestorCapPublic": { "type": "string", "pattern": "^\\d+$" },
+          "issuer": { "type": "string", "pattern": "^G[A-Z2-7]{55}$" },
+          "vk": { "type": "string" },
+          "gateDescription": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
     "transactions": { "type": "object" }
   },
   "additionalProperties": false
 }
-

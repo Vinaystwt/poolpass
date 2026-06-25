@@ -14,6 +14,24 @@
     },
     "test-investor": {
       "publicKey": "GCDJKMWI42NKQBYH4AC7RFKYS7A7YKJ3R7BHILOAEC2PF5VLE56BHHNK"
+    },
+    "poolpass-issuer-open": {
+      "publicKey": "GAU3344OVHRG5GMDNLQR63NWBQVAETOLQ662RSJQIVPYYSOLCRSZHTP3"
+    },
+    "poolpass-investor-open": {
+      "publicKey": "GDQVIPX76FHG4S7JVY2IOOZ23MR3LGDBS45LL4MEB4T44BFZ2NDOVCEP"
+    },
+    "poolpass-issuer-capped": {
+      "publicKey": "GAISYYPMISPEENXSQFZJQXKEIDXKLJ447AP7AMS3TJSQVAIW47SXSVNA"
+    },
+    "poolpass-investor-capped": {
+      "publicKey": "GACCL2U63GDZ3XMGHIHUVJZFJIY4QQAJSE4CT2MYK46FQG3T534A3IK3"
+    },
+    "poolpass-issuer-tier": {
+      "publicKey": "GCKHPQI4NGTT6I5OKIYLRFM4FHYO6NRP6RFRB3LT5EMKMV4QMVKS63WL"
+    },
+    "poolpass-investor-tier": {
+      "publicKey": "GCUVKW3CH65MHCXPBFVCF3AJIRRUDLBKVMCSJWGO22I4W35DFST347WA"
     }
   },
   "contracts": {
@@ -29,13 +47,29 @@
       "contractId": "CAX5YVXG6NQNCWKR5VANI7P7ZKGTAA2EUGWJY5WZZDEMNPFP6UI4KP77",
       "wasmHash": "1dc05ce4f6c7a49542947a0e2c945c39efdfca968470cb27bd50f5a547664c80"
     },
-    "poolToken": {
-      "contractId": "CCNFOLFIALOOURBI7P5ULEHSYJSTXUUUYYK3Y662M2OPBMLVVD53LDEH",
+    "openAccessPoolToken": {
+      "contractId": "CBUXSNRSN3UC5FVGK6MNE4FBJ5LJVWHWQZPZB3MJ4PXX6M73UBVY2KWC",
       "wasmHash": "1dc05ce4f6c7a49542947a0e2c945c39efdfca968470cb27bd50f5a547664c80"
     },
-    "poolpass": {
-      "contractId": "CA27AYHJ3IO4Y5W5BJEYLH5DUUKTICDBWFDYO2GFHXUM3NUCMSYZALKG",
-      "wasmHash": "4b139585d99a77d6c40cee119a112d56f09bfdeb327174055f065ce676edd3ea"
+    "openAccessPoolpass": {
+      "contractId": "CBVARDGOKLVCJ7ZAHETHH7GZIP35FQDQBTGK4J4PLLBXKRHU6SM7K2FV",
+      "wasmHash": "9fc6283ba0a9937c761814f9e3ae6534dbfdb34c3a3c93f17f756e9e19e4d982"
+    },
+    "cappedAllocationPoolToken": {
+      "contractId": "CCV6IPCIQUNVCU273RGIUG34AOFWY275BYXWVKW7Q5K3BDQB7NW7REKP",
+      "wasmHash": "1dc05ce4f6c7a49542947a0e2c945c39efdfca968470cb27bd50f5a547664c80"
+    },
+    "cappedAllocationPoolpass": {
+      "contractId": "CDTQLM2IQG7SCRAZDKCCLCCOZMEICMQG4FYUCJEOJ6G7QPK7CTVDODMX",
+      "wasmHash": "9fc6283ba0a9937c761814f9e3ae6534dbfdb34c3a3c93f17f756e9e19e4d982"
+    },
+    "accreditedTierPoolToken": {
+      "contractId": "CDG4XLAWTH2U7UCBIPMAPZEK3RUEHNBPGULM6EEWDS6F7XKLSHOLTHGR",
+      "wasmHash": "1dc05ce4f6c7a49542947a0e2c945c39efdfca968470cb27bd50f5a547664c80"
+    },
+    "accreditedTierPoolpass": {
+      "contractId": "CD7AKD77JQ3C2GKQLVGUN5CEV447XWIM4772DLQFJAZ3TJ5NFTRIFII5",
+      "wasmHash": "9fc6283ba0a9937c761814f9e3ae6534dbfdb34c3a3c93f17f756e9e19e4d982"
     }
   },
   "transactions": {
@@ -152,6 +186,203 @@
       "ledger": 3244831,
       "status": "SUCCESS",
       "explorer": "https://stellar.expert/explorer/testnet/tx/a3950d75ec2203d33949d4c7c05ba72b78d638361598060f8b9eac91d3baa0dd"
+    },
+    "openAccessPoolTokenDeploy": {
+      "hash": "6a96279ea12ed0ae913dbecb967d84ab445bae351b0f6e933b2355555a8a76eb",
+      "ledger": 3272219,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/6a96279ea12ed0ae913dbecb967d84ab445bae351b0f6e933b2355555a8a76eb"
+    },
+    "openAccessPoolTokenInitialize": {
+      "hash": "7b74636b0f2830cb57a482dc48bfbcf9907adc517d483781fb3c615e3c3c63bb",
+      "ledger": 3272223,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/7b74636b0f2830cb57a482dc48bfbcf9907adc517d483781fb3c615e3c3c63bb"
+    },
+    "openAccessPoolpassDeploy": {
+      "hash": "ecaaeb36110618f87f12e3f2ba85eb8ce336a5289e914c9b9af4edb39c0978b7",
+      "ledger": 3272228,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/ecaaeb36110618f87f12e3f2ba85eb8ce336a5289e914c9b9af4edb39c0978b7"
+    },
+    "openAccessPoolpassInitialize": {
+      "hash": "f5bccde0697ba97f8929c0603318d15b002b5f107c2795ce8e12f3f33669986a",
+      "ledger": 3272231,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/f5bccde0697ba97f8929c0603318d15b002b5f107c2795ce8e12f3f33669986a"
+    },
+    "openAccessPoolTokenSetAdmin": {
+      "hash": "d690ef95cfdf468876f1942ea8a5d5630a3c36ad503c9e9059ddc00fc904d2dc",
+      "ledger": 3272235,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/d690ef95cfdf468876f1942ea8a5d5630a3c36ad503c9e9059ddc00fc904d2dc"
+    },
+    "openAccessRootUpdate": {
+      "hash": "c7c243144206815c48bf0c1c64e96eab067e0182ac9f82e2f05b4464611fb22a",
+      "ledger": 3272240,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/c7c243144206815c48bf0c1c64e96eab067e0182ac9f82e2f05b4464611fb22a"
+    },
+    "openAccessInvestorMint": {
+      "hash": "d52b07ce39a21d724f68995fcd6c15975ab6119ef89d3a8618e0cf8757b9186a",
+      "ledger": 3272247,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/d52b07ce39a21d724f68995fcd6c15975ab6119ef89d3a8618e0cf8757b9186a"
+    },
+    "openAccessSubscribe": {
+      "hash": "7d11c50dd9b1238cfcd2222ff3f01f40d63f05e099ccc4b855f1ffa7eab3e08a",
+      "ledger": 3272255,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/7d11c50dd9b1238cfcd2222ff3f01f40d63f05e099ccc4b855f1ffa7eab3e08a"
+    },
+    "cappedAllocationPoolTokenDeploy": {
+      "hash": "092970e8f8fa416fc7586a7ae03a2bd1cc139e9981ebe520cea5d0e153268177",
+      "ledger": 3272260,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/092970e8f8fa416fc7586a7ae03a2bd1cc139e9981ebe520cea5d0e153268177"
+    },
+    "cappedAllocationPoolTokenInitialize": {
+      "hash": "eedc75379b761bb9871ed70873f25604156e50dc50980b771908eecda6666c48",
+      "ledger": 3272265,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/eedc75379b761bb9871ed70873f25604156e50dc50980b771908eecda6666c48"
+    },
+    "cappedAllocationPoolpassDeploy": {
+      "hash": "35195528d50fd3da00785f53ef10434d324877252bb40cb7585af55ec1f51a9b",
+      "ledger": 3272270,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/35195528d50fd3da00785f53ef10434d324877252bb40cb7585af55ec1f51a9b"
+    },
+    "cappedAllocationPoolpassInitialize": {
+      "hash": "c8dd9e5755d396875655b00e8adbb91dadbb61fda7f0ef5876692e2c97fc6233",
+      "ledger": 3272274,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/c8dd9e5755d396875655b00e8adbb91dadbb61fda7f0ef5876692e2c97fc6233"
+    },
+    "cappedAllocationPoolTokenSetAdmin": {
+      "hash": "2b42d55db662f66ad801eeb18993fb27d38f8d3f1aee29aecd9a0b87e4f66089",
+      "ledger": 3272278,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/2b42d55db662f66ad801eeb18993fb27d38f8d3f1aee29aecd9a0b87e4f66089"
+    },
+    "cappedAllocationRootUpdate": {
+      "hash": "0812f94c813944f478e30c7f75d9597b51c86f6ce52690fb4069b38956e7c47e",
+      "ledger": 3272282,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/0812f94c813944f478e30c7f75d9597b51c86f6ce52690fb4069b38956e7c47e"
+    },
+    "cappedAllocationInvestorMint": {
+      "hash": "fe7a6a6aaf5c183d6314f7e72d9d1f2282945fb420386231ddf6b2f4bec20ca3",
+      "ledger": 3272287,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/fe7a6a6aaf5c183d6314f7e72d9d1f2282945fb420386231ddf6b2f4bec20ca3"
+    },
+    "cappedAllocationSubscribe": {
+      "hash": "7a5507103998e6675b7a0b83959ef6d3fb00efba96eb4acdc849efaa13582e5f",
+      "ledger": 3272292,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/7a5507103998e6675b7a0b83959ef6d3fb00efba96eb4acdc849efaa13582e5f"
+    },
+    "accreditedTierPoolTokenDeploy": {
+      "hash": "128c4585e0a01f14a81c3019dbcaec40aedc20273ee76918663a4fdd8c0ff4e5",
+      "ledger": 3272296,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/128c4585e0a01f14a81c3019dbcaec40aedc20273ee76918663a4fdd8c0ff4e5"
+    },
+    "accreditedTierPoolTokenInitialize": {
+      "hash": "1706dd745864d0242ef926d19b210b75c3964fb1d5a028ec21fcbe9fb11d9ecb",
+      "ledger": 3272300,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/1706dd745864d0242ef926d19b210b75c3964fb1d5a028ec21fcbe9fb11d9ecb"
+    },
+    "accreditedTierPoolpassDeploy": {
+      "hash": "47f85b78e808313faf4b655cb1cb62a60e98c40dc261c94e409f4bd0e99c0b4b",
+      "ledger": 3272305,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/47f85b78e808313faf4b655cb1cb62a60e98c40dc261c94e409f4bd0e99c0b4b"
+    },
+    "accreditedTierPoolpassInitialize": {
+      "hash": "154fc7e4613cf7bfbb70ca6726943f238a3d4827cb4e19f4caed6f0b773693ba",
+      "ledger": 3272310,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/154fc7e4613cf7bfbb70ca6726943f238a3d4827cb4e19f4caed6f0b773693ba"
+    },
+    "accreditedTierPoolTokenSetAdmin": {
+      "hash": "f96b546b0c38be9468b5a3aca8e32988a9ad26ee89f6dd80d08701dfe48e6e67",
+      "ledger": 3272315,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/f96b546b0c38be9468b5a3aca8e32988a9ad26ee89f6dd80d08701dfe48e6e67"
+    },
+    "accreditedTierRootUpdate": {
+      "hash": "7f7b7f0c4aea20da4472df837a71eb25f445975f7c53a1369f36d3b694415a53",
+      "ledger": 3272319,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/7f7b7f0c4aea20da4472df837a71eb25f445975f7c53a1369f36d3b694415a53"
+    },
+    "accreditedTierInvestorMint": {
+      "hash": "37b61f10e18e027ccf511f17afa845ff628c8fe5c05ce79b389856529fdea9b1",
+      "ledger": 3272325,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/37b61f10e18e027ccf511f17afa845ff628c8fe5c05ce79b389856529fdea9b1"
+    },
+    "accreditedTierSubscribe": {
+      "hash": "e40480c7fc7f4a51b415977970d70d76a1708ffb69c4ba7731c73b7a41ed4330",
+      "ledger": 3272331,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/e40480c7fc7f4a51b415977970d70d76a1708ffb69c4ba7731c73b7a41ed4330"
+    },
+    "selfServeOpenAccessAccredit": {
+      "hash": "ee84f3a7406a514b9efa72ac88ae53ab4a0bc6377d78e020ca53193542f14e01",
+      "ledger": 3272420,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/ee84f3a7406a514b9efa72ac88ae53ab4a0bc6377d78e020ca53193542f14e01"
+    },
+    "selfServeOpenAccessFaucet": {
+      "hash": "5f62f2fc140707f332129e290ffa19ea5359c1a6f0e963e5f81424d94c1410ad",
+      "ledger": 3272424,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/5f62f2fc140707f332129e290ffa19ea5359c1a6f0e963e5f81424d94c1410ad"
+    },
+    "selfServeOpenAccessSubscribe": {
+      "hash": "9a62ab346ee17713270320b8010191fed25f03ec2ab37a888b5bc7ca8fbaa517",
+      "ledger": 3272428,
+      "status": "SUCCESS",
+      "explorer": "https://stellar.expert/explorer/testnet/tx/9a62ab346ee17713270320b8010191fed25f03ec2ab37a888b5bc7ca8fbaa517"
     }
-  }
+  },
+  "pools": [
+    {
+      "id": "open-access",
+      "name": "Open Access Pool",
+      "contractId": "CBVARDGOKLVCJ7ZAHETHH7GZIP35FQDQBTGK4J4PLLBXKRHU6SM7K2FV",
+      "poolToken": "CBUXSNRSN3UC5FVGK6MNE4FBJ5LJVWHWQZPZB3MJ4PXX6M73UBVY2KWC",
+      "merkleDepth": 3,
+      "perInvestorCapPublic": "100000000000",
+      "issuer": "GAU3344OVHRG5GMDNLQR63NWBQVAETOLQ662RSJQIVPYYSOLCRSZHTP3",
+      "vk": "circuits/verification_key.json",
+      "gateDescription": "Depth-3 eligibility tree with two seeded investors and zero padding; demonstrates the base membership proof and a generous public cap."
+    },
+    {
+      "id": "capped-allocation",
+      "name": "Capped Allocation Pool",
+      "contractId": "CDTQLM2IQG7SCRAZDKCCLCCOZMEICMQG4FYUCJEOJ6G7QPK7CTVDODMX",
+      "poolToken": "CCV6IPCIQUNVCU273RGIUG34AOFWY275BYXWVKW7Q5K3BDQB7NW7REKP",
+      "merkleDepth": 3,
+      "perInvestorCapPublic": "25000000000",
+      "issuer": "GAISYYPMISPEENXSQFZJQXKEIDXKLJ447AP7AMS3TJSQVAIW47SXSVNA",
+      "vk": "circuits/verification_key.json",
+      "gateDescription": "Depth-3 eligibility tree with a tighter public cap; demonstrates that an over-cap amount cannot produce a valid proof."
+    },
+    {
+      "id": "accredited-tier",
+      "name": "Accredited Tier Pool",
+      "contractId": "CD7AKD77JQ3C2GKQLVGUN5CEV447XWIM4772DLQFJAZ3TJ5NFTRIFII5",
+      "poolToken": "CDG4XLAWTH2U7UCBIPMAPZEK3RUEHNBPGULM6EEWDS6F7XKLSHOLTHGR",
+      "merkleDepth": 3,
+      "perInvestorCapPublic": "250000000000",
+      "issuer": "GCKHPQI4NGTT6I5OKIYLRFM4FHYO6NRP6RFRB3LT5EMKMV4QMVKS63WL",
+      "vk": "circuits/verification_key.json",
+      "gateDescription": "Depth-3 stricter-tier policy with all eight leaves seeded; Pool C uses option (b) because the verified circuit is compiled as PoolPass(3)."
+    }
+  ]
 }

@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
-import { rpc, scValToNative, xdr, nativeToScVal } from "@stellar/stellar-sdk";
+import { rpc, scValToNative, xdr } from "@stellar/stellar-sdk";
 import snapshot from "@/lib/events-snapshot.json";
-import { CONTRACTS, NETWORK, EVENT_NAMES } from "@/lib/backend-config";
+import { CONTRACTS, NETWORK, EVENT_NAMES, POOLS } from "@/lib/backend-config";
+import {
+  buildPoolEventFilters,
+  clampEventStartLedger,
+  liveEventsResponse,
+  staleEventsResponse,
+} from "@/lib/events-live";
 import type { IndexedEvent, IndexerState } from "@/lib/indexer";
 
 export const dynamic = "force-dynamic";
@@ -20,10 +26,13 @@ function jsonSafe(value: unknown): unknown {
 // Mirrors services/indexer/events.ts normalizeEvent.
 function normalize(e: rpc.Api.EventResponse): IndexedEvent {
   const topics = (e.topic as xdr.ScVal[]).map((t) => scValToNative(t));
+  const contractId = e.contractId?.toString() ?? CONTRACTS.poolpass;
+  const poolId = POOLS.find((pool) => pool.contractId === contractId)?.id;
   return {
     id: e.id,
     name: String(topics[0]) as IndexedEvent["name"],
-    contractId: e.contractId?.toString() ?? CONTRACTS.poolpass,
+    ...(poolId ? { poolId } : {}),
+    contractId,
     txHash: e.txHash,
     ledger: e.ledger,
     closedAt: e.ledgerClosedAt,
@@ -35,18 +44,12 @@ function normalize(e: rpc.Api.EventResponse): IndexedEvent {
 async function liveMerge(base: IndexerState): Promise<IndexerState> {
   const server = new rpc.Server(NETWORK.rpcUrl);
   const latest = await server.getLatestLedger();
-  // Stay within RPC retention: start just after the snapshot cursor, clamped.
-  const startLedger = Math.max((base.cursor ?? 0) + 1, latest.sequence - 17000);
+  const startLedger = clampEventStartLedger(base.cursor, latest.sequence);
   if (startLedger >= latest.sequence) return base;
 
-  const topicFor = (name: string) => [nativeToScVal(name, { type: "symbol" }).toXDR("base64"), "*", "*"];
   const res = await server.getEvents({
     startLedger,
-    filters: [
-      { type: "contract", contractIds: [CONTRACTS.poolpass], topics: [topicFor(EVENT_NAMES.subscribed)] },
-      { type: "contract", contractIds: [CONTRACTS.poolpass], topics: [topicFor(EVENT_NAMES.rootUpdated).slice(0, 2)] },
-      { type: "contract", contractIds: [CONTRACTS.poolpass], topics: [topicFor(EVENT_NAMES.epochAdvanced).slice(0, 2)] },
-    ],
+    filters: buildPoolEventFilters(POOLS, EVENT_NAMES),
   });
 
   const byId = new Map(base.events.map((e) => [e.id, e]));
@@ -67,9 +70,8 @@ export async function GET() {
   const base = snapshot as IndexerState;
   try {
     const merged = await liveMerge(base);
-    return NextResponse.json({ ...merged, source: "live" });
+    return NextResponse.json(liveEventsResponse(merged));
   } catch (err) {
-    // RPC outside retention window or unreachable, serve the committed snapshot.
-    return NextResponse.json({ ...base, source: "snapshot", note: String(err) });
+    return NextResponse.json(staleEventsResponse(base, err));
   }
 }

@@ -83,6 +83,7 @@ impl Setup {
     }
 
     fn initialize(&self) {
+        let cap = Some(10_000_000_000i128);
         self.client().initialize(
             &self.issuer,
             &self.usdc,
@@ -90,6 +91,7 @@ impl Setup {
             &Bytes::from_array(&self.env, &VK),
             &3,
             &String::from_str(&self.env, "Demo Credit Pool"),
+            &cap,
         );
     }
 
@@ -138,6 +140,7 @@ fn initialize_is_one_time_and_sets_pool_info() {
     assert_eq!(info.epoch, 0);
     assert_eq!(info.merkle_depth, 3);
     assert_eq!(info.total_subscribed, 0);
+    assert_eq!(info.per_investor_cap_public, Some(10_000_000_000));
     assert_eq!(
         setup.client().try_initialize(
             &setup.issuer,
@@ -145,7 +148,8 @@ fn initialize_is_one_time_and_sets_pool_info() {
             &setup.pool_token,
             &Bytes::new(&setup.env),
             &3,
-            &String::from_str(&setup.env, "again")
+            &String::from_str(&setup.env, "again"),
+            &None
         ),
         Err(Ok(Error::Unauthorized))
     );

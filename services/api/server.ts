@@ -12,7 +12,7 @@ export interface ApiDependencies {
   faucet: { mint(address: string, amount: string): Promise<object> };
   prover: { prove(input: unknown): Promise<object> };
   verifier: { verify(proof: unknown, publicSignals: string[]): Promise<boolean> };
-  pool: { read(id: string): Promise<object> };
+  pool: { read(id: string): Promise<object>; list(): Promise<object[]> };
 }
 
 export function buildServer(dependencies: ApiDependencies): FastifyInstance {
@@ -54,5 +54,6 @@ export function buildServer(dependencies: ApiDependencies): FastifyInstance {
   });
 
   server.get<{ Params: { id: string } }>("/pool/:id", async (request) => dependencies.pool.read(request.params.id));
+  server.get("/pools", async () => ({ pools: await dependencies.pool.list() }));
   return server;
 }

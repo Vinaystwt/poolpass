@@ -1,60 +1,139 @@
 {
-  "cursor": 3245360,
+  "cursor": 3272584,
   "events": [
     {
-      "id": "0013935773011173376-0000000000",
+      "id": "0014054163784679424-0000000000",
       "name": "root_updated",
-      "contractId": "CA27AYHJ3IO4Y5W5BJEYLH5DUUKTICDBWFDYO2GFHXUM3NUCMSYZALKG",
-      "txHash": "bf68edd1fca52e9ccd7c51e0cbc0e2819e2c7b937812e71678340b26f05a8c8a",
-      "ledger": 3244675,
-      "closedAt": "2026-06-23T17:53:27Z",
+      "poolId": "open-access",
+      "contractId": "CBVARDGOKLVCJ7ZAHETHH7GZIP35FQDQBTGK4J4PLLBXKRHU6SM7K2FV",
+      "txHash": "c7c243144206815c48bf0c1c64e96eab067e0182ac9f82e2f05b4464611fb22a",
+      "ledger": 3272240,
+      "closedAt": "2026-06-25T08:13:34Z",
       "epoch": 1,
       "data": {
         "leaf_count": 8,
-        "root": "24fbc2a0b5c37685faca4d084b90fcfaf681eead239b47cf6418e2868183f5d9",
-        "timestamp": "1782237207"
+        "root": "2a97a65b10bd7679f7c50749265090ae191eafe94e85542e881b5c2759207f16",
+        "timestamp": "1782375214"
       }
     },
     {
-      "id": "0013935807370924032-0000000002",
+      "id": "0014054228209192960-0000000002",
       "name": "subscribed",
-      "contractId": "CA27AYHJ3IO4Y5W5BJEYLH5DUUKTICDBWFDYO2GFHXUM3NUCMSYZALKG",
-      "txHash": "c0ed392e0aea922790676010e0a13e4a4d6f5de7b0878e1b08ae9d79b0bfaa51",
-      "ledger": 3244683,
-      "closedAt": "2026-06-23T17:54:07Z",
+      "poolId": "open-access",
+      "contractId": "CBVARDGOKLVCJ7ZAHETHH7GZIP35FQDQBTGK4J4PLLBXKRHU6SM7K2FV",
+      "txHash": "7d11c50dd9b1238cfcd2222ff3f01f40d63f05e099ccc4b855f1ffa7eab3e08a",
+      "ledger": 3272255,
+      "closedAt": "2026-06-25T08:14:49Z",
       "data": {
-        "amount": "25000000000",
-        "commitment": "24d298fc0ae15c6a3868a89f6944298e92a7759ff773dbb37c7e4f13ccdc2eca",
-        "nullifier": "036820726f4029ae517cd5d561fb8a9825635202a8d453e072eda4705a56faaa",
-        "timestamp": "1782237247"
+        "amount": "10000000000",
+        "commitment": "14f94dca0023fe98498436de9dc877e91cb72a2f0cc67e19f6fb07fb35ae88e2",
+        "nullifier": "0f2469937c4e4f805366fd67b250f38bfedf202fca014ed5d17592e6509dc4dc",
+        "timestamp": "1782375289"
       }
     },
     {
-      "id": "0013936412961284096-0000000000",
+      "id": "0014054344173342720-0000000000",
       "name": "root_updated",
-      "contractId": "CA27AYHJ3IO4Y5W5BJEYLH5DUUKTICDBWFDYO2GFHXUM3NUCMSYZALKG",
-      "txHash": "b8394e5c4cb75db7689450c2fb96b979262b73241cacd5a310c3543746ca28fd",
-      "ledger": 3244824,
-      "closedAt": "2026-06-23T18:05:53Z",
+      "poolId": "capped-allocation",
+      "contractId": "CDTQLM2IQG7SCRAZDKCCLCCOZMEICMQG4FYUCJEOJ6G7QPK7CTVDODMX",
+      "txHash": "0812f94c813944f478e30c7f75d9597b51c86f6ce52690fb4069b38956e7c47e",
+      "ledger": 3272282,
+      "closedAt": "2026-06-25T08:17:04Z",
+      "epoch": 1,
+      "data": {
+        "leaf_count": 8,
+        "root": "1685e23357a3ee3f41d04eba549a0c4b805ecf90798f97b5802677b0ca358242",
+        "timestamp": "1782375424"
+      }
+    },
+    {
+      "id": "0014054387122991104-0000000002",
+      "name": "subscribed",
+      "poolId": "capped-allocation",
+      "contractId": "CDTQLM2IQG7SCRAZDKCCLCCOZMEICMQG4FYUCJEOJ6G7QPK7CTVDODMX",
+      "txHash": "7a5507103998e6675b7a0b83959ef6d3fb00efba96eb4acdc849efaa13582e5f",
+      "ledger": 3272292,
+      "closedAt": "2026-06-25T08:17:54Z",
+      "data": {
+        "amount": "20000000000",
+        "commitment": "27a5cf9ac342a91ef0430f0486a005f7d15c9e42c56ae226ceb43e28a51db79f",
+        "nullifier": "06cf1f207afd5c3bcd7b5f0d93ad44ec053f5ac5e049d436ef96de3456291109",
+        "timestamp": "1782375474"
+      }
+    },
+    {
+      "id": "0014054503087104000-0000000000",
+      "name": "root_updated",
+      "poolId": "accredited-tier",
+      "contractId": "CD7AKD77JQ3C2GKQLVGUN5CEV447XWIM4772DLQFJAZ3TJ5NFTRIFII5",
+      "txHash": "7f7b7f0c4aea20da4472df837a71eb25f445975f7c53a1369f36d3b694415a53",
+      "ledger": 3272319,
+      "closedAt": "2026-06-25T08:20:09Z",
+      "epoch": 1,
+      "data": {
+        "leaf_count": 8,
+        "root": "2d4886cdaca607f369f6aa8fcb0d5a4b06bc109b75abdfb872ab01b8b728c867",
+        "timestamp": "1782375609"
+      }
+    },
+    {
+      "id": "0014054554626715648-0000000002",
+      "name": "subscribed",
+      "poolId": "accredited-tier",
+      "contractId": "CD7AKD77JQ3C2GKQLVGUN5CEV447XWIM4772DLQFJAZ3TJ5NFTRIFII5",
+      "txHash": "e40480c7fc7f4a51b415977970d70d76a1708ffb69c4ba7731c73b7a41ed4330",
+      "ledger": 3272331,
+      "closedAt": "2026-06-25T08:21:09Z",
+      "data": {
+        "amount": "100000000000",
+        "commitment": "0ec160ad068f7e6b331730597a1cf67d7aecda83b58086cba574adfa9d24fdcc",
+        "nullifier": "24d89a5ef2672fafc0660be54cfd789a90c41aa4b4616a705085856ec0ca7e16",
+        "timestamp": "1782375669"
+      }
+    },
+    {
+      "id": "0014054846684573696-0000000000",
+      "name": "root_updated",
+      "poolId": "open-access",
+      "contractId": "CBVARDGOKLVCJ7ZAHETHH7GZIP35FQDQBTGK4J4PLLBXKRHU6SM7K2FV",
+      "txHash": "d93528c03f0f5a497ea1556c49a03c39fdcd8a24a72d8058630b2db39592f470",
+      "ledger": 3272399,
+      "closedAt": "2026-06-25T08:26:50Z",
       "epoch": 2,
       "data": {
         "leaf_count": 8,
-        "root": "0fb80821d3b2289aedcf16ba2970dce1d1ef20f3698dfb66284365317b0293f2",
-        "timestamp": "1782237953"
+        "root": "01f1f75ff81a043ffe7ede8300fd0669815c734659f1c3e2b1964a1cb76c7acb",
+        "timestamp": "1782376010"
       }
     },
     {
-      "id": "0013936443026079744-0000000002",
+      "id": "0014054936878862336-0000000000",
+      "name": "root_updated",
+      "poolId": "open-access",
+      "contractId": "CBVARDGOKLVCJ7ZAHETHH7GZIP35FQDQBTGK4J4PLLBXKRHU6SM7K2FV",
+      "txHash": "ee84f3a7406a514b9efa72ac88ae53ab4a0bc6377d78e020ca53193542f14e01",
+      "ledger": 3272420,
+      "closedAt": "2026-06-25T08:28:35Z",
+      "epoch": 3,
+      "data": {
+        "leaf_count": 8,
+        "root": "00093b328c79e214dd1bec51b93153ba01da5109183f954f059b5f800e3c38fe",
+        "timestamp": "1782376115"
+      }
+    },
+    {
+      "id": "0014054971238576128-0000000002",
       "name": "subscribed",
-      "contractId": "CA27AYHJ3IO4Y5W5BJEYLH5DUUKTICDBWFDYO2GFHXUM3NUCMSYZALKG",
-      "txHash": "a3950d75ec2203d33949d4c7c05ba72b78d638361598060f8b9eac91d3baa0dd",
-      "ledger": 3244831,
-      "closedAt": "2026-06-23T18:06:28Z",
+      "poolId": "open-access",
+      "contractId": "CBVARDGOKLVCJ7ZAHETHH7GZIP35FQDQBTGK4J4PLLBXKRHU6SM7K2FV",
+      "txHash": "9a62ab346ee17713270320b8010191fed25f03ec2ab37a888b5bc7ca8fbaa517",
+      "ledger": 3272428,
+      "closedAt": "2026-06-25T08:29:15Z",
       "data": {
         "amount": "10000000000",
-        "commitment": "0f427beff96af59131907a3299ced3d918430a6dfb78729298fadbe5e4c20333",
-        "nullifier": "0a691b0c0e631d953a2764660b1f23270657e4fafc930244c807f1d43e424f1a",
-        "timestamp": "1782237988"
+        "commitment": "07b09a8bbe418618c71dfe37548ee0377b3b69476bb59b9c2433b4b6fad8823f",
+        "nullifier": "23e1d7ebeec2227e509d0a4722f1d83db58838050c241a264b758e32ec9387d6",
+        "timestamp": "1782376155"
       }
     }
   ]

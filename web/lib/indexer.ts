@@ -18,6 +18,7 @@ export interface RootUpdatedData {
 export interface IndexedEvent {
   id: string;
   name: "subscribed" | "root_updated" | "epoch_advanced";
+  poolId?: string;
   contractId: string;
   txHash: string;
   ledger: number;
@@ -29,6 +30,13 @@ export interface IndexedEvent {
 export interface IndexerState {
   cursor?: number;
   events: IndexedEvent[];
+}
+
+export interface EventsApiResponse extends IndexerState {
+  source: "live" | "snapshot";
+  isStale: boolean;
+  lastLedger: number | null;
+  note?: string;
 }
 
 export interface SubscriptionRecord {

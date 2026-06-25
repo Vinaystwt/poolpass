@@ -203,6 +203,7 @@ async function main(): Promise<void> {
       "--groth16_vk", serializeVerificationKey(vk).toString("hex"),
       "--merkle_depth", "3",
       "--pool_name", "Demo Credit Pool",
+      "--per_investor_cap_public", "100000000000",
     ]);
   }
 

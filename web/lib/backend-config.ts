@@ -12,6 +12,23 @@
 import deployments from "./deployments.json";
 
 export const DEPLOYMENTS = deployments;
+const rawDeployments = deployments as typeof deployments & {
+  contracts: typeof deployments.contracts & {
+    poolpass?: { contractId: string; wasmHash?: string };
+    poolToken?: { contractId: string; wasmHash?: string };
+  };
+  pools?: Array<{
+    id: string;
+    name: string;
+    contractId: string;
+    poolToken: string;
+    merkleDepth: number;
+    perInvestorCapPublic: string;
+    issuer: string;
+    vk: string;
+    gateDescription: string;
+  }>;
+};
 
 // ── Network ────────────────────────────────────────────────────────────────
 export const NETWORK = {
@@ -29,18 +46,36 @@ export const ACCOUNTS = {
 } as const;
 
 // ── Contracts ────────────────────────────────────────────────────────────────
+export const POOLS =
+  rawDeployments.pools ??
+  [
+    {
+      id: "demo",
+      name: "Demo Credit Pool",
+      contractId: rawDeployments.contracts.poolpass?.contractId ?? "",
+      poolToken: rawDeployments.contracts.poolToken?.contractId ?? "",
+      merkleDepth: 3,
+      perInvestorCapPublic: "",
+      issuer: deployments.accounts["test-issuer"].publicKey,
+      vk: "circuits/verification_key.json",
+      gateDescription: "Legacy single PoolPass demo pool.",
+    },
+  ];
+
+const DEFAULT_POOL = POOLS[0];
+
 export const CONTRACTS = {
-  poolpass: deployments.contracts.poolpass.contractId,
+  poolpass: DEFAULT_POOL.contractId,
   mockUsdc: deployments.contracts.mockUsdc.contractId,
-  poolToken: deployments.contracts.poolToken.contractId,
+  poolToken: DEFAULT_POOL.poolToken,
   gatePoseidon: deployments.contracts.gatePoseidon.contractId,
   gateGroth16: deployments.contracts.gateGroth16.contractId,
 } as const;
 
 export const WASM_HASHES = {
-  poolpass: deployments.contracts.poolpass.wasmHash,
+  poolpass: rawDeployments.contracts.poolpass?.wasmHash ?? "",
   mockUsdc: deployments.contracts.mockUsdc.wasmHash,
-  poolToken: deployments.contracts.poolToken.wasmHash,
+  poolToken: rawDeployments.contracts.poolToken?.wasmHash ?? deployments.contracts.mockUsdc.wasmHash,
   gatePoseidon: deployments.contracts.gatePoseidon.wasmHash,
   gateGroth16: deployments.contracts.gateGroth16.wasmHash,
 } as const;

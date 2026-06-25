@@ -25,6 +25,7 @@ impl PoolPass {
         groth16_vk: Bytes,
         merkle_depth: u32,
         pool_name: String,
+        per_investor_cap_public: Option<i128>,
     ) -> Result<(), Error> {
         if storage::is_initialized(&env) {
             return Err(Error::Unauthorized);
@@ -41,6 +42,7 @@ impl PoolPass {
             &groth16_vk,
             merkle_depth,
             &pool_name,
+            &per_investor_cap_public,
         );
         Ok(())
     }

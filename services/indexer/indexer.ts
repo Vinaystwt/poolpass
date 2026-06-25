@@ -8,13 +8,16 @@ export class PoolPassIndexer {
     private readonly store: EventStore,
     private readonly fetchPage: EventPageFetcher,
     private readonly startLedger: number,
+    private readonly poolIdForContract: (contractId: string) => string | undefined = () => undefined,
   ) {}
 
   async runOnce(): Promise<{ cursor: number; events: number }> {
     const state = await this.store.load();
     const start = state.cursor === undefined ? this.startLedger : state.cursor + 1;
     const page = await this.fetchPage(start);
-    const successful = page.events.filter((event) => event.inSuccessfulContractCall).map(normalizeEvent);
+    const successful = page.events
+      .filter((event) => event.inSuccessfulContractCall)
+      .map((event) => normalizeEvent(event, this.poolIdForContract));
     const persisted = await this.store.merge(successful, page.latestLedger);
     return { cursor: page.latestLedger, events: persisted.events.length };
   }

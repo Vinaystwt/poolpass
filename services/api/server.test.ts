@@ -21,7 +21,13 @@ async function dependencies(): Promise<ApiDependencies> {
     faucet: { mint: vi.fn(async () => ({ hash: "ab".repeat(32) })) },
     prover: { prove: vi.fn(async () => ({ proof: { ok: true }, publicSignals: ["1"] })) },
     verifier: { verify: vi.fn(async () => true) },
-    pool: { read: vi.fn(async () => ({ id: "demo", epoch: 2, totalSubscribed: "25" })) },
+    pool: {
+      read: vi.fn(async () => ({ id: "demo", epoch: 2, totalSubscribed: "25" })),
+      list: vi.fn(async () => [
+        { id: "open-access", name: "Open Access Pool", epoch: 1, totalSubscribed: "25" },
+        { id: "capped-allocation", name: "Capped Allocation Pool", epoch: 1, totalSubscribed: "10" },
+      ]),
+    },
   };
 }
 
@@ -84,6 +90,12 @@ describe("PoolPass API", () => {
     expect((await server.inject({ method: "POST", url: "/prove", payload: { input: { amount: "1" } } })).json()).toEqual({ proof: { ok: true }, publicSignals: ["1"] });
     expect((await server.inject({ method: "POST", url: "/verify", payload: { proof: {}, publicSignals: ["1", "2", "3", "4"] } })).json()).toEqual({ valid: true });
     expect((await server.inject({ method: "GET", url: "/pool/demo" })).json()).toMatchObject({ id: "demo", epoch: 2 });
+    expect((await server.inject({ method: "GET", url: "/pools" })).json()).toMatchObject({
+      pools: [
+        { id: "open-access", name: "Open Access Pool" },
+        { id: "capped-allocation", name: "Capped Allocation Pool" },
+      ],
+    });
     expect(deps.verifier.verify).toHaveBeenCalledOnce();
   });
 });

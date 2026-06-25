@@ -39,6 +39,7 @@ pub fn initialize(
     groth16_vk: &Bytes,
     merkle_depth: u32,
     pool_name: &String,
+    per_investor_cap_public: &Option<i128>,
 ) {
     let storage = env.storage().instance();
     storage.set(&DataKey::Issuer, issuer);
@@ -50,7 +51,7 @@ pub fn initialize(
     storage.set(&DataKey::Epoch, &0u32);
     storage.set(&DataKey::TotalSubscribed, &0i128);
     storage.set(&DataKey::PoolName, pool_name);
-    storage.set(&DataKey::PerInvestorCapPublic, &Option::<i128>::None);
+    storage.set(&DataKey::PerInvestorCapPublic, per_investor_cap_public);
     bump(env);
 }
 

@@ -29,6 +29,7 @@ function jsonSafe(value: unknown): unknown {
 export interface IndexedEvent {
   id: string;
   name: string;
+  poolId?: string;
   contractId: string;
   txHash: string;
   ledger: number;
@@ -37,11 +38,16 @@ export interface IndexedEvent {
   data: unknown;
 }
 
-export function normalizeEvent(event: RpcContractEvent): IndexedEvent {
+export function normalizeEvent(
+  event: RpcContractEvent,
+  poolIdForContract: (contractId: string) => string | undefined = () => undefined,
+): IndexedEvent {
   const topics = event.topic.map(decode);
+  const poolId = poolIdForContract(event.contractId);
   return {
     id: event.id,
     name: String(topics[0]),
+    ...(poolId ? { poolId } : {}),
     contractId: event.contractId,
     txHash: event.txHash,
     ledger: event.ledger,

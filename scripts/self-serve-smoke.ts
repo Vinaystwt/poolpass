@@ -11,6 +11,7 @@ import { buildServer } from "../services/api/server.js";
 interface Registry {
   accounts: Record<string, { publicKey: string }>;
   contracts: Record<string, { contractId: string }>;
+  pools?: Array<{ id: string; contractId: string; issuer: string }>;
   transactions: Record<string, { hash: string; ledger: number; status: "SUCCESS" | "FAILED"; explorer?: string }>;
 }
 
@@ -41,14 +42,21 @@ function evidence(transaction: HorizonTransaction) {
 }
 
 const registry = JSON.parse(await readFile("deployments.json", "utf8")) as Registry;
-if (registry.transactions.selfServeSubscribe) {
-  process.stdout.write(`Self-serve smoke PASS (recorded) ${registry.transactions.selfServeSubscribe.hash}\n`);
+const activePool = registry.pools?.[0];
+const poolpass = activePool?.contractId ?? registry.contracts.poolpass.contractId;
+const activeKey = activePool?.id.replace(/-([a-z])/g, (_match, letter: string) => letter.toUpperCase()) ?? "";
+const accreditKey = activeKey ? `selfServe${activeKey[0].toUpperCase()}${activeKey.slice(1)}Accredit` : "selfServeAccredit";
+const faucetKey = activeKey ? `selfServe${activeKey[0].toUpperCase()}${activeKey.slice(1)}Faucet` : "selfServeFaucet";
+const subscribeKey = activeKey ? `selfServe${activeKey[0].toUpperCase()}${activeKey.slice(1)}Subscribe` : "selfServeSubscribe";
+if (registry.transactions[subscribeKey]) {
+  process.stdout.write(`Self-serve smoke PASS (recorded) ${registry.transactions[subscribeKey].hash}\n`);
 } else {
-  const issuer = registry.accounts["test-issuer"].publicKey;
+  const issuer = activePool?.issuer ?? registry.accounts["test-issuer"].publicKey;
+  const tokenIssuer = registry.accounts["test-issuer"].publicKey;
   const visitor = registry.accounts.deployer.publicKey;
-  const investorId = 4_242n;
+  const investorId = activePool ? 5_243n : 4_242n;
   const cap = 100_000_000_000n;
-  const secret = 9_001n;
+  const secret = activePool ? 9_102n : 9_001n;
   const amount = 10_000_000_000n;
   const leaf = (await poseidon3(investorId, cap, secret)).toString(16).padStart(64, "0");
   const server = buildServer(await createDependencies());
@@ -56,7 +64,7 @@ if (registry.transactions.selfServeSubscribe) {
     const beforeAccredit = await latest(issuer);
     const accreditedResponse = await server.inject({ method: "POST", url: "/accredit", payload: { leaf } });
     if (accreditedResponse.statusCode !== 200) throw new Error(`Accreditation failed: ${accreditedResponse.body}`);
-    registry.transactions.selfServeAccredit = evidence(await next(issuer, beforeAccredit?.hash));
+    registry.transactions[accreditKey] = evidence(await next(issuer, beforeAccredit?.hash));
     const accredited = accreditedResponse.json() as {
       root: string;
       epoch: number;
@@ -64,10 +72,10 @@ if (registry.transactions.selfServeSubscribe) {
       merkle_indices: number[];
     };
 
-    const beforeFaucet = await latest(issuer);
+    const beforeFaucet = await latest(tokenIssuer);
     const faucet = await server.inject({ method: "POST", url: "/faucet", payload: { address: visitor, amount: amount.toString() } });
     if (faucet.statusCode !== 200) throw new Error(`Faucet failed: ${faucet.body}`);
-    registry.transactions.selfServeFaucet = evidence(await next(issuer, beforeFaucet?.hash));
+    registry.transactions[faucetKey] = evidence(await next(tokenIssuer, beforeFaucet?.hash));
 
     const nullifier = await poseidon2(secret, BigInt(accredited.epoch));
     const proved = await server.inject({
@@ -93,13 +101,13 @@ if (registry.transactions.selfServeSubscribe) {
     const publicHex = serializePublicSignals(payload.publicSignals).map((value) => value.toString("hex"));
     const beforeSubscribe = await latest(visitor);
     await runStellar([
-      "contract", "invoke", "--id", registry.contracts.poolpass.contractId,
+      "contract", "invoke", "--id", poolpass,
       "--source", "deployer", "--network", "testnet", "--send", "yes", "--",
       "subscribe", "--investor", visitor, "--amount", amount.toString(), "--proof", proofHex, "--public_inputs", JSON.stringify(publicHex),
     ]);
-    registry.transactions.selfServeSubscribe = evidence(await next(visitor, beforeSubscribe?.hash));
+    registry.transactions[subscribeKey] = evidence(await next(visitor, beforeSubscribe?.hash));
     await writeRegistryAtomic("deployments.json", registry);
-    process.stdout.write(`Self-serve smoke PASS ${registry.transactions.selfServeSubscribe.hash}\n`);
+    process.stdout.write(`Self-serve smoke PASS ${registry.transactions[subscribeKey].hash}\n`);
   } finally {
     await server.close();
   }

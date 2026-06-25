@@ -1,16 +1,22 @@
 import { readFile } from "node:fs/promises";
 
+import {
+  eventPoolsFromDeployments,
+  indexerStartLedgerFromDeployments,
+  type IndexerDeployments,
+} from "./deployments.js";
 import { type RpcContractEvent } from "./events.js";
 import { PoolPassIndexer } from "./indexer.js";
 import { EventStore } from "./store.js";
 
-interface Deployments {
-  network: { rpcUrl: string };
-  contracts: { poolpass: { contractId: string } };
-  transactions: { poolpassDeploy: { ledger: number } };
-}
+const RPC_RETENTION_LEDGERS = 17_000;
 
-const deployments = JSON.parse(await readFile("deployments.json", "utf8")) as Deployments;
+const deployments = JSON.parse(await readFile("deployments.json", "utf8")) as IndexerDeployments & {
+  network: { rpcUrl: string };
+};
+const pools = eventPoolsFromDeployments(deployments);
+const contractIds = pools.map((pool) => pool.contractId);
+const poolByContract = new Map(pools.map((pool) => [pool.contractId, pool.id]));
 const fetchPage = async (startLedger: number): Promise<{ events: RpcContractEvent[]; latestLedger: number }> => {
   const latestResponse = await fetch(deployments.network.rpcUrl, {
     method: "POST",
@@ -20,7 +26,8 @@ const fetchPage = async (startLedger: number): Promise<{ events: RpcContractEven
   const latestBody = (await latestResponse.json()) as { result?: { sequence?: number } };
   const currentLedger = latestBody.result?.sequence;
   if (currentLedger === undefined) throw new Error("getLatestLedger failed");
-  if (startLedger > currentLedger) return { events: [], latestLedger: currentLedger };
+  const clampedStartLedger = Math.max(startLedger, currentLedger - RPC_RETENTION_LEDGERS);
+  if (clampedStartLedger > currentLedger) return { events: [], latestLedger: currentLedger };
   const response = await fetch(deployments.network.rpcUrl, {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -29,8 +36,8 @@ const fetchPage = async (startLedger: number): Promise<{ events: RpcContractEven
       id: 1,
       method: "getEvents",
       params: {
-        startLedger,
-        filters: [{ type: "contract", contractIds: [deployments.contracts.poolpass.contractId] }],
+        startLedger: clampedStartLedger,
+        filters: [{ type: "contract", contractIds }],
         pagination: { limit: 100 },
       },
     }),
@@ -43,7 +50,8 @@ const fetchPage = async (startLedger: number): Promise<{ events: RpcContractEven
 const indexer = new PoolPassIndexer(
   new EventStore(process.env.INDEXER_STORE ?? "services/data/events.json"),
   fetchPage,
-  deployments.transactions.poolpassDeploy.ledger,
+  indexerStartLedgerFromDeployments(deployments),
+  (contractId) => poolByContract.get(contractId),
 );
 const result = await indexer.runOnce();
 process.stdout.write(`Indexer PASS cursor=${result.cursor} events=${result.events}\n`);

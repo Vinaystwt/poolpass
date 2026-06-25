@@ -25,9 +25,10 @@ function rpcEvent(id = "0001-0000000000") {
 
 describe("PoolPass event indexer", () => {
   test("normalizes contract events into durable JSON", () => {
-    expect(normalizeEvent(rpcEvent())).toMatchObject({
+    expect(normalizeEvent(rpcEvent(), () => "open-access")).toMatchObject({
       id: "0001-0000000000",
       name: "root_updated",
+      poolId: "open-access",
       ledger: 100,
       epoch: 1,
       data: { leaf_count: "8", timestamp: "1750000000" },
