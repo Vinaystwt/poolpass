@@ -29,7 +29,6 @@ import { faucet } from "@/lib/api";
 import { decodeError } from "@/lib/errors";
 import { formatMockUsdc, parseMockUsdc, stellarExpertTx, truncate } from "@/lib/utils";
 import { MOCK_USDC } from "@/lib/backend-config";
-import type { PoolInfo } from "@/lib/stellar/client";
 import type { ProofPackage } from "@/lib/zk/types";
 
 type Step = "accredit" | "prove" | "subscribe";
@@ -42,7 +41,7 @@ export function SubscribeModal({
 }: {
   open: boolean;
   onOpenChange: (o: boolean) => void;
-  pool: PoolInfo | undefined;
+  pool?: { name: string; capBaseUnits: string | null; contractId: string };
   poolId?: string;
 }) {
   const { address, connect, available } = useWallet();
@@ -68,7 +67,7 @@ export function SubscribeModal({
 
   const capExceeded = Boolean(pkg && BigInt(amountBaseUnits) > BigInt(pkg.cap));
   const poolCapExceeded = Boolean(
-    pool && pool.per_investor_cap_public != null && BigInt(amountBaseUnits) > pool.per_investor_cap_public,
+    pool && pool.capBaseUnits && BigInt(amountBaseUnits) > BigInt(pool.capBaseUnits),
   );
 
   const reset = () => {
@@ -106,6 +105,7 @@ export function SubscribeModal({
         proofHex: proofHandle.output.proofHex,
         publicSignalsHex: proofHandle.output.publicSignalsHex,
         sign: signXdr,
+        contractId: pool?.contractId,
       });
       const commitment = typeof res.returnValue === "string" ? res.returnValue : "";
       const decodedCommitment = commitment || (proofHandle.output.publicSignalsHex[2] ?? "");
@@ -168,7 +168,7 @@ export function SubscribeModal({
     >
       <DialogContent className="max-w-[640px]">
         <DialogHeader>
-          <DialogTitle>Subscribe privately</DialogTitle>
+          <DialogTitle>{pool?.name ? `Subscribe: ${pool.name}` : "Subscribe privately"}</DialogTitle>
           <DialogDescription>
             Accredit, prove in your browser, then subscribe on testnet. Your secret never leaves this device.
           </DialogDescription>
@@ -279,7 +279,7 @@ export function SubscribeModal({
                     {(capExceeded || poolCapExceeded) && (
                       <p className="mt-xs text-caption text-ruby">
                         Amount exceeds {capExceeded ? "your cap" : "the pool's per-investor cap"} (
-                        {formatMockUsdc(capExceeded ? pkg.cap : (pool?.per_investor_cap_public ?? 0n).toString())}{" "}
+                        {formatMockUsdc(capExceeded ? pkg.cap : (pool?.capBaseUnits ?? "0"))}{" "}
                         {MOCK_USDC.labelShort}).
                       </p>
                     )}

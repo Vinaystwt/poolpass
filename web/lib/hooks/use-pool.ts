@@ -2,8 +2,16 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getPoolInfo, getMockUsdcBalance, type PoolInfo } from "../stellar/client";
-import { fetchEvents } from "../api";
+import { fetchEvents, fetchPools, type PoolMarket } from "../api";
 import type { IndexerState } from "../indexer";
+
+export function usePools() {
+  return useQuery<PoolMarket[]>({
+    queryKey: ["pools"],
+    queryFn: fetchPools,
+    refetchInterval: 20_000,
+  });
+}
 
 export function usePoolInfo() {
   return useQuery<PoolInfo>({

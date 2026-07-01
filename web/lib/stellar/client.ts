@@ -153,8 +153,10 @@ export async function subscribe(params: {
   proofHex: string;
   publicSignalsHex: string[];
   sign: (xdr: string) => Promise<string>;
+  /** Target pool contract; defaults to the first pool for the legacy single-pool path. */
+  contractId?: string;
 }): Promise<SubmitResult> {
-  const { investor, amount, proofHex, publicSignalsHex, sign } = params;
+  const { investor, amount, proofHex, publicSignalsHex, sign, contractId } = params;
   const proofScVal = bytesScVal(hexToBytes(proofHex));
   const publicInputs = xdr.ScVal.scvVec(publicSignalsHex.map((h) => bytesScVal(hexToBytes(h))));
   const args = [
@@ -163,7 +165,7 @@ export async function subscribe(params: {
     proofScVal,
     publicInputs,
   ];
-  return invoke(investor, "subscribe", args, CONTRACTS.poolpass, sign);
+  return invoke(investor, "subscribe", args, contractId ?? CONTRACTS.poolpass, sign);
 }
 
 export async function updateAccreditedSet(params: {

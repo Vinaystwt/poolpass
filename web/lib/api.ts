@@ -47,3 +47,29 @@ export async function fetchPoolDemo(): Promise<unknown> {
   const res = await fetch("/api/pool-demo", { cache: "no-store" });
   return res.json();
 }
+
+/** Real per-pool marketplace data from GET /pools (shape per FRONTEND_INTEGRATION.md). */
+export interface PoolMarket {
+  id: string;
+  name: string;
+  gateDescription: string;
+  contractId: string;
+  poolToken: string;
+  issuer: string;
+  vk: string;
+  merkleDepth: number;
+  leafCount: number;
+  perInvestorCapPublic: string;
+  totalSubscribed: string;
+  epoch: number;
+  currentRoot: string;
+  subscriberCount: number;
+  subscribedVolume: string;
+}
+
+export async function fetchPools(): Promise<PoolMarket[]> {
+  const res = await fetch("/api/pools", { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load pools");
+  const data = await res.json();
+  return (data.pools ?? []) as PoolMarket[];
+}

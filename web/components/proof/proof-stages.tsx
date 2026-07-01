@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils";
 import type { ProofStage } from "@/lib/zk/types";
 
 const ORDER: { key: ProofStage; label: string; detail: string }[] = [
-  { key: "witness", label: "Witness", detail: "Evaluating the circuit over your private inputs" },
-  { key: "prove", label: "Prove", detail: "Generating the Groth16 proof (~1,350 constraints)" },
-  { key: "verify", label: "Verify", detail: "Checking the proof against the verifying key, locally" },
+  { key: "witness", label: "On the list", detail: "Confirming you are on the issuer's approved list" },
+  { key: "prove", label: "Within cap", detail: "Proving your amount is within your limit" },
+  { key: "verify", label: "Checked", detail: "Checking the proof, locally, before it goes anywhere" },
 ];
 
 function rank(stage: ProofStage): number {
