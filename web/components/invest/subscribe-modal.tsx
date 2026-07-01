@@ -215,6 +215,8 @@ export function SubscribeModal({
               <div className="flex flex-col gap-lg">
                 <AccreditPanel
                   amountBaseUnits={amountBaseUnits}
+                  poolId={poolId}
+                  poolContractId={pool?.contractId}
                   onAccredited={(p) => {
                     setPkg(p);
                     setProofHandle(null);

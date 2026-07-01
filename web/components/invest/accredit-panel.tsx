@@ -30,9 +30,13 @@ type Phase = "idle" | "generating" | "sending" | "done";
 export function AccreditPanel({
   amountBaseUnits,
   onAccredited,
+  poolId,
+  poolContractId,
 }: {
   amountBaseUnits: string;
   onAccredited: (pkg: ProofPackage) => void;
+  poolId?: string;
+  poolContractId?: string;
 }) {
   const reduce = useReducedMotion();
   const [phase, setPhase] = React.useState<Phase>("idle");
@@ -52,7 +56,7 @@ export function AccreditPanel({
 
       // 2 · only the leaf hash crosses to the "network" side
       setPhase("sending");
-      const result = await requestSelfServeAccreditation(id, amountBaseUnits);
+      const result = await requestSelfServeAccreditation(id, amountBaseUnits, poolId, poolContractId);
       savePackage(result);
       setPkg(result);
       setPhase("done");

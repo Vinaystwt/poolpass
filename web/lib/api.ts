@@ -17,8 +17,8 @@ async function postJson<T>(url: string, body: unknown): Promise<T> {
 }
 
 /** Self-serve accreditation: send ONLY the leaf hash. */
-export function accredit(leaf: string): Promise<AccreditationResponse> {
-  return postJson<AccreditationResponse>("/api/accredit", { leaf });
+export function accredit(leaf: string, poolId?: string): Promise<AccreditationResponse> {
+  return postJson<AccreditationResponse>("/api/accredit", poolId ? { leaf, poolId } : { leaf });
 }
 
 export function faucet(address: string, amount?: string): Promise<{ hash?: string; txHash?: string }> {

@@ -27,9 +27,11 @@ export function generateIdentity(capBaseUnits = 100_000_000_000n): Identity {
 export async function requestSelfServeAccreditation(
   identity: Identity,
   amountBaseUnits: string,
+  poolId?: string,
+  poolContractId?: string,
 ): Promise<ProofPackage> {
   const leaf = await computeLeaf(identity.investorId, identity.cap, identity.investorSecret);
-  const res = await accredit(fieldToHex(leaf));
+  const res = await accredit(fieldToHex(leaf), poolId);
   const pkg: ProofPackage = {
     investor_id: identity.investorId.toString(),
     cap: identity.cap.toString(),
@@ -41,8 +43,8 @@ export async function requestSelfServeAccreditation(
     merkle_indices: res.merkle_indices,
     epoch: res.epoch,
     amount: amountBaseUnits,
-    poolContractId: CONTRACTS.poolpass,
-    label: "Self-serve test accreditation",
+    poolContractId: poolContractId ?? CONTRACTS.poolpass,
+    label: poolId ? `Self-serve accreditation: ${poolId}` : "Self-serve test accreditation",
   };
   return pkg;
 }

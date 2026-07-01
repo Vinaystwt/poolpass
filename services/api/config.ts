@@ -123,18 +123,39 @@ export async function createDependencies(): Promise<ApiDependencies> {
       subscribedVolume: stats.subscribedVolume,
     };
   };
+  // Each pool's issuer key lives in the local keystore under a predictable name.
+  const issuerSourceByPool: Record<string, string> = {
+    "open-access": "poolpass-issuer-open",
+    "capped-allocation": "poolpass-issuer-capped",
+    "accredited-tier": "poolpass-issuer-tier",
+  };
+  const chainFor = (pool: PoolDescriptor) => {
+    const source = issuerSourceByPool[pool.id] ?? issuerSource;
+    return {
+      async update(leaves: string[], computedRoot: string) {
+        const root = JSON.parse(
+          await invoke(pool.contractId, source, "yes", "update_accredited_set", [
+            "--issuer", pool.issuer,
+            "--leaf_hashes", JSON.stringify(leaves),
+          ]),
+        ) as string;
+        const info = JSON.parse(await invoke(pool.contractId, "deployer", "no", "get_pool_info")) as { epoch: number };
+        return { root: root || computedRoot, epoch: info.epoch };
+      },
+    };
+  };
+  const accreditationFileFor = (pool: PoolDescriptor) =>
+    pool.id === defaultPool.id
+      ? process.env.ACCREDITATION_STORE ?? "services/data/accreditation.json"
+      : `services/data/accreditation-${pool.id}.json`;
+  const accreditationByPool = Object.fromEntries(
+    pools.map((pool) => [pool.id, { file: accreditationFileFor(pool), chain: chainFor(pool) }]),
+  );
+
   return {
     accreditationFile: process.env.ACCREDITATION_STORE ?? "services/data/accreditation.json",
-    accreditationChain: {
-      async update(leaves, computedRoot) {
-        const root = JSON.parse(await invoke(poolpass, issuerSource, "yes", "update_accredited_set", [
-          "--issuer", issuer,
-          "--leaf_hashes", JSON.stringify(leaves),
-        ])) as string;
-        const pool = JSON.parse(await invoke(poolpass, "deployer", "no", "get_pool_info")) as { epoch: number };
-        return { root: root || computedRoot, epoch: pool.epoch };
-      },
-    },
+    accreditationChain: chainFor(defaultPool),
+    accreditationByPool,
     faucet: {
       async mint(address, amount) {
         const result = await invoke(usdc, "test-issuer", "yes", "mint", ["--to", address, "--amount", amount]);

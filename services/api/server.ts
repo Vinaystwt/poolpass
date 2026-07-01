@@ -9,6 +9,7 @@ const fieldHexSchema = z.string().regex(/^[0-9a-f]{64}$/i);
 export interface ApiDependencies {
   accreditationFile: string;
   accreditationChain: AccreditationChain;
+  accreditationByPool?: Record<string, { file: string; chain: AccreditationChain }>;
   faucet: { mint(address: string, amount: string): Promise<object> };
   prover: { prove(input: unknown): Promise<object> };
   verifier: { verify(proof: unknown, publicSignals: string[]): Promise<boolean> };
@@ -17,14 +18,24 @@ export interface ApiDependencies {
 
 export function buildServer(dependencies: ApiDependencies): FastifyInstance {
   const server = Fastify({ logger: false, bodyLimit: 1_000_000 });
-  const accreditation = new AccreditationService(dependencies.accreditationFile, dependencies.accreditationChain);
+  const defaultAccreditation = new AccreditationService(dependencies.accreditationFile, dependencies.accreditationChain);
+  // One accreditation service per pool so a leaf is committed to the chosen pool's tree.
+  const accreditationByPool = new Map<string, AccreditationService>();
+  for (const [poolId, cfg] of Object.entries(dependencies.accreditationByPool ?? {})) {
+    accreditationByPool.set(poolId, new AccreditationService(cfg.file, cfg.chain));
+  }
   const faucetClaims = new Set<string>();
 
   server.post("/accredit", async (request, reply) => {
-    const parsed = z.object({ leaf: fieldHexSchema }).strict().safeParse(request.body);
-    if (!parsed.success) return reply.code(400).send({ error: "Expected a canonical 32-byte leaf hash only" });
+    const parsed = z
+      .object({ leaf: fieldHexSchema, poolId: z.string().min(1).optional() })
+      .strict()
+      .safeParse(request.body);
+    if (!parsed.success) return reply.code(400).send({ error: "Expected a canonical 32-byte leaf hash and optional poolId" });
+    const service =
+      (parsed.data.poolId && accreditationByPool.get(parsed.data.poolId)) || defaultAccreditation;
     try {
-      return await accreditation.add(parsed.data.leaf.toLowerCase());
+      return await service.add(parsed.data.leaf.toLowerCase());
     } catch (error) {
       return reply.code(409).send({ error: String(error) });
     }
