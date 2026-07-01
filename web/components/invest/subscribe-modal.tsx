@@ -17,6 +17,8 @@ import { Badge } from "@/components/ui/badge";
 import { HashChip } from "@/components/shared/copy";
 import { ProofConsole, type ProofConsoleHandle } from "@/components/proof/proof-console";
 import { AccreditPanel } from "@/components/invest/accredit-panel";
+import { useQueryClient } from "@tanstack/react-query";
+import type { IndexerState } from "@/lib/indexer";
 import { useWallet } from "@/lib/stellar/wallet";
 import { useMockUsdcBalance } from "@/lib/hooks/use-pool";
 import { savePackage } from "@/lib/accreditation";
@@ -36,13 +38,16 @@ export function SubscribeModal({
   open,
   onOpenChange,
   pool,
+  poolId,
 }: {
   open: boolean;
   onOpenChange: (o: boolean) => void;
   pool: PoolInfo | undefined;
+  poolId?: string;
 }) {
   const { address, connect, available } = useWallet();
   const { data: balance, refetch: refetchBalance } = useMockUsdcBalance(address);
+  const queryClient = useQueryClient();
 
   const [step, setStep] = React.useState<Step>("accredit");
   const [pkg, setPkg] = React.useState<ProofPackage | null>(null);
@@ -103,13 +108,35 @@ export function SubscribeModal({
         sign: signXdr,
       });
       const commitment = typeof res.returnValue === "string" ? res.returnValue : "";
-      setResult({
-        hash: res.hash,
-        commitment: commitment || (proofHandle.output.publicSignalsHex[2] ?? ""),
-        nullifier: proofHandle.output.publicSignalsHex[2] ?? "",
-      });
+      const decodedCommitment = commitment || (proofHandle.output.publicSignalsHex[2] ?? "");
+      const nullifier = proofHandle.output.publicSignalsHex[2] ?? "";
+      setResult({ hash: res.hash, commitment: decodedCommitment, nullifier });
       toast.success("Subscribed on testnet");
       void refetchBalance();
+
+      // Optimistic: show the new subscription in Recent immediately, reconcile when
+      // the indexer catches up. Deduped by tx hash in subscriptions().
+      queryClient.setQueryData<IndexerState>(["indexer"], (old) => {
+        const optimistic = {
+          id: `optimistic-${res.hash}`,
+          name: "subscribed" as const,
+          contractId: "",
+          txHash: res.hash,
+          ledger: Number.MAX_SAFE_INTEGER,
+          closedAt: new Date().toISOString(),
+          poolId,
+          data: {
+            amount: amountBaseUnits,
+            commitment: decodedCommitment,
+            nullifier,
+            timestamp: String(Math.floor(Date.now() / 1000)),
+          },
+        };
+        if (!old) return { events: [optimistic] } as unknown as IndexerState;
+        return { ...old, events: [optimistic, ...old.events] } as IndexerState;
+      });
+      // Reconcile with the real indexer once it has had time to pick up the event.
+      setTimeout(() => void queryClient.invalidateQueries({ queryKey: ["indexer"] }), 5000);
     } catch (e) {
       const f = decodeError(e);
       toast.error(f.title, { description: f.message });

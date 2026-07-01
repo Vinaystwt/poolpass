@@ -8,9 +8,10 @@ import { HashChip } from "@/components/shared/copy";
 import { formatMockUsdc, stellarExpertTx, truncate } from "@/lib/utils";
 import { MOCK_USDC } from "@/lib/backend-config";
 
-export function MySubscriptions() {
+export function MySubscriptions({ poolId }: { poolId?: string } = {}) {
   const { data } = useIndexer();
-  const subs = data ? subscriptions(data) : [];
+  const subs = data ? subscriptions(data, poolId) : [];
+  const stale = Boolean((data as { isStale?: boolean } | undefined)?.isStale);
 
   if (subs.length === 0) return null;
 
@@ -19,6 +20,7 @@ export function MySubscriptions() {
       <h2 className="text-display-md text-ink">Recent subscriptions</h2>
       <p className="mt-xxs text-body-md text-ink-mute">
         Live from the indexer. Every row is a real testnet subscription, verify any of them.
+        {stale && <span className="ml-xs text-warning">updating…</span>}
       </p>
       <div className="mt-lg overflow-x-auto rounded-lg border border-hairline">
         <table className="w-full min-w-[640px] text-left">
@@ -37,6 +39,7 @@ export function MySubscriptions() {
               <tr key={s.txHash} className="border-b border-hairline/60 last:border-0">
                 <td className="px-md py-sm tnum text-body-md text-ink">
                   {formatMockUsdc(s.amount)} {MOCK_USDC.ticker}
+                  {s.optimistic && <span className="ml-xs text-micro text-warning">just now</span>}
                 </td>
                 <td className="px-md py-sm"><HashChip value={s.commitment} copy={false} /></td>
                 <td className="px-md py-sm"><HashChip value={s.nullifier} copy={false} /></td>

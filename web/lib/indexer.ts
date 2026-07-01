@@ -47,11 +47,15 @@ export interface SubscriptionRecord {
   commitment: string;
   nullifier: string;
   timestamp: string;
+  poolId?: string;
+  optimistic?: boolean;
 }
 
-export function subscriptions(state: IndexerState): SubscriptionRecord[] {
-  return state.events
+/** Subscriptions, newest first, deduped by tx hash. Optionally filtered to one pool. */
+export function subscriptions(state: IndexerState, poolId?: string): SubscriptionRecord[] {
+  const rows = state.events
     .filter((e): e is IndexedEvent & { data: SubscribedData } => e.name === "subscribed")
+    .filter((e) => !poolId || e.poolId === poolId)
     .map((e) => ({
       txHash: e.txHash,
       ledger: e.ledger,
@@ -60,8 +64,12 @@ export function subscriptions(state: IndexerState): SubscriptionRecord[] {
       commitment: e.data.commitment,
       nullifier: e.data.nullifier,
       timestamp: e.data.timestamp,
+      poolId: e.poolId,
+      optimistic: e.id?.startsWith("optimistic-"),
     }))
     .sort((a, b) => b.ledger - a.ledger);
+  const seen = new Set<string>();
+  return rows.filter((r) => (seen.has(r.txHash) ? false : (seen.add(r.txHash), true)));
 }
 
 export function rootUpdates(state: IndexerState) {

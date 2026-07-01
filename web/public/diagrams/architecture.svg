@@ -1,0 +1,139 @@
+<svg viewBox="0 0 1160 720" xmlns="http://www.w3.org/2000/svg" font-family="'Space Grotesk','Inter',system-ui,sans-serif" role="img" aria-label="PoolPass architecture. The browser generates proofs locally. Services handle accreditation, indexing, the API, and fallback verification. Three pool contracts plus shared contracts run on Stellar testnet with native BN254 and Poseidon host functions.">
+  <defs>
+    <marker id="pa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7C5CFF"/>
+    </marker>
+    <marker id="pm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7E8BA3"/>
+    </marker>
+  </defs>
+
+  <!-- CARD SURFACE -->
+  <rect x="0" y="0" width="1160" height="720" rx="20" fill="#1B2230"/>
+  <rect x="0.75" y="0.75" width="1158.5" height="718.5" rx="19.25" fill="none" stroke="#2E384A" stroke-width="1.5"/>
+
+  <!-- TITLE -->
+  <text x="48" y="56" fill="#F4F6FB" font-size="27" font-weight="500" letter-spacing="-0.4">Architecture</text>
+  <text x="48" y="84" fill="#9AA6BC" font-size="14">Proofs are generated in the browser. Verification is native, on Stellar testnet.</text>
+
+  <!-- ===== LANE 1: BROWSER ===== -->
+  <rect x="40" y="112" width="300" height="576" rx="16" fill="#222C3D" stroke="#7C5CFF" stroke-width="1.4" stroke-dasharray="7 6"/>
+  <text x="64" y="142" fill="#B7A8FF" font-size="12.5" font-weight="600" letter-spacing="1.5">BROWSER · YOUR DEVICE</text>
+
+  <g transform="translate(64,162)">
+    <rect width="252" height="92" rx="11" fill="#2B3547" stroke="#7C5CFF" stroke-width="1.5"/>
+    <text x="18" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">Next.js app</text>
+    <text x="18" y="54" fill="#9AA6BC" font-size="12">Marketplace, subscribe flow,</text>
+    <text x="18" y="71" fill="#9AA6BC" font-size="12">verify and docs.</text>
+  </g>
+  <g transform="translate(64,274)">
+    <rect width="252" height="104" rx="11" fill="#2B3547" stroke="#7C5CFF" stroke-width="1.5"/>
+    <text x="18" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">snarkjs worker</text>
+    <text x="18" y="54" fill="#9AA6BC" font-size="12">Groth16 proving in a Web</text>
+    <text x="18" y="71" fill="#9AA6BC" font-size="12">Worker. Private inputs never</text>
+    <text x="18" y="88" fill="#9AA6BC" font-size="12">leave this box.</text>
+  </g>
+  <g transform="translate(64,398)">
+    <rect width="252" height="92" rx="11" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="18" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">Poseidon + Merkle</text>
+    <text x="18" y="54" fill="#9AA6BC" font-size="12">circomlibjs. Leaf and path</text>
+    <text x="18" y="71" fill="#9AA6BC" font-size="12">built client-side.</text>
+  </g>
+  <g transform="translate(64,510)">
+    <rect width="252" height="92" rx="11" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="18" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">Freighter wallet</text>
+    <text x="18" y="54" fill="#9AA6BC" font-size="12">Signs the subscribe</text>
+    <text x="18" y="71" fill="#9AA6BC" font-size="12">transaction only.</text>
+  </g>
+
+  <!-- ===== LANE 2: SERVICES ===== -->
+  <rect x="430" y="112" width="300" height="576" rx="16" fill="#202938" stroke="#3A465C" stroke-width="1.4"/>
+  <text x="454" y="142" fill="#9AA6BC" font-size="12.5" font-weight="600" letter-spacing="1.5">SERVICES</text>
+
+  <g transform="translate(454,162)">
+    <rect width="252" height="92" rx="11" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="18" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">Demo-issuer service</text>
+    <text x="18" y="54" fill="#9AA6BC" font-size="12">Receives the leaf only, commits</text>
+    <text x="18" y="71" fill="#9AA6BC" font-size="12">the root, returns the path.</text>
+  </g>
+  <g transform="translate(454,274)">
+    <rect width="252" height="80" rx="11" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="18" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">Indexer</text>
+    <text x="18" y="54" fill="#9AA6BC" font-size="12">Reads events from all three</text>
+    <text x="18" y="71" fill="#9AA6BC" font-size="12">pools, tags poolId, dedupes.</text>
+  </g>
+  <g transform="translate(454,374)">
+    <rect width="252" height="80" rx="11" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="18" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">API routes</text>
+    <text x="18" y="53" fill="#9AA6BC" font-family="'JetBrains Mono',monospace" font-size="11">/pools /accredit /faucet</text>
+    <text x="18" y="70" fill="#9AA6BC" font-family="'JetBrains Mono',monospace" font-size="11">/prove /verify /events</text>
+  </g>
+  <g transform="translate(454,474)">
+    <rect width="252" height="80" rx="11" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="18" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">Verify (fallback)</text>
+    <text x="18" y="54" fill="#9AA6BC" font-size="12">Server re-check against the</text>
+    <text x="18" y="71" fill="#9AA6BC" font-size="12">committed verifying key.</text>
+  </g>
+  <text x="454" y="592" fill="#7E8BA3" font-size="11.5">No private key held here. Proving is</text>
+  <text x="454" y="608" fill="#7E8BA3" font-size="11.5">browser-first; the server path is opt-in.</text>
+
+  <!-- ===== LANE 3: STELLAR ===== -->
+  <rect x="820" y="112" width="300" height="576" rx="16" fill="#202938" stroke="#3A465C" stroke-width="1.4"/>
+  <text x="844" y="142" fill="#9AA6BC" font-size="12.5" font-weight="600" letter-spacing="1.5">STELLAR TESTNET · SOROBAN</text>
+
+  <g transform="translate(844,162)">
+    <rect width="252" height="158" rx="11" fill="#2B3547" stroke="#7C5CFF" stroke-width="1.5"/>
+    <text x="18" y="30" fill="#F4F6FB" font-size="15" font-weight="500">Three PoolPass contracts</text>
+    <rect x="18" y="44" width="216" height="28" rx="7" fill="#222C3D"/>
+    <text x="30" y="63" fill="#C2CCDD" font-family="'JetBrains Mono',monospace" font-size="10.5">Open Access · cap 10,000</text>
+    <rect x="18" y="80" width="216" height="28" rx="7" fill="#222C3D"/>
+    <text x="30" y="99" fill="#C2CCDD" font-family="'JetBrains Mono',monospace" font-size="10.5">Capped Alloc · cap 2,500</text>
+    <rect x="18" y="116" width="216" height="28" rx="7" fill="#222C3D"/>
+    <text x="30" y="135" fill="#C2CCDD" font-family="'JetBrains Mono',monospace" font-size="10.5">Accredited Tier · cap 25,000</text>
+  </g>
+  <g transform="translate(844,340)">
+    <rect width="252" height="92" rx="11" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="18" y="30" fill="#F4F6FB" font-size="15" font-weight="500">Host functions</text>
+    <text x="18" y="54" fill="#9D8BFF" font-family="'JetBrains Mono',monospace" font-size="11">bn254_pairing_check</text>
+    <text x="18" y="72" fill="#9D8BFF" font-family="'JetBrains Mono',monospace" font-size="11">poseidon (CAP-0074/0075)</text>
+  </g>
+  <g transform="translate(844,452)">
+    <rect width="120" height="84" rx="11" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="16" y="30" fill="#F4F6FB" font-size="14" font-weight="500">Mock USDC</text>
+    <text x="16" y="51" fill="#9AA6BC" font-size="11.5">Shared 7-dec</text>
+    <text x="16" y="67" fill="#9AA6BC" font-size="11.5">test token.</text>
+  </g>
+  <g transform="translate(976,452)">
+    <rect width="120" height="84" rx="11" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="16" y="30" fill="#F4F6FB" font-size="14" font-weight="500">Pool tokens</text>
+    <text x="16" y="51" fill="#9AA6BC" font-size="11.5">One per pool,</text>
+    <text x="16" y="67" fill="#9AA6BC" font-size="11.5">minted on entry.</text>
+  </g>
+  <g transform="translate(844,556)">
+    <rect width="252" height="76" rx="11" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="18" y="30" fill="#F4F6FB" font-size="15" font-weight="500">Parity gates</text>
+    <text x="18" y="52" fill="#9AA6BC" font-size="12">Gate A (Poseidon), Gate B (BN254),</text>
+    <text x="18" y="69" fill="#9AA6BC" font-size="12">verified on-chain.</text>
+  </g>
+
+  <!-- ===== CONNECTORS (channels in the 90px gaps at x=340-430 and x=730-820) ===== -->
+  <!-- app -> API (request) -->
+  <path d="M 316 208 H 384 V 414 H 454" fill="none" stroke="#7E8BA3" stroke-width="1.8" marker-end="url(#pm)"/>
+  <!-- Poseidon/Merkle -> demo-issuer (leaf only) -->
+  <path d="M 316 444 H 400 V 208 H 454" fill="none" stroke="#7C5CFF" stroke-width="1.8" marker-end="url(#pa)"/>
+  <text x="324" y="436" fill="#B7A8FF" font-size="11" font-weight="600">leaf only</text>
+  <!-- worker -> API (proof) -->
+  <path d="M 316 326 H 372 V 408 H 454" fill="none" stroke="#7C5CFF" stroke-width="1.8" marker-end="url(#pa)"/>
+  <text x="324" y="318" fill="#B7A8FF" font-size="11" font-weight="600">proof</text>
+
+  <!-- demo-issuer -> pools (commit root) -->
+  <path d="M 706 196 H 770 V 200 H 844" fill="none" stroke="#7E8BA3" stroke-width="1.8" marker-end="url(#pm)"/>
+  <text x="712" y="188" fill="#9AA6BC" font-size="11">commit root</text>
+  <!-- pools -> indexer (events) -->
+  <path d="M 844 290 H 786 V 300 H 706" fill="none" stroke="#7E8BA3" stroke-width="1.8" marker-end="url(#pm)"/>
+  <text x="744" y="282" fill="#9AA6BC" font-size="11">events</text>
+
+  <!-- wallet -> pools (signed subscribe), routed through the gap channels, clear of the Verify box -->
+  <path d="M 316 556 H 388 V 660 H 772 V 244 H 844" fill="none" stroke="#7C5CFF" stroke-width="1.8" marker-end="url(#pa)"/>
+  <text x="470" y="652" fill="#B7A8FF" font-size="11" font-weight="600">signed subscribe transaction</text>
+</svg>

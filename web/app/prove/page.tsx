@@ -6,10 +6,16 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
-import { ProofConsole } from "@/components/proof/proof-console";
-import { isProofPackage } from "@/lib/zk/assemble";
+import dynamic from "next/dynamic";
+const ProofConsole = dynamic(
+  () => import("@/components/proof/proof-console").then((m) => m.ProofConsole),
+  {
+    ssr: false,
+    loading: () => <div className="h-40 w-full animate-pulse rounded-lg bg-ink/5" />,
+  },
+);
+import { isProofPackage } from "@/lib/zk/decode";
 import { DEMO_PROOF_PACKAGE } from "@/lib/zk/demo";
-import { loadPackage } from "@/lib/accreditation";
 import { formatMockUsdc } from "@/lib/utils";
 import { toast } from "sonner";
 import type { ProofPackage } from "@/lib/zk/types";
@@ -19,8 +25,12 @@ export default function ProvePage() {
   const [paste, setPaste] = React.useState("");
 
   React.useEffect(() => {
-    const saved = loadPackage();
-    if (saved) setPkg(saved);
+    try {
+      const raw = localStorage.getItem("poolpass-proof-package");
+      if (raw) setPkg(JSON.parse(raw));
+    } catch {
+      /* no saved package */
+    }
   }, []);
 
   const load = (raw: string) => {

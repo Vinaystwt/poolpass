@@ -1,13 +1,20 @@
 "use client";
 
 import * as React from "react";
+import dynamic from "next/dynamic";
 import { Wallet, Coins, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PoolCard } from "@/components/invest/pool-card";
 import { MySubscriptions } from "@/components/invest/my-subscriptions";
-import { SubscribeModal } from "@/components/invest/subscribe-modal";
 import { useWallet } from "@/lib/stellar/wallet";
+
+// Defer the proof stack (snarkjs worker, circomlibjs, proof console) out of the
+// initial /invest bundle; it loads only when the user opens the subscribe modal.
+const SubscribeModal = dynamic(
+  () => import("@/components/invest/subscribe-modal").then((m) => m.SubscribeModal),
+  { ssr: false },
+);
 import { usePoolInfo, useMockUsdcBalance } from "@/lib/hooks/use-pool";
 import { faucet } from "@/lib/api";
 import { decodeError } from "@/lib/errors";
@@ -16,10 +23,16 @@ import { MOCK_USDC, EXTERNAL_LINKS } from "@/lib/backend-config";
 import { toast } from "sonner";
 
 export default function InvestPage() {
-  const { address, available, init } = useWallet();
+  const { address, available, init, connect } = useWallet();
   const { data: pool, isLoading } = usePoolInfo();
   const { data: balance, refetch } = useMockUsdcBalance(address);
   const [open, setOpen] = React.useState(false);
+  const [modalMounted, setModalMounted] = React.useState(false);
+
+  const openModal = () => {
+    setModalMounted(true);
+    setOpen(true);
+  };
 
   React.useEffect(() => {
     void init();
@@ -58,11 +71,26 @@ export default function InvestPage() {
             revealing your identity.
           </p>
           <div className="mt-md flex flex-wrap gap-sm">
-            <Button asChild size="sm" variant={available === false ? "primary" : "secondary"}>
-              <a href={EXTERNAL_LINKS.freighterInstall} target="_blank" rel="noreferrer">
-                <Wallet className="h-4 w-4" /> Get Freighter
-              </a>
-            </Button>
+            {available === false ? (
+              <Button asChild size="sm" variant="secondary">
+                <a href={EXTERNAL_LINKS.freighterInstall} target="_blank" rel="noreferrer">
+                  <Wallet className="h-4 w-4" /> Get Freighter
+                </a>
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                onClick={async () => {
+                  try {
+                    await connect();
+                  } catch (e) {
+                    toast.error(decodeError(e).title, { description: decodeError(e).message });
+                  }
+                }}
+              >
+                <Wallet className="h-4 w-4" /> Connect wallet
+              </Button>
+            )}
             {address && (
               <Button
                 size="sm"
@@ -86,7 +114,7 @@ export default function InvestPage() {
 
       {/* Pool grid */}
       <div className="mt-xl grid gap-lg md:grid-cols-2 lg:grid-cols-3">
-        <PoolCard pool={pool} loading={isLoading} onSubscribe={() => setOpen(true)} />
+        <PoolCard pool={pool} loading={isLoading} onSubscribe={openModal} />
       </div>
 
       {/* Coming-soon band (full width, not a mismatched grid sibling) */}
@@ -97,7 +125,7 @@ export default function InvestPage() {
         <MySubscriptions />
       </div>
 
-      <SubscribeModal open={open} onOpenChange={setOpen} pool={pool} />
+      {modalMounted && <SubscribeModal open={open} onOpenChange={setOpen} pool={pool} />}
     </div>
   );
 }

@@ -1,0 +1,74 @@
+<svg viewBox="0 0 1160 580" xmlns="http://www.w3.org/2000/svg" font-family="'Space Grotesk','Inter',system-ui,sans-serif" role="img" aria-label="What stays private versus what the public ledger sees. Identity, wealth, and the issuer's investor list stay secret. Only a nullifier, a commitment, and a 256-byte proof are public.">
+  <defs>
+    <g id="eyeoff">
+      <path d="M2 12 C5 6,13 6,16 12" fill="none" stroke="#9D8BFF" stroke-width="1.7" stroke-linecap="round"/>
+      <circle cx="9" cy="11" r="3.2" fill="none" stroke="#9D8BFF" stroke-width="1.7"/>
+      <line x1="2.5" y1="3.5" x2="15.5" y2="17.5" stroke="#9D8BFF" stroke-width="1.7" stroke-linecap="round"/>
+    </g>
+    <g id="eye">
+      <path d="M2 11 C5 5,13 5,16 11 C13 17,5 17,2 11 Z" fill="none" stroke="#7E8BA3" stroke-width="1.7"/>
+      <circle cx="9" cy="11" r="2.6" fill="#7E8BA3"/>
+    </g>
+  </defs>
+
+  <!-- CARD SURFACE -->
+  <rect x="0" y="0" width="1160" height="580" rx="20" fill="#1B2230"/>
+  <rect x="0.75" y="0.75" width="1158.5" height="578.5" rx="19.25" fill="none" stroke="#2E384A" stroke-width="1.5"/>
+
+  <!-- TITLE -->
+  <text x="48" y="56" fill="#F4F6FB" font-size="27" font-weight="500" letter-spacing="-0.4">What the ledger sees, and what it never will</text>
+  <text x="48" y="84" fill="#9AA6BC" font-size="14.5">PoolPass proves you qualify without putting anything about you on chain.</text>
+
+  <!-- ============ PRIVATE COLUMN ============ -->
+  <rect x="48" y="116" width="528" height="406" rx="16" fill="#222C3D" stroke="#7C5CFF" stroke-width="1.5"/>
+  <use href="#eyeoff" x="74" y="138"/>
+  <text x="102" y="154" fill="#B7A8FF" font-size="12.5" font-weight="600" letter-spacing="1.5">STAYS PRIVATE · NEVER ON CHAIN</text>
+
+  <g transform="translate(72,176)">
+    <rect width="480" height="72" rx="10" fill="#2B3547" stroke="#3C4961" stroke-width="1.2"/>
+    <text x="22" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">Your identity</text>
+    <text x="22" y="54" fill="#9AA6BC" font-size="12.5">Who you are. The wallet that proves never reveals the person.</text>
+  </g>
+  <g transform="translate(72,260)">
+    <rect width="480" height="72" rx="10" fill="#2B3547" stroke="#3C4961" stroke-width="1.2"/>
+    <text x="22" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">Your wealth</text>
+    <text x="22" y="54" fill="#9AA6BC" font-size="12.5">Your cap and balances stay on your device, inside the proof.</text>
+  </g>
+  <g transform="translate(72,344)">
+    <rect width="480" height="72" rx="10" fill="#2B3547" stroke="#3C4961" stroke-width="1.2"/>
+    <text x="22" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">The issuer's investor list</text>
+    <text x="22" y="54" fill="#9AA6BC" font-size="12.5">Membership is proven against a root. The list is never published.</text>
+  </g>
+  <g transform="translate(72,428)">
+    <rect width="480" height="72" rx="10" fill="#2B3547" stroke="#3C4961" stroke-width="1.2"/>
+    <text x="22" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">The amount, beyond what you submit</text>
+    <text x="22" y="54" fill="#9AA6BC" font-size="12.5">Proven to fit your cap. The cap itself is never disclosed.</text>
+  </g>
+
+  <!-- ============ PUBLIC COLUMN ============ -->
+  <rect x="608" y="116" width="504" height="406" rx="16" fill="#202938" stroke="#3A465C" stroke-width="1.5"/>
+  <use href="#eye" x="634" y="138"/>
+  <text x="662" y="154" fill="#9AA6BC" font-size="12.5" font-weight="600" letter-spacing="1.5">PUBLIC ON STELLAR</text>
+
+  <g transform="translate(632,176)">
+    <rect width="456" height="98" rx="10" fill="#2B3547" stroke="#3C4961" stroke-width="1.2"/>
+    <text x="22" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">A nullifier</text>
+    <text x="22" y="56" fill="#9AA6BC" font-size="12.5">A one-time tag that stops the same person subscribing</text>
+    <text x="22" y="74" fill="#9AA6BC" font-size="12.5">twice in a round. It does not reveal who they are.</text>
+  </g>
+  <g transform="translate(632,286)">
+    <rect width="456" height="98" rx="10" fill="#2B3547" stroke="#3C4961" stroke-width="1.2"/>
+    <text x="22" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">A commitment</text>
+    <text x="22" y="56" fill="#9AA6BC" font-size="12.5">A hashed receipt of the subscription. Verifiable, but it</text>
+    <text x="22" y="74" fill="#9AA6BC" font-size="12.5">discloses nothing about identity.</text>
+  </g>
+  <g transform="translate(632,396)">
+    <rect width="456" height="98" rx="10" fill="#2B3547" stroke="#3C4961" stroke-width="1.2"/>
+    <text x="22" y="32" fill="#F4F6FB" font-size="15.5" font-weight="500">A 256-byte proof</text>
+    <text x="22" y="56" fill="#9AA6BC" font-size="12.5">Anyone can re-verify it against the pool's verifying key.</text>
+    <text x="22" y="74" fill="#9AA6BC" font-size="12.5">It proves the claim and reveals none of the inputs.</text>
+  </g>
+
+  <!-- FOOTER -->
+  <text x="48" y="556" fill="#9AA6BC" font-size="13.5">The issuer keeps its audit trail. A regulator can confirm every subscriber was authorized. The public sees only math.</text>
+</svg>

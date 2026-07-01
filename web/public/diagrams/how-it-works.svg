@@ -1,0 +1,104 @@
+<svg viewBox="0 0 1160 660" xmlns="http://www.w3.org/2000/svg" font-family="'Space Grotesk','Inter',system-ui,sans-serif" role="img" aria-label="How PoolPass works. The issuer commits an accredited set. You prove membership privately in the browser. The contract verifies on Stellar and the pool unlocks. Private inputs never leave your device.">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7C5CFF"/>
+    </marker>
+    <marker id="arm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7E8BA3"/>
+    </marker>
+  </defs>
+
+  <!-- CARD SURFACE -->
+  <rect x="0" y="0" width="1160" height="660" rx="20" fill="#1B2230"/>
+  <rect x="0.75" y="0.75" width="1158.5" height="658.5" rx="19.25" fill="none" stroke="#2E384A" stroke-width="1.5"/>
+
+  <!-- TITLE -->
+  <text x="48" y="58" fill="#F4F6FB" font-size="27" font-weight="500" letter-spacing="-0.4">How PoolPass works</text>
+  <text x="48" y="86" fill="#9AA6BC" font-size="14.5">Prove you qualify for a gated pool. Reveal nothing about who you are.</text>
+
+  <!-- DEVICE ZONE -->
+  <rect x="48" y="116" width="612" height="500" rx="16" fill="#222C3D" stroke="#7C5CFF" stroke-width="1.5" stroke-dasharray="7 6"/>
+  <circle cx="74" cy="150" r="5" fill="#9D8BFF"/>
+  <text x="88" y="155" fill="#B7A8FF" font-size="12.5" font-weight="600" letter-spacing="1.6">STAYS ON YOUR DEVICE</text>
+
+  <!-- CHAIN ZONE -->
+  <rect x="684" y="116" width="428" height="500" rx="16" fill="#202938" stroke="#3A465C" stroke-width="1.5"/>
+  <rect x="710" y="139" width="13" height="13" rx="3" fill="#7E8BA3"/>
+  <text x="734" y="150" fill="#9AA6BC" font-size="12.5" font-weight="600" letter-spacing="1.6">PUBLIC ON STELLAR</text>
+
+  <!-- STEP 1 -->
+  <g transform="translate(80,176)">
+    <rect width="262" height="150" rx="12" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="20" y="32" fill="#9D8BFF" font-size="12.5" font-weight="600" letter-spacing="1.2">STEP 1</text>
+    <text x="20" y="58" fill="#F4F6FB" font-size="17" font-weight="500">Issuer commits</text>
+    <text x="20" y="84" fill="#C2CCDD" font-size="13">The issuer builds a Merkle tree</text>
+    <text x="20" y="102" fill="#C2CCDD" font-size="13">of accredited investors and</text>
+    <text x="20" y="120" fill="#C2CCDD" font-size="13">commits only the root on-chain.</text>
+    <text x="20" y="140" fill="#9D8BFF" font-family="'JetBrains Mono',monospace" font-size="12">root = Poseidon(...)</text>
+  </g>
+
+  <!-- STEP 2 -->
+  <g transform="translate(80,360)">
+    <rect width="262" height="224" rx="12" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="20" y="32" fill="#9D8BFF" font-size="12.5" font-weight="600" letter-spacing="1.2">STEP 2</text>
+    <text x="20" y="58" fill="#F4F6FB" font-size="17" font-weight="500">You prove, in the browser</text>
+    <text x="20" y="84" fill="#C2CCDD" font-size="13">snarkjs runs a Groth16 proof on</text>
+    <text x="20" y="102" fill="#C2CCDD" font-size="13">your machine. It proves you are</text>
+    <text x="20" y="120" fill="#C2CCDD" font-size="13">in the tree and your amount fits</text>
+    <text x="20" y="138" fill="#C2CCDD" font-size="13">your cap, revealing neither.</text>
+    <rect x="20" y="156" width="222" height="50" rx="9" fill="#2A2350" stroke="#7C5CFF" stroke-width="1.3"/>
+    <text x="34" y="178" fill="#B7A8FF" font-family="'JetBrains Mono',monospace" font-size="12">investor_id · cap</text>
+    <text x="34" y="196" fill="#B7A8FF" font-family="'JetBrains Mono',monospace" font-size="12">investor_secret</text>
+    <text x="158" y="187" fill="#8B7BE0" font-size="11.5" font-weight="600">never sent</text>
+  </g>
+
+  <!-- PROOF ARTIFACT -->
+  <g transform="translate(366,438)">
+    <rect width="128" height="66" rx="11" fill="#2A2350" stroke="#7C5CFF" stroke-width="1.6"/>
+    <text x="64" y="28" text-anchor="middle" fill="#B7A8FF" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="600">256-byte</text>
+    <text x="64" y="47" text-anchor="middle" fill="#B7A8FF" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="600">proof</text>
+  </g>
+  <line x1="342" y1="471" x2="362" y2="471" stroke="#7C5CFF" stroke-width="2.2" marker-end="url(#ar)"/>
+
+  <!-- STEP 3 -->
+  <g transform="translate(708,176)">
+    <rect width="380" height="196" rx="12" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="20" y="32" fill="#9D8BFF" font-size="12.5" font-weight="600" letter-spacing="1.2">STEP 3</text>
+    <text x="20" y="58" fill="#F4F6FB" font-size="17" font-weight="500">The contract verifies, on-chain</text>
+    <text x="20" y="84" fill="#C2CCDD" font-size="13">A Soroban contract checks the proof</text>
+    <text x="20" y="102" fill="#C2CCDD" font-size="13">natively with Stellar's BN254 and</text>
+    <text x="20" y="120" fill="#C2CCDD" font-size="13">Poseidon host functions, compares it</text>
+    <text x="20" y="138" fill="#C2CCDD" font-size="13">to the committed root, and burns a</text>
+    <text x="20" y="156" fill="#C2CCDD" font-size="13">one-time nullifier.</text>
+    <text x="20" y="180" fill="#9D8BFF" font-family="'JetBrains Mono',monospace" font-size="11.5">bn254_pairing_check · poseidon</text>
+  </g>
+
+  <!-- STEP 4 -->
+  <g transform="translate(708,406)">
+    <rect width="380" height="178" rx="12" fill="#2B3547" stroke="#3C4961" stroke-width="1.4"/>
+    <text x="20" y="32" fill="#9D8BFF" font-size="12.5" font-weight="600" letter-spacing="1.2">STEP 4</text>
+    <text x="20" y="58" fill="#F4F6FB" font-size="17" font-weight="500">The pool unlocks</text>
+    <text x="20" y="84" fill="#C2CCDD" font-size="13">Mock USDC settles and pool tokens</text>
+    <text x="20" y="102" fill="#C2CCDD" font-size="13">mint to you. The ledger records only</text>
+    <text x="20" y="120" fill="#C2CCDD" font-size="13">a nullifier and a commitment.</text>
+    <rect x="20" y="136" width="166" height="26" rx="7" fill="#222C3D"/>
+    <text x="34" y="154" fill="#9AA6BC" font-family="'JetBrains Mono',monospace" font-size="11.5">nullifier</text>
+    <rect x="198" y="136" width="166" height="26" rx="7" fill="#222C3D"/>
+    <text x="212" y="154" fill="#9AA6BC" font-family="'JetBrains Mono',monospace" font-size="11.5">commitment</text>
+  </g>
+
+  <!-- CONNECTORS -->
+  <!-- root public: step1 -> step3 -->
+  <path d="M 342 251 H 524 V 250 H 708" fill="none" stroke="#7E8BA3" stroke-width="2" marker-end="url(#arm)"/>
+  <text x="430" y="243" fill="#9AA6BC" font-size="11.5" font-weight="500">root (public)</text>
+
+  <!-- proof crosses: proof box -> step3 -->
+  <path d="M 494 471 H 600 V 300 H 708" fill="none" stroke="#7C5CFF" stroke-width="2.4" marker-end="url(#ar)"/>
+  <text x="512" y="320" fill="#B7A8FF" font-size="11.5" font-weight="600">only the proof crosses</text>
+
+  <!-- seam -->
+  <line x1="672" y1="128" x2="672" y2="604" stroke="#3A465C" stroke-width="1" stroke-dasharray="2 7"/>
+
+  <!-- FOOTER -->
+  <text x="48" y="646" fill="#9AA6BC" font-size="13.5">Your identity, your wealth, and the issuer's investor list never touch the ledger. Only a 256-byte proof does.</text>
+</svg>

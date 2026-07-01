@@ -39,8 +39,21 @@ export const useWallet = create<WalletState>((set, get) => ({
 
   async init() {
     try {
-      const conn = await isConnected();
-      const available = Boolean((conn as { isConnected?: boolean }).isConnected);
+      // The Freighter content script may not have injected window.freighterApi by
+      // first paint. Poll briefly before concluding the wallet is absent.
+      let available = false;
+      for (let attempt = 0; attempt < 6; attempt += 1) {
+        try {
+          const conn = await isConnected();
+          if ((conn as { isConnected?: boolean }).isConnected) {
+            available = true;
+            break;
+          }
+        } catch {
+          /* not injected yet */
+        }
+        await new Promise((r) => setTimeout(r, 300));
+      }
       set({ available });
       if (!available) return;
       const allowed = await isAllowed();

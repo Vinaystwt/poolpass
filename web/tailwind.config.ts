@@ -100,9 +100,15 @@ const config: Config = {
           from: { opacity: "0", transform: "translateY(8px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        // opacity-only: safe on nodes that use transform for centering (modal)
+        "fade-in": {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
       },
       animation: {
         "fade-up": "fade-up 240ms ease-out both",
+        "fade-in": "fade-in 200ms ease-out both",
       },
     },
   },

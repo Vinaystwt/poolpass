@@ -23,7 +23,7 @@ import { MySubscriptions } from "@/components/invest/my-subscriptions";
 import { useWallet } from "@/lib/stellar/wallet";
 import { usePoolInfo, useIndexer } from "@/lib/hooks/use-pool";
 import { updateAccreditedSet, advanceEpoch } from "@/lib/stellar/client";
-import { buildTreeFromLeaves, leafFromRecord, pathFor, type MerkleTree } from "@/lib/zk/merkle";
+import type { MerkleTree } from "@/lib/zk/merkle";
 import { fieldToHex } from "@/lib/zk/field";
 import { faucet } from "@/lib/api";
 import { decodeError } from "@/lib/errors";
@@ -67,6 +67,7 @@ export default function IssuerPage() {
     const dataLines = hasHeader ? lines.slice(1) : lines;
     const leafOnly = /leaf/.test(header) && !/investor_id/.test(header);
 
+    const { leafFromRecord, buildTreeFromLeaves } = await import("@/lib/zk/merkle");
     const parsed: Row[] = [];
     for (const line of dataLines.slice(0, 8)) {
       const cols = line.split(",").map((c) => c.trim());
@@ -122,8 +123,9 @@ export default function IssuerPage() {
     }
   };
 
-  const downloadPackage = (row: Row, index: number) => {
+  const downloadPackage = async (row: Row, index: number) => {
     if (!tree) return;
+    const { pathFor } = await import("@/lib/zk/merkle");
     const path = pathFor(tree, index);
     const pkg: ProofPackage = {
       investor_id: row.investorId ?? "0",
