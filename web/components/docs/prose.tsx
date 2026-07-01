@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { CopyButton } from "@/components/shared/copy";
 
 export function Prose({ children, className }: { children: React.ReactNode; className?: string }) {
   return <div className={cn("flex w-full min-w-0 flex-col gap-lg", className)}>{children}</div>;
@@ -40,10 +41,15 @@ export function Mono({ children }: { children: React.ReactNode }) {
 
 export function CodeBlock({ children, lang }: { children: string; lang?: string }) {
   return (
-    <pre className="block w-full min-w-0 max-w-full overflow-x-auto rounded-lg border border-hairline bg-canvas-sunken p-lg">
-      {lang && <span className="mb-xs block text-micro-cap uppercase tracking-wide text-ink-mute">{lang}</span>}
-      <code className="mono whitespace-pre text-[12.5px] leading-relaxed text-ink-secondary">{children}</code>
-    </pre>
+    <div className="relative">
+      <div className="absolute right-sm top-sm z-10 rounded-sm bg-canvas-sunken/80">
+        <CopyButton value={children} label="Code" />
+      </div>
+      <pre className="block w-full min-w-0 max-w-full overflow-x-auto rounded-lg border border-hairline bg-canvas-sunken p-lg pr-huge">
+        {lang && <span className="mb-xs block text-micro-cap uppercase tracking-wide text-ink-mute">{lang}</span>}
+        <code className="mono whitespace-pre text-[12.5px] leading-relaxed text-ink-secondary">{children}</code>
+      </pre>
+    </div>
   );
 }
 

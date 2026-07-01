@@ -45,14 +45,17 @@ export default function LandingPage() {
       {/* ── Hero: plain meaning left, live proof right, above the fold ── */}
       <section className="relative overflow-hidden">
         <div className="mesh-bg mesh-anim pointer-events-none absolute inset-x-0 top-0 h-[460px]" />
-        <div className="relative mx-auto max-w-container px-lg pb-xxl pt-xxl">
+        <div className="relative mx-auto max-w-container px-lg pb-huge pt-xxl">
           <div className="grid items-center gap-xl lg:grid-cols-[1fr_0.92fr]">
             <div>
               <Badge variant="neutral">Real-world investing, kept private</Badge>
               <h1 className="mt-lg text-display-xxl text-balance text-ink">Prove you qualify. Reveal nothing.</h1>
-              <p className="mt-lg max-w-[52ch] text-body-lg text-ink-secondary">
-                Join a gated real-world-asset pool on Stellar by proving you belong. It is like showing you are on the
-                guest list without showing your ID.
+              <p className="mt-lg max-w-[54ch] text-body-lg text-ink">
+                PoolPass is a way to invest in gated real-world-asset pools on Stellar without revealing your identity
+                or your finances.
+              </p>
+              <p className="mt-sm max-w-[54ch] text-body-md text-ink-mute">
+                You prove you are an eligible investor without handing over your identity and balance sheet.
               </p>
               <div className="mt-xl flex flex-wrap items-center gap-md">
                 <Button asChild size="lg">
@@ -78,7 +81,7 @@ export default function LandingPage() {
 
       {/* ── Four-verb mental model ── */}
       <section id="four-verbs" className="border-y border-hairline bg-canvas-soft">
-        <div className="mx-auto max-w-container px-lg py-xxl">
+        <div className="mx-auto max-w-container px-lg py-huge">
           <h2 className="text-display-md text-ink">Four steps, that is the whole product.</h2>
           <div className="mt-lg grid gap-lg sm:grid-cols-2 lg:grid-cols-4">
             {VERBS.map((v, i) => (

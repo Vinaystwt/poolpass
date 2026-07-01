@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { HashChip } from "@/components/shared/copy";
 import { TreeViz } from "@/components/issuer/tree-viz";
 import { WalletPill } from "@/components/wallet/wallet-pill";
+import { FilePicker } from "@/components/shared/file-picker";
 import { MySubscriptions } from "@/components/invest/my-subscriptions";
 import { useWallet } from "@/lib/stellar/wallet";
 import { usePoolInfo, useIndexer } from "@/lib/hooks/use-pool";
@@ -257,15 +258,9 @@ export default function IssuerPage() {
               single <span className="mono text-[12px]">leaf_hash</span> column. The tree is built in your browser; only
               leaf hashes are committed on chain.
             </p>
-            <input
-              type="file"
-              accept=".csv,text/csv"
-              className="mt-md block text-caption text-ink-mute file:mr-sm file:rounded-pill file:border-0 file:bg-primary file:px-md file:py-xs file:text-on-primary"
-              onChange={async (e) => {
-                const file = e.target.files?.[0];
-                if (file) await parseCsv(await file.text());
-              }}
-            />
+            <div className="mt-md">
+              <FilePicker accept=".csv,text/csv" label="Choose CSV file" onFile={async (file) => await parseCsv(await file.text())} />
+            </div>
 
             {tree && (
               <div className="mt-lg flex flex-col gap-lg">

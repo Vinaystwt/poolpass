@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
+import { FilePicker } from "@/components/shared/file-picker";
 import dynamic from "next/dynamic";
 const ProofConsole = dynamic(
   () => import("@/components/proof/proof-console").then((m) => m.ProofConsole),
@@ -76,15 +77,7 @@ export default function ProvePage() {
           <Upload className="h-4 w-4 text-ink-mute" /> Load a different proof package
         </summary>
         <div className="mt-md flex flex-col gap-sm">
-          <input
-            type="file"
-            accept="application/json"
-            className="text-caption text-ink-mute file:mr-sm file:rounded-pill file:border-0 file:bg-primary file:px-md file:py-xs file:text-on-primary"
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              if (file) load(await file.text());
-            }}
-          />
+          <FilePicker accept="application/json" label="Choose package file" onFile={async (file) => load(await file.text())} />
           <Textarea rows={5} placeholder="Paste proof package JSON…" value={paste} onChange={(e) => setPaste(e.target.value)} />
           <Button variant="outline" size="sm" disabled={!paste.trim()} onClick={() => load(paste)}>
             Load pasted package

@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { HashChip } from "@/components/shared/copy";
 import { ProofConsole, type ProofConsoleHandle } from "@/components/proof/proof-console";
 import { AccreditPanel } from "@/components/invest/accredit-panel";
+import { FilePicker } from "@/components/shared/file-picker";
 import { useQueryClient } from "@tanstack/react-query";
 import type { IndexerState } from "@/lib/indexer";
 import { useWallet } from "@/lib/stellar/wallet";
@@ -28,7 +29,7 @@ import { subscribe } from "@/lib/stellar/client";
 import { faucet } from "@/lib/api";
 import { decodeError } from "@/lib/errors";
 import { formatMockUsdc, parseMockUsdc, stellarExpertTx, truncate } from "@/lib/utils";
-import { MOCK_USDC } from "@/lib/backend-config";
+import { MOCK_USDC, CONTRACTS } from "@/lib/backend-config";
 import type { ProofPackage } from "@/lib/zk/types";
 
 type Step = "accredit" | "prove" | "subscribe";
@@ -146,15 +147,31 @@ export function SubscribeModal({
   };
 
   const needsFunds = address && balance !== undefined && BigInt(amountBaseUnits) > balance;
+  const [faucetPending, setFaucetPending] = React.useState(false);
 
   const onFaucet = async () => {
-    if (!address) return;
+    if (!address || faucetPending) return;
+    const before = balance ?? 0n;
+    setFaucetPending(true);
+    const id = toast.loading("Requesting test funds, this can take a few seconds");
     try {
       await faucet(address);
-      toast.success("Faucet sent Mock USDC");
-      setTimeout(() => void refetchBalance(), 2500);
+      let arrived = false;
+      for (let i = 0; i < 12; i += 1) {
+        await new Promise((r) => setTimeout(r, 2000));
+        const res = await refetchBalance();
+        if (res.data !== undefined && res.data > before) {
+          arrived = true;
+          break;
+        }
+      }
+      if (arrived) toast.success("1,000 Mock USDC (testnet) arrived", { id });
+      else toast.message("Funds requested. If the balance has not updated, retry in a moment.", { id });
     } catch (e) {
-      toast.error(decodeError(e).title, { description: decodeError(e).message });
+      const f = decodeError(e);
+      toast.error(f.title, { id, description: f.message });
+    } finally {
+      setFaucetPending(false);
     }
   };
 
@@ -230,15 +247,7 @@ export function SubscribeModal({
                     <Upload className="h-4 w-4 text-ink-mute" /> I already have a proof package
                   </summary>
                   <div className="mt-md flex flex-col gap-sm">
-                    <input
-                      type="file"
-                      accept="application/json"
-                      className="text-caption text-ink-mute file:mr-sm file:rounded-pill file:border-0 file:bg-primary file:px-md file:py-xs file:text-on-primary"
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0];
-                        if (file) onImport(await file.text());
-                      }}
-                    />
+                    <FilePicker accept="application/json" label="Choose package file" onFile={async (file) => onImport(await file.text())} />
                     <Textarea
                       rows={4}
                       placeholder='{"investor_id":"...","investor_secret":"...","root":"...","merkle_path":[...],"merkle_indices":[...],"epoch":1}'
@@ -344,15 +353,24 @@ export function SubscribeModal({
                   ) : (
                     <>
                       <div className="flex items-center justify-between rounded-md bg-canvas-soft px-md py-sm text-caption">
-                        <span className="text-ink-mute">
-                          Balance: {balance !== undefined ? formatMockUsdc(balance) : "…"} {MOCK_USDC.labelShort}
+                        <span className="tnum text-ink-mute">
+                          Balance: {balance !== undefined ? formatMockUsdc(balance) : "…"} {MOCK_USDC.ticker}
                         </span>
-                        <button className="text-primary hover:underline" onClick={onFaucet}>
-                          <Coins className="mr-xxs inline h-3.5 w-3.5" /> Get test funds
+                        <button
+                          className="inline-flex items-center gap-xxs text-ink hover:text-accent disabled:opacity-50"
+                          onClick={onFaucet}
+                          disabled={faucetPending}
+                        >
+                          {faucetPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Coins className="h-3.5 w-3.5" />}
+                          {faucetPending ? "Requesting…" : "Get test funds"}
                         </button>
                       </div>
+                      <div className="flex items-center justify-between rounded-md border border-hairline px-md py-sm text-caption">
+                        <span className="text-ink-mute">Add {MOCK_USDC.labelShort} to Freighter (paste this asset id)</span>
+                        <HashChip value={CONTRACTS.mockUsdc} />
+                      </div>
                       {needsFunds && (
-                        <p className="text-caption text-ruby">
+                        <p className="text-caption text-warning">
                           Balance below the subscription amount. Use the faucet, then submit.
                         </p>
                       )}
