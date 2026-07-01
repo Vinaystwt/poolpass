@@ -1,5 +1,6 @@
 import { Nav } from "./nav";
 import { Footer } from "./footer";
+import { Walkthrough } from "@/components/walkthrough";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -7,6 +8,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Nav />
       <main className="flex-1">{children}</main>
       <Footer />
+      <Walkthrough />
     </div>
   );
 }

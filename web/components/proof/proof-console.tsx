@@ -91,10 +91,8 @@ export function ProofConsole({
           ) : (
             <div className="rounded-lg border border-accent-proof/30 bg-accent-proof/5 p-lg">
               <p className="text-body-md text-ink-secondary">
-                Your <span className="mono text-[13px]">investor_id</span>,{" "}
-                <span className="mono text-[13px]">cap</span>, and{" "}
-                <span className="mono text-[13px]">investor_secret</span> stay on this device. Only a 256-byte proof
-                and four public inputs leave it.
+                Your private details stay on this device. Only a small proof leaves it, and it reveals nothing about
+                you.
               </p>
             </div>
           )}
