@@ -1,4 +1,4 @@
-import { Prose, H1, Lead, H2, H3, P, Mono, CodeBlock, Callout, Table } from "@/components/docs/prose";
+import { Prose, H1, Lead, H2, H3, P, UL, Mono, CodeBlock, Callout, Table } from "@/components/docs/prose";
 import { Toc } from "@/components/docs/toc";
 
 export const metadata = { title: "PoolPass docs: Mathematics" };
@@ -8,11 +8,36 @@ export default function Mathematics() {
     <Prose>
       <H1>Mathematics</H1>
       <Lead>
-        Every value below is a canonical element of the BN254 scalar field Fr. The circuit proves four statements at
-        once and reveals four public inputs: <Mono>[merkle_root, amount, nullifier, epoch]</Mono>.
+        In one sentence: you prove you are on the issuer&rsquo;s approved list and that your amount fits your limit,
+        without revealing which entry is yours. This page starts in plain words, then descends into the exact formulas
+        for readers who want them.
       </Lead>
 
       <Toc />
+
+      <H2 id="claims">The four claims, in words</H2>
+      <P>The proof makes four promises at once, and reveals nothing else about you:</P>
+      <UL>
+        <li>
+          <strong>You are on the list.</strong> Your private entry (a hash of your id, cap, and secret) is one of the
+          leaves the issuer approved.
+        </li>
+        <li>
+          <strong>Your entry is under the published root.</strong> A short path of sibling hashes ties your leaf to the
+          one public fingerprint, the root, without showing the list.
+        </li>
+        <li>
+          <strong>Your amount fits your cap.</strong> The amount you subscribe is not larger than your private limit.
+        </li>
+        <li>
+          <strong>You have not subscribed twice this round.</strong> A one-time tag (the nullifier) is derived from your
+          secret and the round, so a replay is rejected without linking you across rounds.
+        </li>
+      </UL>
+      <P>
+        Only four values become public: <Mono>[merkle_root, amount, nullifier, epoch]</Mono>. Everything below is the
+        precise version of the four claims above.
+      </P>
 
       <H2 id="field">The field</H2>
       <P>The scalar field modulus, where all witness and public values live:</P>

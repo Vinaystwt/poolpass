@@ -1,7 +1,6 @@
 import { Prose, H1, Lead, H2, P, Mono, CodeBlock, Table } from "@/components/docs/prose";
 import { CONTRACTS } from "@/lib/backend-config";
 import { HashChip } from "@/components/shared/copy";
-import { ArchitectureDiagram } from "@/components/diagrams/architecture-diagram";
 import { Toc } from "@/components/docs/toc";
 
 export const metadata = { title: "PoolPass docs: Architecture" };
@@ -15,7 +14,9 @@ export default function Architecture() {
         path runs entirely in the browser; the services hold only issuer-side state.
       </Lead>
 
-      <ArchitectureDiagram />
+      <div className="overflow-x-auto rounded-xl border border-hairline">
+        <img src="/diagrams/architecture.svg" alt="PoolPass system architecture" className="h-auto w-full min-w-[680px]" />
+      </div>
 
       <Toc />
 

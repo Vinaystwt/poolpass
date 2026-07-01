@@ -12,6 +12,10 @@ export default function Privacy() {
         It does not hide the amount, the timing, or the on-chain wallet.
       </Lead>
 
+      <div className="overflow-x-auto rounded-xl border border-hairline">
+        <img src="/diagrams/privacy-split.svg" alt="What stays private versus what becomes public" className="h-auto w-full min-w-[680px]" />
+      </div>
+
       <Toc />
 
       <H2 id="who-sees">Who sees what</H2>

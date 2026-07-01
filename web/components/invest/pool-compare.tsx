@@ -21,7 +21,7 @@ export function PoolCompare({ pools, onInspect }: { pools: PoolMarket[]; onInspe
             <th className="px-md py-sm text-micro-cap uppercase tracking-wide text-ink-mute">Compare</th>
             {pools.map((p) => (
               <th key={p.id} className="px-md py-sm">
-                <button onClick={() => onInspect(p.id)} className="text-body-md font-medium text-ink hover:text-accent">
+                <button onClick={() => onInspect(p.id)} className="text-body-md font-medium text-ink underline decoration-dotted underline-offset-4 hover:text-ink-secondary">
                   {p.name}
                 </button>
               </th>
