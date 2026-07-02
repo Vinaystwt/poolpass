@@ -66,5 +66,11 @@ export function buildServer(dependencies: ApiDependencies): FastifyInstance {
 
   server.get<{ Params: { id: string } }>("/pool/:id", async (request) => dependencies.pool.read(request.params.id));
   server.get("/pools", async () => ({ pools: await dependencies.pool.list() }));
+
+  server.get("/health", async () => ({
+    ok: true,
+    pools: Object.keys(dependencies.accreditationByPool ?? {}),
+    service: "poolpass-api",
+  }));
   return server;
 }

@@ -21,7 +21,7 @@ export default function ApiDocs() {
 # -> { leaf, root, epoch, index, merkle_path[3], merkle_indices[3] }`}</CodeBlock>
 
       <H2 id="faucet">POST /faucet</H2>
-      <P>Mints Mock USDC to an address. Amount optional, in base units, capped at 100,000,000,000 (10,000 mUSDC).</P>
+      <P>Mints Testnet USDC to an address. Amount optional, in base units, capped at 100,000,000,000 (10,000 tUSDC).</P>
       <CodeBlock lang="curl">{`curl -s http://127.0.0.1:3000/faucet \\
   -H 'content-type: application/json' \\
   -d '{"address":"G...","amount":"10000000000"}'`}</CodeBlock>

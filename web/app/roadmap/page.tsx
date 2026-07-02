@@ -24,7 +24,7 @@ const QUARTERS = [
     accent: "var(--positive)",
     bullets: [
       "Mainnet deployment behind a feature flag",
-      "Circle USDC integration via SAC, replacing Mock USDC",
+      "Circle USDC integration via SAC, replacing Testnet USDC",
       "Partnership pilot with one regulated tokenized-treasury issuer on Stellar",
       "zkEmail integration for bank-statement-driven accreditation",
     ],

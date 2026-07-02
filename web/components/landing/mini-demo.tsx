@@ -1,6 +1,6 @@
 "use client";
 
-import { Cpu } from "lucide-react";
+import { Cpu, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ProofConsole } from "@/components/proof/proof-console";
 import { DEMO_PROOF_PACKAGE } from "@/lib/zk/demo";
@@ -13,15 +13,16 @@ export function MiniDemo() {
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent-proof/10">
             <Cpu className="h-4 w-4 text-accent-proof" />
           </span>
-          <div>
-            <p className="text-heading-sm text-ink">Run a real proof, right here</p>
-            <p className="text-caption text-ink-mute">No wallet. No signup. Your machine does the math.</p>
-          </div>
+          <p className="text-heading-sm text-ink">See the core of PoolPass in action</p>
         </div>
         <Badge variant="proof">snarkjs · wasm</Badge>
       </div>
-      <p className="mt-md rounded-md bg-canvas-sunken px-md py-sm text-caption text-ink-mute">
-        This runs a real proof for a sample investor. It does not touch your wallet, and none of your data is used.
+      <p className="mt-sm text-body-md text-ink-secondary">
+        This generates a real zero-knowledge proof for a sample investor, entirely in your browser, so you can watch
+        the privacy step work before you use it yourself.
+      </p>
+      <p className="mt-md flex items-center gap-xs rounded-md bg-canvas-sunken px-md py-sm text-body-md text-ink">
+        <ShieldCheck className="h-4 w-4 shrink-0 text-accent" /> Sample investor. No wallet. None of your data is used.
       </p>
       <div className="mt-md">
         <ProofConsole
@@ -31,8 +32,8 @@ export function MiniDemo() {
         />
       </div>
       <p className="mt-md text-caption text-ink-mute">
-        When it finishes: you have proven the sample investor is on the list and within their cap. Their identity and
-        amount were never revealed.
+        You just proved the sample investor is on the list and within their cap, with their identity and amount never
+        revealed. This is exactly the proof you would generate to join a pool, minus your real details.
       </p>
     </div>
   );

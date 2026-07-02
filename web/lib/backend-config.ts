@@ -83,10 +83,10 @@ export const WASM_HASHES = {
 // ── Asset facts (honesty rule) ───────────────────────────────────────────────
 export const MOCK_USDC = {
   decimals: 7,
-  /** Label rules: first appearance per session is the long form, then short. */
-  labelLong: "Mock USDC (testnet)",
-  labelShort: "Mock USDC",
-  ticker: "mUSDC",
+  /** A real 7-decimal SAC token on Stellar testnet, used deliberately for the demo. */
+  labelLong: "Testnet USDC (a 7-decimal test asset on Stellar testnet)",
+  labelShort: "Testnet USDC",
+  ticker: "tUSDC",
 } as const;
 
 // ── Circuit / proof system ───────────────────────────────────────────────────

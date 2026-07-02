@@ -24,7 +24,7 @@ export function ArchitectureDiagram() {
 
         {/* contracts */}
         <Box x={680} y={48} w={220} h={70} title="PoolPass" lines={["subscribe, update_set", "advance_epoch"]} accent />
-        <Box x={680} y={140} w={220} h={56} title="Mock USDC (SAC)" lines={["7-decimal test token"]} />
+        <Box x={680} y={140} w={220} h={56} title="Testnet USDC (SAC)" lines={["7-decimal test token"]} />
         <Box x={680} y={212} w={220} h={56} title="Pool token" lines={["minted on subscribe"]} />
         <Box x={680} y={284} w={220} h={56} title="Gate contracts" lines={["Poseidon + Groth16 parity"]} />
 

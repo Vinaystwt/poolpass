@@ -31,7 +31,7 @@ export default function HowItWorks() {
           state, and rejects a reused nullifier.
         </li>
         <li>
-          <strong>Settle.</strong> The contract pulls the public <Mono>amount</Mono> of {`Mock USDC`} from the investor,
+          <strong>Settle.</strong> The contract pulls the public <Mono>amount</Mono> of {`Testnet USDC`} from the investor,
           mints pool tokens, records the nullifier, and emits <Mono>Subscribed</Mono> with the commitment.
         </li>
       </OL>

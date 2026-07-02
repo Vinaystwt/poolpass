@@ -40,7 +40,7 @@ export default function DocsIntro() {
         <li>It does not yet run a multi-issuer pool factory; one verified demo pool runs the full loop today.</li>
       </UL>
 
-      <H2 id="testnet">Testnet and Mock USDC</H2>
+      <H2 id="testnet">Testnet and Testnet USDC</H2>
       <P>
         Everything here runs on Stellar testnet, protocol 27. Settlement uses{" "}
         <strong>{MOCK_USDC.labelLong}</strong>, a custom 7-decimal token deployed for this build, not Circle USDC. No

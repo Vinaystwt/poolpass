@@ -63,7 +63,7 @@ export default function HowPage() {
               body: (
                 <>
                   Connect a Freighter wallet with testnet funds and submit. Stellar checks the proof and settles your
-                  Mock USDC (testnet). This is the only step that needs a wallet.
+                  Testnet USDC. This is the only step that needs a wallet.
                 </>
               ),
             },
@@ -89,8 +89,8 @@ export default function HowPage() {
       <section className="mt-huge rounded-xl border border-hairline bg-canvas-soft p-xl text-center">
         <h2 className="text-display-md text-ink">Ready?</h2>
         <p className="mx-auto mt-xs max-w-[46ch] text-body-md text-ink-secondary">
-          Run a proof first with no wallet, or jump straight into the demo pool. Everything is on testnet with Mock USDC
-          (testnet). No real money moves.
+          Run a proof first with no wallet, or jump straight into the demo pool. Everything is on Stellar testnet with
+          Testnet USDC. No real money moves.
         </p>
         <div className="mt-md flex flex-wrap justify-center gap-md">
           <Button asChild size="lg">

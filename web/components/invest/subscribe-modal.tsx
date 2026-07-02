@@ -165,7 +165,7 @@ export function SubscribeModal({
           break;
         }
       }
-      if (arrived) toast.success("1,000 Mock USDC (testnet) arrived", { id });
+      if (arrived) toast.success("1,000 Testnet USDC arrived", { id });
       else toast.message("Funds requested. If the balance has not updated, retry in a moment.", { id });
     } catch (e) {
       const f = decodeError(e);

@@ -25,7 +25,7 @@ export default function Architecture() {
         head={["Role", "Contract ID"]}
         rows={[
           ["PoolPass", <HashChip key="p" value={CONTRACTS.poolpass} />],
-          ["Mock USDC (SAC)", <HashChip key="u" value={CONTRACTS.mockUsdc} />],
+          ["Testnet USDC (SAC)", <HashChip key="u" value={CONTRACTS.mockUsdc} />],
           ["Pool token", <HashChip key="pt" value={CONTRACTS.poolToken} />],
           ["Poseidon parity gate", <HashChip key="gp" value={CONTRACTS.gatePoseidon} />],
           ["Groth16 parity gate", <HashChip key="gg" value={CONTRACTS.gateGroth16} />],
@@ -40,7 +40,7 @@ get_pool_info() -> Result<PoolInfo, Error>
 advance_epoch(issuer) -> Result<u32, Error>`}</CodeBlock>
       <P>
         The issuer must authorize set updates and epoch advances. The investor must authorize <Mono>subscribe</Mono> and
-        its nested Mock USDC transfer.
+        its nested Testnet USDC transfer.
       </P>
 
       <H2 id="events">Events</H2>
@@ -71,7 +71,7 @@ EpochAdvanced { epoch(topic), timestamp }
         rows={[
           [<Mono key="a">api</Mono>, "Fastify HTTP: /accredit, /faucet, /verify, /prove (fallback), /pool/demo."],
           [<Mono key="i">indexer</Mono>, "Reads RPC getEvents, dedupes by event ID, persists to services/data/events.json."],
-          [<Mono key="d">demo-issuer</Mono>, "Holds the issuer key; commits leaves and mints Mock USDC."],
+          [<Mono key="d">demo-issuer</Mono>, "Holds the issuer key; commits leaves and mints Testnet USDC."],
         ]}
       />
 

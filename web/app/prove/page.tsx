@@ -59,7 +59,7 @@ export default function ProvePage() {
           <div>
             <p className="text-heading-sm text-ink">{pkg.label ?? "Proof package"}</p>
             <p className="text-caption text-ink-mute">
-              epoch {pkg.epoch} · amount {formatMockUsdc(pkg.amount ?? "0")} Mock USDC
+              epoch {pkg.epoch} · amount {formatMockUsdc(pkg.amount ?? "0")} Testnet USDC
             </p>
           </div>
           <Badge variant={pkg.label?.includes("Demo") ? "neutral" : "success"}>

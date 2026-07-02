@@ -16,7 +16,7 @@ export function usePools() {
 export function usePoolInfo() {
   return useQuery<PoolInfo>({
     queryKey: ["pool-info"],
-    queryFn: getPoolInfo,
+    queryFn: () => getPoolInfo(),
     refetchInterval: 20_000,
   });
 }

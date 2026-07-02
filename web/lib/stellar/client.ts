@@ -34,9 +34,9 @@ function bytesScVal(bytes: Uint8Array): xdr.ScVal {
 }
 
 /** Simulate a read-only contract method and decode the result natively. */
-async function simulateRead(method: string, args: xdr.ScVal[]): Promise<unknown> {
+async function simulateRead(method: string, args: xdr.ScVal[], contractId: string = CONTRACTS.poolpass): Promise<unknown> {
   const source = new Account(ACCOUNTS.deployer, "0");
-  const contract = new Contract(CONTRACTS.poolpass);
+  const contract = new Contract(contractId);
   const tx = new TransactionBuilder(source, { fee: BASE_FEE, networkPassphrase: NETWORK.passphrase })
     .addOperation(contract.call(method, ...args))
     .setTimeout(30)
@@ -54,8 +54,8 @@ function toHex(v: unknown): string {
   return String(v);
 }
 
-export async function getPoolInfo(): Promise<PoolInfo> {
-  const raw = (await simulateRead("get_pool_info", [])) as Record<string, unknown>;
+export async function getPoolInfo(contractId?: string): Promise<PoolInfo> {
+  const raw = (await simulateRead("get_pool_info", [], contractId)) as Record<string, unknown>;
   return {
     epoch: Number(raw.epoch),
     issuer: String(raw.issuer),

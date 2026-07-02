@@ -10,7 +10,7 @@ const REMEDIATION: Record<number, string> = {
   4: "The issuer advanced the epoch between proving and subscribing. Regenerate the nullifier (it depends on epoch) and re-prove.",
   5: "This secret already subscribed in the current epoch. Wait for the next epoch or use a different accreditation.",
   6: "The amount sent to subscribe must equal the amount in the proof and stay within the cap and 64-bit range.",
-  7: "The Mock USDC transfer failed, usually for lack of balance. Use the faucet, then retry.",
+  7: "The Testnet USDC transfer failed, usually for lack of balance. Use the faucet, then retry.",
   8: "The pool has not been initialized. This should not happen for the deployed demo pool.",
 };
 
@@ -70,7 +70,7 @@ export default function Errors() {
 
       <Callout title="Payment failures (code 7)">
         <p>
-          A <Mono>PaymentFailed</Mono> almost always means the investor wallet lacks Mock USDC. Use the faucet, wait for
+          A <Mono>PaymentFailed</Mono> almost always means the investor wallet lacks Testnet USDC. Use the faucet, wait for
           the mint to settle, then resubmit. The proof itself does not need regenerating, since the amount and round did
           not change.
         </p>

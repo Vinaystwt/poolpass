@@ -340,7 +340,7 @@ export default function IssuerPage() {
                 <Coins className="h-4 w-4 text-primary" />
                 <h2 className="text-heading-md text-ink">Faucet</h2>
               </div>
-              <p className="mt-xs text-body-md text-ink-mute">Send Mock USDC to any address, useful mid-demo.</p>
+              <p className="mt-xs text-body-md text-ink-mute">Send Testnet USDC to any address, useful mid-demo.</p>
               <div className="mt-md flex gap-sm">
                 <Input placeholder="G..." value={faucetAddr} onChange={(e) => setFaucetAddr(e.target.value)} />
                 <Button

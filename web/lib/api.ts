@@ -68,8 +68,18 @@ export interface PoolMarket {
 }
 
 export async function fetchPools(): Promise<PoolMarket[]> {
-  const res = await fetch("/api/pools", { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to load pools");
-  const data = await res.json();
-  return (data.pools ?? []) as PoolMarket[];
+  // Prefer the keyed backend (has issuer-side stats), but fall back to reading the
+  // pools straight from chain so the public marketplace works even if it is down.
+  try {
+    const res = await fetch("/api/pools", { cache: "no-store" });
+    if (res.ok) {
+      const data = await res.json();
+      const pools = (data.pools ?? []) as PoolMarket[];
+      if (pools.length > 0) return pools;
+    }
+  } catch {
+    /* fall through to on-chain read */
+  }
+  const { readPoolsOnChain } = await import("./pools-onchain");
+  return readPoolsOnChain();
 }

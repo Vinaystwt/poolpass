@@ -68,7 +68,7 @@ export default function LandingPage() {
                 </Button>
               </div>
               <p className="mt-md text-caption text-ink-mute">
-                <WalkthroughButton />. Testnet only, uses Mock USDC (testnet), a 7-decimal token, not Circle USDC. No
+                <WalkthroughButton />. Testnet only, uses Testnet USDC, a 7-decimal token, not Circle USDC. No
                 real money moves.
               </p>
             </div>

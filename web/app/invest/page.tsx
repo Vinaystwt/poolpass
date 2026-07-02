@@ -25,7 +25,7 @@ const SubscribeModal = dynamic(
 
 export default function InvestPage() {
   const { address, available, init, connect } = useWallet();
-  const { data: pools, isLoading } = usePools();
+  const { data: pools, isLoading, refetch: refetchPools } = usePools();
   const { data: balance } = useMockUsdcBalance(address);
 
   const [open, setOpen] = React.useState(false);
@@ -128,9 +128,11 @@ export default function InvestPage() {
       {list.length === 0 && !isLoading && (
         <Card className="mt-lg p-xl">
           <p className="flex items-center gap-sm text-body-md text-ink-mute">
-            <ShieldCheck className="h-4 w-4" /> Pools are loading from the marketplace service. Start it with{" "}
-            <span className="mono text-[13px]">pnpm api</span> if this persists.
+            <ShieldCheck className="h-4 w-4" /> Could not reach the network just now. This usually clears in a moment.
           </p>
+          <Button variant="secondary" size="sm" className="mt-md" onClick={() => refetchPools()}>
+            Retry
+          </Button>
         </Card>
       )}
 
