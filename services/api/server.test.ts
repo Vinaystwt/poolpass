@@ -95,6 +95,27 @@ describe("PoolPass API", () => {
     expect((await server.inject({ method: "POST", url: "/faucet", payload: { address, amount: "10000000" } })).statusCode).toBe(429);
   });
 
+  test("does not expose backend exception details", async () => {
+    const deps = await dependencies();
+    deps.faucet.mint = vi.fn(async () => {
+      throw new Error("spawn stellar ENOENT /private/runtime/path");
+    });
+    const server = buildServer(deps);
+    servers.push(server);
+
+    const response = await server.inject({
+      method: "POST",
+      url: "/faucet",
+      payload: { address, amount: "10000000" },
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.json()).toEqual({
+      error: "operation_failed",
+      message: "The request could not be completed.",
+    });
+  });
+
   test("exposes bounded prove, fixed-key verify, and pool reads", async () => {
     const deps = await dependencies();
     const server = buildServer(deps);

@@ -18,6 +18,12 @@ export interface ApiDependencies {
 
 export function buildServer(dependencies: ApiDependencies): FastifyInstance {
   const server = Fastify({ logger: false, bodyLimit: 1_000_000 });
+  server.setErrorHandler((_error, _request, reply) =>
+    reply.code(500).send({
+      error: "operation_failed",
+      message: "The request could not be completed.",
+    }),
+  );
   const defaultAccreditation = new AccreditationService(dependencies.accreditationFile, dependencies.accreditationChain);
   // One accreditation service per pool so a leaf is committed to the chosen pool's tree.
   const accreditationByPool = new Map<string, AccreditationService>();
@@ -37,7 +43,11 @@ export function buildServer(dependencies: ApiDependencies): FastifyInstance {
     try {
       return await service.add(parsed.data.leaf.toLowerCase());
     } catch (error) {
-      return reply.code(409).send({ error: String(error) });
+      const message = error instanceof Error ? error.message : "";
+      if (message === "Leaf is already accredited" || message === "Demo accredited set is full") {
+        return reply.code(409).send({ error: message });
+      }
+      throw error;
     }
   });
 
