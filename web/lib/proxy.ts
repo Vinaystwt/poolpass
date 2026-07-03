@@ -12,12 +12,11 @@ export async function proxyPost(path: string, body: unknown) {
     const text = await res.text();
     const data = text ? JSON.parse(text) : {};
     return NextResponse.json(data, { status: res.status });
-  } catch (err) {
+  } catch {
     return NextResponse.json(
       {
         error: "backend_unreachable",
-        message: `The PoolPass API at ${API_BASE} is not reachable. Start it with \`pnpm api\`.`,
-        detail: String(err),
+        message: "The PoolPass API is temporarily unavailable.",
       },
       { status: 502 },
     );
@@ -30,9 +29,12 @@ export async function proxyGet(path: string) {
     const text = await res.text();
     const data = text ? JSON.parse(text) : {};
     return NextResponse.json(data, { status: res.status });
-  } catch (err) {
+  } catch {
     return NextResponse.json(
-      { error: "backend_unreachable", message: `The PoolPass API at ${API_BASE} is not reachable.`, detail: String(err) },
+      {
+        error: "backend_unreachable",
+        message: "The PoolPass API is temporarily unavailable.",
+      },
       { status: 502 },
     );
   }

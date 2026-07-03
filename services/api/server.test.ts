@@ -17,7 +17,13 @@ async function dependencies(): Promise<ApiDependencies> {
   let epoch = 1;
   return {
     accreditationFile: join(directory, "accreditation.json"),
-    accreditationChain: { update: async (_leaves, root) => ({ root, epoch: epoch++ }) },
+    accreditationChain: {
+      update: async (_leaves, root) => ({
+        root,
+        epoch: epoch++,
+        hash: "cd".repeat(32),
+      }),
+    },
     faucet: { mint: vi.fn(async () => ({ hash: "ab".repeat(32) })) },
     prover: { prove: vi.fn(async () => ({ proof: { ok: true }, publicSignals: ["1"] })) },
     verifier: { verify: vi.fn(async () => true) },
@@ -42,7 +48,13 @@ describe("PoolPass API", () => {
     const response = await server.inject({ method: "POST", url: "/accredit", payload: { leaf: leafA } });
     expect(response.statusCode).toBe(200);
     const body = response.json();
-    expect(body).toMatchObject({ leaf: leafA, index: 0, epoch: 1, merkle_indices: [0, 0, 0] });
+    expect(body).toMatchObject({
+      leaf: leafA,
+      index: 0,
+      epoch: 1,
+      txHash: "cd".repeat(32),
+      merkle_indices: [0, 0, 0],
+    });
     expect(await verifyPath(BigInt(`0x${leafA}`), {
       index: body.index,
       siblings: body.merkle_path.map(BigInt),

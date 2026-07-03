@@ -125,8 +125,11 @@ export const ZK_ARTIFACTS = {
 
 // ── HTTP API (PoolPass services) ─────────────────────────────────────────────
 /** Backend services base URL; overridable for local dev via NEXT_PUBLIC_API_BASE. */
-export const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE?.replace(/\/$/, "") ?? "http://127.0.0.1:3000";
+export function resolveApiBase(value: string | undefined): string {
+  return value?.replace(/\/$/, "") || "https://api.usepoolpass.xyz";
+}
+
+export const API_BASE = resolveApiBase(process.env.NEXT_PUBLIC_API_BASE);
 
 export const API = {
   accredit: `${API_BASE}/accredit`,

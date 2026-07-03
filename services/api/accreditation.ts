@@ -5,7 +5,10 @@ import { dirname } from "node:path";
 import { buildTreeFromLeaves, pathFor } from "../../src/merkle/tree.js";
 
 export interface AccreditationChain {
-  update(leaves: string[], computedRoot: string): Promise<{ root: string; epoch: number }>;
+  update(
+    leaves: string[],
+    computedRoot: string,
+  ): Promise<{ root: string; epoch: number; hash?: string }>;
 }
 
 interface AccreditationState {
@@ -60,6 +63,7 @@ export class AccreditationService {
       leaf,
       root,
       epoch: committed.epoch,
+      ...(committed.hash ? { txHash: committed.hash } : {}),
       index,
       merkle_path: path.siblings.map(String),
       merkle_indices: path.indices,

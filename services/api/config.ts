@@ -4,8 +4,11 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
 
+import { Address, nativeToScVal, xdr } from "@stellar/stellar-sdk";
+
 import { runStellar } from "../../src/stellar/process.js";
 import type { ApiDependencies } from "./server.js";
+import { createTestnetContractWriter } from "./stellar.js";
 
 const exec = promisify(execFile);
 
@@ -19,6 +22,10 @@ async function withProofFiles<T>(callback: (directory: string) => Promise<T>): P
 }
 
 interface Deployments {
+  network: {
+    rpcUrl: string;
+    passphrase: string;
+  };
   accounts: Record<string, { publicKey: string }>;
   contracts: Record<string, { contractId: string }>;
   pools?: Array<{
@@ -60,6 +67,10 @@ async function invoke(id: string, source: string, send: "yes" | "no", fn: string
 
 export async function createDependencies(): Promise<ApiDependencies> {
   const deployments = JSON.parse(await readFile("deployments.json", "utf8")) as Deployments;
+  const writer = createTestnetContractWriter(
+    deployments.network.rpcUrl,
+    deployments.network.passphrase,
+  );
   const pools: PoolDescriptor[] =
     deployments.pools ??
     [
@@ -133,14 +144,27 @@ export async function createDependencies(): Promise<ApiDependencies> {
     const source = issuerSourceByPool[pool.id] ?? issuerSource;
     return {
       async update(leaves: string[], computedRoot: string) {
-        const root = JSON.parse(
-          await invoke(pool.contractId, source, "yes", "update_accredited_set", [
-            "--issuer", pool.issuer,
-            "--leaf_hashes", JSON.stringify(leaves),
-          ]),
-        ) as string;
+        const result = await writer.invoke({
+          contractId: pool.contractId,
+          sourceName: source,
+          method: "update_accredited_set",
+          args: [
+            new Address(pool.issuer).toScVal(),
+            xdr.ScVal.scvVec(
+              leaves.map((leaf) => xdr.ScVal.scvBytes(Buffer.from(leaf, "hex"))),
+            ),
+          ],
+        });
+        const root =
+          result.returnValue instanceof Uint8Array
+            ? Buffer.from(result.returnValue).toString("hex")
+            : String(result.returnValue ?? computedRoot);
         const info = JSON.parse(await invoke(pool.contractId, "deployer", "no", "get_pool_info")) as { epoch: number };
-        return { root: root || computedRoot, epoch: info.epoch };
+        return {
+          root: root || computedRoot,
+          epoch: info.epoch,
+          hash: result.hash,
+        };
       },
     };
   };
@@ -158,8 +182,16 @@ export async function createDependencies(): Promise<ApiDependencies> {
     accreditationByPool,
     faucet: {
       async mint(address, amount) {
-        const result = await invoke(usdc, "test-issuer", "yes", "mint", ["--to", address, "--amount", amount]);
-        return { minted: amount, address, result };
+        const result = await writer.invoke({
+          contractId: usdc,
+          sourceName: "test-issuer",
+          method: "mint",
+          args: [
+            new Address(address).toScVal(),
+            nativeToScVal(BigInt(amount), { type: "i128" }),
+          ],
+        });
+        return { minted: amount, address, hash: result.hash, status: result.status };
       },
     },
     prover: {
