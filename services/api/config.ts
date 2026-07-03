@@ -4,15 +4,26 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
 
-import { Address, nativeToScVal, xdr } from "@stellar/stellar-sdk";
+import {
+  Address,
+  nativeToScVal,
+  rpc,
+  scValToNative,
+  xdr,
+} from "@stellar/stellar-sdk";
 
 import type { ApiDependencies } from "./server.js";
 import {
   createTestnetContractReader,
   createTestnetContractWriter,
 } from "./stellar.js";
+import {
+  mergeLiveSubscriptions,
+  type PoolStatEvent,
+} from "./pool-stats.js";
 
 const exec = promisify(execFile);
+const snarkjs = join(process.cwd(), "node_modules", ".bin", "snarkjs");
 
 async function withProofFiles<T>(callback: (directory: string) => Promise<T>): Promise<T> {
   const directory = await mkdtemp(join(tmpdir(), "poolpass-proof-"));
@@ -41,13 +52,6 @@ interface Deployments {
     vk: string;
     gateDescription: string;
   }>;
-}
-
-interface IndexedEvent {
-  name: string;
-  poolId?: string;
-  contractId: string;
-  data?: { amount?: string };
 }
 
 interface PoolDescriptor {
@@ -95,17 +99,55 @@ export async function createDependencies(): Promise<ApiDependencies> {
   );
   const readPoolInfo = async (pool: PoolDescriptor) =>
     (await reader.invoke(pool.contractId, "get_pool_info")) as Record<string, unknown>;
-  const readIndexedEvents = async (): Promise<IndexedEvent[]> => {
+  const eventServer = new rpc.Server(deployments.network.rpcUrl);
+  const poolIdByContract = new Map(pools.map((pool) => [pool.contractId, pool.id]));
+  const readSnapshotEvents = async (): Promise<PoolStatEvent[]> => {
     try {
       const path = process.env.INDEXER_STORE ?? "services/data/events.json";
-      const state = JSON.parse(await readFile(path, "utf8")) as { events?: IndexedEvent[] };
+      const state = JSON.parse(await readFile(path, "utf8")) as { events?: PoolStatEvent[] };
       return state.events ?? [];
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === "ENOENT") return [];
       throw error;
     }
   };
-  const statsFor = (pool: PoolDescriptor, events: IndexedEvent[]) => {
+  const readIndexedEvents = async (): Promise<PoolStatEvent[]> => {
+    const snapshot = await readSnapshotEvents();
+    try {
+      const latest = await eventServer.getLatestLedger();
+      const page = await eventServer.getEvents({
+        startLedger: Math.max(1, latest.sequence - 10_000),
+        filters: [
+          {
+            type: "contract",
+            contractIds: pools.map((pool) => pool.contractId),
+            topics: [
+              [
+                nativeToScVal("subscribed", { type: "symbol" }).toXDR("base64"),
+                "*",
+                "*",
+              ],
+            ],
+          },
+        ],
+      });
+      const live = page.events.map((event) => {
+        const contractId = event.contractId?.toString() ?? "";
+        const value = scValToNative(event.value) as { amount?: bigint | string | number };
+        return {
+          name: "subscribed",
+          poolId: poolIdByContract.get(contractId),
+          contractId,
+          txHash: event.txHash,
+          data: { amount: String(value.amount ?? "0") },
+        } satisfies PoolStatEvent;
+      });
+      return mergeLiveSubscriptions(snapshot, live);
+    } catch {
+      return snapshot;
+    }
+  };
+  const statsFor = (pool: PoolDescriptor, events: PoolStatEvent[]) => {
     const subscriptions = events.filter(
       (event) =>
         event.name === "subscribed" &&
@@ -114,8 +156,11 @@ export async function createDependencies(): Promise<ApiDependencies> {
     const volume = subscriptions.reduce((sum, event) => sum + BigInt(event.data?.amount ?? "0"), 0n);
     return { subscriberCount: subscriptions.length, subscribedVolume: volume.toString() };
   };
-  const presentPool = async (pool: PoolDescriptor) => {
-    const [info, events] = await Promise.all([readPoolInfo(pool), readIndexedEvents()]);
+  const presentPool = async (pool: PoolDescriptor, knownEvents?: PoolStatEvent[]) => {
+    const [info, events] = await Promise.all([
+      readPoolInfo(pool),
+      knownEvents ? Promise.resolve(knownEvents) : readIndexedEvents(),
+    ]);
     const stats = statsFor(pool, events);
     return {
       id: pool.id,
@@ -205,7 +250,7 @@ export async function createDependencies(): Promise<ApiDependencies> {
           const proofPath = join(directory, "proof.json");
           const publicPath = join(directory, "public.json");
           await writeFile(inputPath, JSON.stringify(input));
-          await exec("pnpm", ["exec", "snarkjs", "groth16", "fullprove", inputPath, "circuits/build/poolpass/poolpass_js/poolpass.wasm", "circuits/build/poolpass/poolpass_final.zkey", proofPath, publicPath], { maxBuffer: 16 * 1024 * 1024 });
+          await exec(snarkjs, ["groth16", "fullprove", inputPath, "circuits/build/poolpass/poolpass_js/poolpass.wasm", "circuits/build/poolpass/poolpass_final.zkey", proofPath, publicPath], { maxBuffer: 16 * 1024 * 1024 });
           return { proof: JSON.parse(await readFile(proofPath, "utf8")), publicSignals: JSON.parse(await readFile(publicPath, "utf8")) };
         });
       },
@@ -221,7 +266,7 @@ export async function createDependencies(): Promise<ApiDependencies> {
             writeFile(proofPath, JSON.stringify(proof)),
             writeFile(publicPath, JSON.stringify(publicSignals)),
           ]);
-          const result = await exec("pnpm", ["exec", "snarkjs", "groth16", "verify", vkPath, publicPath, proofPath], { maxBuffer: 16 * 1024 * 1024 });
+          const result = await exec(snarkjs, ["groth16", "verify", vkPath, publicPath, proofPath], { maxBuffer: 16 * 1024 * 1024 });
           return result.stdout.includes("OK!");
         });
       },
@@ -233,7 +278,8 @@ export async function createDependencies(): Promise<ApiDependencies> {
         return presentPool(pool);
       },
       async list() {
-        return Promise.all(pools.map(presentPool));
+        const events = await readIndexedEvents();
+        return Promise.all(pools.map((pool) => presentPool(pool, events)));
       },
     },
   };
