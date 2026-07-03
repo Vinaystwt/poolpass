@@ -65,6 +65,8 @@ export interface PoolMarket {
   currentRoot: string;
   subscriberCount: number;
   subscribedVolume: string;
+  assetClass?: string;
+  riskProfile?: string;
 }
 
 export async function fetchPools(): Promise<PoolMarket[]> {

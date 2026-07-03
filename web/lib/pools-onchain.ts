@@ -27,7 +27,7 @@ export async function readPoolsOnChain(): Promise<PoolMarket[]> {
       const volume = subs.reduce((sum, e) => sum + BigInt(e.data?.amount ?? "0"), 0n);
       return {
         id: p.id,
-        name: info.pool_name,
+        name: p.name ?? info.pool_name,
         gateDescription: p.gateDescription,
         contractId: p.contractId,
         poolToken: p.poolToken,
@@ -44,6 +44,8 @@ export async function readPoolsOnChain(): Promise<PoolMarket[]> {
         currentRoot: info.merkle_root,
         subscriberCount: subs.length,
         subscribedVolume: volume.toString(),
+        assetClass: (p as Record<string, unknown>).assetClass as string | undefined,
+        riskProfile: (p as Record<string, unknown>).riskProfile as string | undefined,
       } satisfies PoolMarket;
     }),
   );

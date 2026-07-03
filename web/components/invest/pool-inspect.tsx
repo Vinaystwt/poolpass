@@ -29,8 +29,14 @@ export function PoolInspect({
     <Card className="p-xl">
       <div className="flex items-start justify-between gap-md">
         <div>
-          <h2 className="text-display-md text-ink">{pool.name}</h2>
+          <div className="flex items-center gap-sm">
+            <h2 className="text-display-md text-ink">{pool.name}</h2>
+            {pool.assetClass && <Badge variant="soft">{pool.assetClass}</Badge>}
+          </div>
           <p className="mt-xxs max-w-[70ch] text-body-md text-ink-mute">{pool.gateDescription}</p>
+          {pool.riskProfile && (
+            <p className="mt-xxs text-caption text-ink-mute">{pool.riskProfile}</p>
+          )}
         </div>
         <button onClick={onClose} className="rounded-sm p-xs text-ink-mute hover:bg-ink/5 hover:text-ink" aria-label="Close">
           <X className="h-4 w-4" />

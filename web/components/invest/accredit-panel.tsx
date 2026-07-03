@@ -20,7 +20,7 @@ import { MOCK_USDC } from "@/lib/backend-config";
 import { decodeError } from "@/lib/errors";
 import type { ProofPackage } from "@/lib/zk/types";
 
-type Phase = "idle" | "generating" | "sending" | "done";
+type Phase = "idle" | "generating" | "verifying" | "sending" | "done";
 
 /**
  * Shows, in real time, what stays on the device (investor_id, cap, secret) and
@@ -54,7 +54,11 @@ export function AccreditPanel({
       setLeafHash(fieldToHex(leaf));
       if (!reduce) await new Promise((r) => setTimeout(r, 650));
 
-      // 2 · only the leaf hash crosses to the "network" side
+      // 2 · simulated issuer KYC/AML verification
+      setPhase("verifying");
+      if (!reduce) await new Promise((r) => setTimeout(r, 1800));
+
+      // 3 · only the leaf hash crosses to the "network" side
       setPhase("sending");
       const result = await requestSelfServeAccreditation(id, amountBaseUnits, poolId, poolContractId);
       savePackage(result);
@@ -133,9 +137,28 @@ export function AccreditPanel({
                   {leafHash && <HashChip value={leafHash} />}
                 </motion.div>
               )}
-              {(phase === "sending") && (
+              {phase === "verifying" && (
+                <motion.div
+                  initial={reduce ? false : { opacity: 0 }}
+                  animate={reduce ? undefined : { opacity: 1 }}
+                  className="mt-sm rounded-md border border-amber-500/30 bg-amber-500/5 p-sm"
+                >
+                  <p className="flex items-center gap-xs text-caption text-amber-600 dark:text-amber-400">
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" /> Issuer verifying your eligibility...
+                  </p>
+                  <p className="mt-xxs text-micro text-ink-mute">
+                    Simulated KYC/AML check. In production, the issuer performs real verification off-chain.
+                  </p>
+                </motion.div>
+              )}
+              {phase === "sending" && (
                 <p className="mt-sm flex items-center gap-xs text-caption text-ink-mute">
                   <Loader2 className="h-3.5 w-3.5 animate-spin" /> committing root on chain
+                </p>
+              )}
+              {(phase === "sending" || phase === "done") && (
+                <p className="mt-xs flex items-center gap-xs text-caption text-emerald-600 dark:text-emerald-400">
+                  <Check className="h-3.5 w-3.5" /> Issuer confirmed eligibility
                 </p>
               )}
             </div>

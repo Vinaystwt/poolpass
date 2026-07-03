@@ -36,10 +36,16 @@ export function PoolCard({
   return (
     <Card className="flex flex-col p-xl">
       <div className="flex items-start justify-between gap-sm">
-        <h3 className="text-heading-lg text-ink">{pool.name}</h3>
+        <div className="flex items-center gap-sm">
+          <h3 className="text-heading-lg text-ink">{pool.name}</h3>
+          {pool.assetClass && <Badge variant="soft">{pool.assetClass}</Badge>}
+        </div>
         <Badge variant="neutral">epoch {pool.epoch}</Badge>
       </div>
       <p className="mt-xs min-h-[42px] text-body-md text-ink-mute">{pool.gateDescription}</p>
+      {pool.riskProfile && (
+        <p className="mt-xs text-caption text-ink-mute">{pool.riskProfile}</p>
+      )}
 
       {/* Gate as headline identity (replaces APY) */}
       <div className="mt-md rounded-lg border border-accent-soft bg-accent-soft/50 p-md">
@@ -98,7 +104,7 @@ export function PoolCard({
         )}
       </div>
       <p className="mt-sm text-center text-micro text-ink-mute">
-        Uses {MOCK_USDC.labelLong}, a 7-decimal token. No real money.
+        Asset classes are illustrative for testnet. Gate, cap, and on-chain metrics are real. Uses {MOCK_USDC.labelShort}.
       </p>
     </Card>
   );

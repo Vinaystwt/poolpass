@@ -1,4 +1,4 @@
-import { Prose, H1, Lead, H2, P, Mono, CodeBlock, Table } from "@/components/docs/prose";
+import { Prose, H1, Lead, H2, P, Mono, CodeBlock, Table, Callout } from "@/components/docs/prose";
 import { CONTRACTS } from "@/lib/backend-config";
 import { HashChip } from "@/components/shared/copy";
 import { Toc } from "@/components/docs/toc";
@@ -74,6 +74,29 @@ EpochAdvanced { epoch(topic), timestamp }
           [<Mono key="d">demo-issuer</Mono>, "Holds the issuer key; commits leaves and mints Testnet USDC."],
         ]}
       />
+
+      <H2 id="merkle-recomputation">On-chain Merkle recomputation</H2>
+      <P>
+        The Groth16 proof already outputs the <Mono>merkle_root</Mono> as a public input, so in principle the contract
+        could skip on-chain recomputation and just compare the proof&rsquo;s root to the stored root. PoolPass
+        deliberately recomputes the root on-chain as well, using Stellar&rsquo;s native Poseidon host function, for two
+        reasons:
+      </P>
+      <Callout title="Why recompute?">
+        <p>
+          <strong>(1)</strong> It demonstrates that Stellar&rsquo;s Poseidon implementation agrees with the off-chain
+          and circuit implementations. This is the Gate A parity evidence.
+        </p>
+        <p>
+          <strong>(2)</strong> It provides an independent integrity check that the Merkle tree the contract stores
+          matches the one the proof was generated against.
+        </p>
+      </Callout>
+      <P>
+        In a production deployment optimized for gas, the recomputation could be removed and the contract would rely
+        solely on the proof&rsquo;s public root input. The current design prioritizes parity verification over gas
+        efficiency.
+      </P>
 
       <H2 id="repo">Repository</H2>
       <CodeBlock lang="layout">{`contracts/        Soroban contracts (poolpass, mock token, gates)

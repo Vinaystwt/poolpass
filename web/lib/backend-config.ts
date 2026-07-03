@@ -27,6 +27,8 @@ const rawDeployments = deployments as typeof deployments & {
     issuer: string;
     vk: string;
     gateDescription: string;
+    assetClass?: string;
+    riskProfile?: string;
   }>;
 };
 

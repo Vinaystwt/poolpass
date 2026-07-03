@@ -82,6 +82,37 @@ export default function Privacy() {
           ceremony).
         </p>
       </Callout>
+
+      <H2 id="threat-model">Threat model and honest limits</H2>
+      <UL>
+        <li>
+          <strong>Self-serve issuer.</strong> The accreditation gate is simulated for the demo. In production, the issuer
+          performs real KYC/AML verification off-chain before committing an investor&rsquo;s leaf to the Merkle tree. The
+          ZK proof verifies membership in whatever set the issuer commits, but the integrity of that set depends entirely
+          on the issuer&rsquo;s off-chain process.
+        </li>
+        <li>
+          <strong>Trusted setup.</strong> The Groth16 parameters are a test fixture. A mainnet deployment requires a
+          multi-party Phase-2 ceremony (Powers of Tau) to eliminate the trapdoor risk.
+        </li>
+        <li>
+          <strong>Public amount.</strong> The subscription amount is a public input. The commitment records the amount
+          but does not hide it. Anyone reading the ledger knows how much was subscribed.
+        </li>
+        <li>
+          <strong>Timing correlation.</strong> The on-chain wallet address and the timing of subscriptions are
+          observable. The nullifier prevents cross-epoch linkability (it folds in the secret and epoch), but intra-epoch
+          timing is a side-channel leak.
+        </li>
+        <li>
+          <strong>Issuer centralization.</strong> The issuer is a single point of trust for tree commitments. A
+          production system should use a multisig or on-chain governance to limit issuer unilateral power.
+        </li>
+        <li>
+          <strong>Merkle depth.</strong> Depth-3 (8 leaves) is demo scale. Production requires depth 16 to 20. The
+          circuit is parameterized for depth but compiled for 3; scaling requires recompilation and a new trusted setup.
+        </li>
+      </UL>
     </Prose>
   );
 }

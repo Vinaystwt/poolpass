@@ -353,36 +353,42 @@
   "pools": [
     {
       "id": "open-access",
-      "name": "Open Access Pool",
+      "name": "Tokenized Treasury Bills",
       "contractId": "CBVARDGOKLVCJ7ZAHETHH7GZIP35FQDQBTGK4J4PLLBXKRHU6SM7K2FV",
       "poolToken": "CBUXSNRSN3UC5FVGK6MNE4FBJ5LJVWHWQZPZB3MJ4PXX6M73UBVY2KWC",
       "merkleDepth": 3,
       "perInvestorCapPublic": "100000000000",
       "issuer": "GAU3344OVHRG5GMDNLQR63NWBQVAETOLQ662RSJQIVPYYSOLCRSZHTP3",
       "vk": "circuits/verification_key.json",
-      "gateDescription": "Depth-3 eligibility tree with two seeded investors and zero padding; demonstrates the base membership proof and a generous public cap."
+      "gateDescription": "Short-term government-backed instruments. Open to all accredited investors.",
+      "assetClass": "Treasury",
+      "riskProfile": "Low risk, broad access"
     },
     {
       "id": "capped-allocation",
-      "name": "Capped Allocation Pool",
+      "name": "Private Credit Fund",
       "contractId": "CDTQLM2IQG7SCRAZDKCCLCCOZMEICMQG4FYUCJEOJ6G7QPK7CTVDODMX",
       "poolToken": "CCV6IPCIQUNVCU273RGIUG34AOFWY275BYXWVKW7Q5K3BDQB7NW7REKP",
       "merkleDepth": 3,
       "perInvestorCapPublic": "25000000000",
       "issuer": "GAISYYPMISPEENXSQFZJQXKEIDXKLJ447AP7AMS3TJSQVAIW47SXSVNA",
       "vk": "circuits/verification_key.json",
-      "gateDescription": "Depth-3 eligibility tree with a tighter public cap; demonstrates that an over-cap amount cannot produce a valid proof."
+      "gateDescription": "Senior secured lending to mid-market borrowers. Per-investor allocation capped.",
+      "assetClass": "Credit",
+      "riskProfile": "Medium risk, tighter allocation"
     },
     {
       "id": "accredited-tier",
-      "name": "Accredited Tier Pool",
+      "name": "Venture Capital Fund",
       "contractId": "CD7AKD77JQ3C2GKQLVGUN5CEV447XWIM4772DLQFJAZ3TJ5NFTRIFII5",
       "poolToken": "CDG4XLAWTH2U7UCBIPMAPZEK3RUEHNBPGULM6EEWDS6F7XKLSHOLTHGR",
       "merkleDepth": 3,
       "perInvestorCapPublic": "250000000000",
       "issuer": "GCKHPQI4NGTT6I5OKIYLRFM4FHYO6NRP6RFRB3LT5EMKMV4QMVKS63WL",
       "vk": "circuits/verification_key.json",
-      "gateDescription": "Depth-3 stricter-tier policy with all eight leaves seeded; Pool C uses option (b) because the verified circuit is compiled as PoolPass(3)."
+      "gateDescription": "Early-stage equity in blockchain infrastructure. Higher minimum, stricter eligibility.",
+      "assetClass": "Venture",
+      "riskProfile": "Higher risk, larger commitment"
     }
   ]
 }
