@@ -11,6 +11,14 @@ target/
 **/test_snapshots/
 *.wasm
 circuits/build/
+!circuits/build/
+circuits/build/*
+!circuits/build/poolpass/
+circuits/build/poolpass/*
+!circuits/build/poolpass/poolpass_final.zkey
+!circuits/build/poolpass/poolpass_js/
+circuits/build/poolpass/poolpass_js/*
+!circuits/build/poolpass/poolpass_js/poolpass.wasm
 circuits/powersOfTau*.ptau
 circuits/*.zkey
 services/data/

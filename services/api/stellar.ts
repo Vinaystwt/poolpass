@@ -1,6 +1,3 @@
-import { execFile } from "node:child_process";
-import { promisify } from "node:util";
-
 import {
   BASE_FEE,
   Account,
@@ -13,31 +10,21 @@ import {
   type xdr,
 } from "@stellar/stellar-sdk";
 
-const exec = promisify(execFile);
-
 interface SigningKeyOptions {
   env?: NodeJS.ProcessEnv;
-  readKeystore?: (name: string) => Promise<string>;
 }
 
 export async function loadSigningKey(name: string, options: SigningKeyOptions = {}): Promise<Keypair> {
   const env = options.env ?? process.env;
   const variable = `STELLAR_SECRET_${name.replace(/-/g, "_").toUpperCase()}`;
-  const readKeystore =
-    options.readKeystore ??
-    (async (identity: string) => {
-      const result = await exec("stellar", ["keys", "secret", identity], {
-        cwd: process.cwd(),
-        env,
-        maxBuffer: 1024 * 1024,
-      });
-      return result.stdout.trim();
-    });
-  const secret = env[variable] ?? (await readKeystore(name));
+  const secret = env[variable];
+  if (!secret) {
+    throw new Error(`Missing required signing key environment variable ${variable}`);
+  }
   try {
     return Keypair.fromSecret(secret);
   } catch {
-    throw new Error(`No valid signing key is configured for ${name}`);
+    throw new Error(`No valid signing key is configured in ${variable}`);
   }
 }
 

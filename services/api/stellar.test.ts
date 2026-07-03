@@ -19,17 +19,22 @@ const PASSPHRASE = "Test SDF Network ; September 2015";
 const CONTRACT = "CBVARDGOKLVCJ7ZAHETHH7GZIP35FQDQBTGK4J4PLLBXKRHU6SM7K2FV";
 
 describe("SDK contract writer", () => {
-  test("loads a signing key from the hosted-runtime environment without invoking the keystore", async () => {
+  test("loads a signing key from the hosted-runtime environment", async () => {
     const signer = Keypair.random();
-    const readKeystore = vi.fn();
 
     const loaded = await loadSigningKey("poolpass-issuer-open", {
       env: { STELLAR_SECRET_POOLPASS_ISSUER_OPEN: signer.secret() },
-      readKeystore,
     });
 
     expect(loaded.publicKey()).toBe(signer.publicKey());
-    expect(readKeystore).not.toHaveBeenCalled();
+  });
+
+  test("fails when the signing-key environment variable is missing", async () => {
+    await expect(
+      loadSigningKey("poolpass-issuer-open", {
+        env: {},
+      }),
+    ).rejects.toThrow("STELLAR_SECRET_POOLPASS_ISSUER_OPEN");
   });
 
   test("builds, signs, submits, and polls a contract write through the SDK", async () => {

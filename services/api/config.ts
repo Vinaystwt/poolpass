@@ -17,6 +17,7 @@ import {
   createTestnetContractReader,
   createTestnetContractWriter,
 } from "./stellar.js";
+import { resolveNetworkConfiguration } from "./runtime.js";
 import {
   mergeLiveSubscriptions,
   type PoolStatEvent,
@@ -68,9 +69,10 @@ interface PoolDescriptor {
 
 export async function createDependencies(): Promise<ApiDependencies> {
   const deployments = JSON.parse(await readFile("deployments.json", "utf8")) as Deployments;
+  const network = resolveNetworkConfiguration(deployments.network);
   const writer = createTestnetContractWriter(
-    deployments.network.rpcUrl,
-    deployments.network.passphrase,
+    network.rpcUrl,
+    network.passphrase,
   );
   const pools: PoolDescriptor[] =
     deployments.pools ??
@@ -93,13 +95,13 @@ export async function createDependencies(): Promise<ApiDependencies> {
   const issuerSource = Object.entries(deployments.accounts).find(([, account]) => account.publicKey === issuer)?.[0] ?? "test-issuer";
   const verificationKey = JSON.parse(await readFile("circuits/verification_key.json", "utf8")) as object;
   const reader = createTestnetContractReader(
-    deployments.network.rpcUrl,
-    deployments.network.passphrase,
+    network.rpcUrl,
+    network.passphrase,
     deployments.accounts.deployer.publicKey,
   );
   const readPoolInfo = async (pool: PoolDescriptor) =>
     (await reader.invoke(pool.contractId, "get_pool_info")) as Record<string, unknown>;
-  const eventServer = new rpc.Server(deployments.network.rpcUrl);
+  const eventServer = new rpc.Server(network.rpcUrl);
   const poolIdByContract = new Map(pools.map((pool) => [pool.contractId, pool.id]));
   const readSnapshotEvents = async (): Promise<PoolStatEvent[]> => {
     try {
@@ -183,7 +185,7 @@ export async function createDependencies(): Promise<ApiDependencies> {
       subscribedVolume: stats.subscribedVolume,
     };
   };
-  // Each pool's issuer key lives in the local keystore under a predictable name.
+  // Each pool's issuer key is supplied through its predictable environment variable.
   const issuerSourceByPool: Record<string, string> = {
     "open-access": "poolpass-issuer-open",
     "capped-allocation": "poolpass-issuer-capped",
