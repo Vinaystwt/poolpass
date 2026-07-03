@@ -18,7 +18,7 @@ export function ArchitectureDiagram() {
         <Box x={20} y={120} w={220} h={120} title="This frontend" lines={["snarkjs Web Worker (prove)", "verify (client-side)", "wallet (Freighter)"]} accent />
 
         {/* services */}
-        <Box x={330} y={48} w={250} h={70} title="api" lines={["/accredit /faucet /verify", "/prove (fallback) /pool/demo"]} />
+        <Box x={330} y={48} w={250} h={70} title="api" lines={["/accredit /faucet /verify", "/prove /pools /pool/:id"]} />
         <Box x={330} y={150} w={250} h={60} title="indexer" lines={["RPC getEvents to events.json"]} />
         <Box x={330} y={244} w={250} h={60} title="demo-issuer" lines={["holds issuer key, mints"]} />
 

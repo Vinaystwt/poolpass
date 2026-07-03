@@ -3,13 +3,13 @@ import { promisify } from "node:util";
 
 import {
   BASE_FEE,
+  Account,
   Contract,
   Keypair,
   rpc,
   scValToNative,
   Transaction,
   TransactionBuilder,
-  type Account,
   type xdr,
 } from "@stellar/stellar-sdk";
 
@@ -131,5 +131,50 @@ export function createTestnetContractWriter(rpcUrl: string, networkPassphrase: s
         simulation as rpc.Api.SimulateTransactionSuccessResponse,
       ),
     sleep: (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)),
+  });
+}
+
+interface ContractReaderDependencies {
+  server: {
+    simulateTransaction(transaction: Transaction): Promise<unknown>;
+  };
+  networkPassphrase: string;
+  source: string;
+}
+
+export function createContractReader(dependencies: ContractReaderDependencies) {
+  return {
+    async invoke(contractId: string, method: string, args: xdr.ScVal[] = []): Promise<unknown> {
+      const transaction = new TransactionBuilder(
+        new Account(dependencies.source, "0"),
+        {
+          fee: BASE_FEE,
+          networkPassphrase: dependencies.networkPassphrase,
+        },
+      )
+        .addOperation(new Contract(contractId).call(method, ...args))
+        .setTimeout(30)
+        .build();
+      const simulation =
+        (await dependencies.server.simulateTransaction(transaction)) as rpc.Api.SimulateTransactionResponse;
+      if (rpc.Api.isSimulationError(simulation)) {
+        throw new Error(`Contract read failed: ${simulation.error}`);
+      }
+      const retval = simulation.result?.retval;
+      if (!retval) throw new Error(`Contract read returned no value from ${method}`);
+      return scValToNative(retval);
+    },
+  };
+}
+
+export function createTestnetContractReader(
+  rpcUrl: string,
+  networkPassphrase: string,
+  source: string,
+) {
+  return createContractReader({
+    server: new rpc.Server(rpcUrl, { allowHttp: rpcUrl.startsWith("http://") }),
+    networkPassphrase,
+    source,
   });
 }

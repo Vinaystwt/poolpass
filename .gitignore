@@ -16,3 +16,4 @@ circuits/*.zkey
 services/data/
 .stellar/
 .tools/
+.gstack/

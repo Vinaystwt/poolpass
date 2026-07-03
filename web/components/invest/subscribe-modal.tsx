@@ -31,6 +31,7 @@ import { decodeError } from "@/lib/errors";
 import { formatMockUsdc, parseMockUsdc, stellarExpertTx, truncate } from "@/lib/utils";
 import { MOCK_USDC, CONTRACTS } from "@/lib/backend-config";
 import type { ProofPackage } from "@/lib/zk/types";
+import { defaultSubscribeAmount } from "@/lib/subscription";
 
 type Step = "accredit" | "prove" | "subscribe";
 
@@ -51,7 +52,9 @@ export function SubscribeModal({
 
   const [step, setStep] = React.useState<Step>("accredit");
   const [pkg, setPkg] = React.useState<ProofPackage | null>(null);
-  const [amountHuman, setAmountHuman] = React.useState("2500");
+  const [amountHuman, setAmountHuman] = React.useState(() =>
+    defaultSubscribeAmount(pool?.capBaseUnits),
+  );
   const [proofHandle, setProofHandle] = React.useState<ProofConsoleHandle | null>(null);
   const [proofStale, setProofStale] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
@@ -78,7 +81,12 @@ export function SubscribeModal({
     setProofStale(false);
     setResult(null);
     setPasteValue("");
+    setAmountHuman(defaultSubscribeAmount(pool?.capBaseUnits));
   };
+
+  React.useEffect(() => {
+    if (open) setAmountHuman(defaultSubscribeAmount(pool?.capBaseUnits));
+  }, [open, pool?.capBaseUnits, pool?.contractId]);
 
   const onImport = (raw: string) => {
     try {
@@ -136,8 +144,18 @@ export function SubscribeModal({
         if (!old) return { events: [optimistic] } as unknown as IndexerState;
         return { ...old, events: [optimistic, ...old.events] } as IndexerState;
       });
-      // Reconcile with the real indexer once it has had time to pick up the event.
-      setTimeout(() => void queryClient.invalidateQueries({ queryKey: ["indexer"] }), 5000);
+      // Poll briefly so the optimistic row becomes a real indexed event without
+      // waiting for the background refresh interval.
+      void (async () => {
+        for (let attempt = 0; attempt < 15; attempt += 1) {
+          await new Promise((resolve) => setTimeout(resolve, 2_000));
+          await queryClient.refetchQueries({ queryKey: ["indexer"], exact: true });
+          const indexed = queryClient.getQueryData<IndexerState>(["indexer"]);
+          if (indexed?.events.some((event) => event.txHash === res.hash && !event.id.startsWith("optimistic-"))) {
+            break;
+          }
+        }
+      })();
     } catch (e) {
       const f = decodeError(e);
       toast.error(f.title, { description: f.message });
@@ -165,7 +183,7 @@ export function SubscribeModal({
           break;
         }
       }
-      if (arrived) toast.success("1,000 Testnet USDC arrived", { id });
+      if (arrived) toast.success("10,000 Testnet USDC arrived", { id });
       else toast.message("Funds requested. If the balance has not updated, retry in a moment.", { id });
     } catch (e) {
       const f = decodeError(e);

@@ -29,7 +29,14 @@ export const metadata: Metadata = {
   title: "PoolPass: Prove you qualify. Reveal nothing.",
   description:
     "Subscribe to gated real-world-asset pools on Stellar without exposing your identity, your wealth, or the issuer's investor list. Zero-knowledge accreditation on testnet.",
-  metadataBase: new URL("https://poolpass.app"),
+  metadataBase: new URL("https://usepoolpass.xyz"),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
+  },
   openGraph: {
     title: "PoolPass: Prove you qualify. Reveal nothing.",
     description: "Zero-knowledge gated RWA subscriptions on Stellar testnet.",

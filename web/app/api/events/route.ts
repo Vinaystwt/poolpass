@@ -4,8 +4,8 @@ import snapshot from "@/lib/events-snapshot.json";
 import { CONTRACTS, NETWORK, EVENT_NAMES, POOLS } from "@/lib/backend-config";
 import {
   buildPoolEventFilters,
-  clampEventStartLedger,
   liveEventsResponse,
+  safeEventStartLedger,
   staleEventsResponse,
 } from "@/lib/events-live";
 import type { IndexedEvent, IndexerState } from "@/lib/indexer";
@@ -44,7 +44,7 @@ function normalize(e: rpc.Api.EventResponse): IndexedEvent {
 async function liveMerge(base: IndexerState): Promise<IndexerState> {
   const server = new rpc.Server(NETWORK.rpcUrl);
   const latest = await server.getLatestLedger();
-  const startLedger = clampEventStartLedger(base.cursor, latest.sequence);
+  const startLedger = safeEventStartLedger(base.cursor, latest.sequence);
   if (startLedger >= latest.sequence) return base;
 
   const res = await server.getEvents({

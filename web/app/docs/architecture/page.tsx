@@ -69,7 +69,7 @@ EpochAdvanced { epoch(topic), timestamp }
       <Table
         head={["Service", "Role"]}
         rows={[
-          [<Mono key="a">api</Mono>, "Fastify HTTP: /accredit, /faucet, /verify, /prove (fallback), /pool/demo."],
+          [<Mono key="a">api</Mono>, "Fastify HTTP: /accredit, /faucet, /verify, /prove (fallback), /pools, /pool/:id."],
           [<Mono key="i">indexer</Mono>, "Reads RPC getEvents, dedupes by event ID, persists to services/data/events.json."],
           [<Mono key="d">demo-issuer</Mono>, "Holds the issuer key; commits leaves and mints Testnet USDC."],
         ]}

@@ -1,8 +1,9 @@
 import { nativeToScVal } from "@stellar/stellar-sdk";
 
-import type { IndexerState } from "./indexer";
+import type { IndexedEvent, IndexerState } from "./indexer";
 
 export const RPC_RETENTION_LEDGERS = 17_000;
+export const RPC_EVENT_QUERY_LEDGERS = 10_000;
 
 export interface EventPool {
   id: string;
@@ -32,6 +33,28 @@ export type EventsResponse = IndexerState & {
 
 export function clampEventStartLedger(cursor: number | undefined, latestLedger: number): number {
   return Math.max((cursor ?? 0) + 1, latestLedger - RPC_RETENTION_LEDGERS);
+}
+
+export function safeEventStartLedger(cursor: number | undefined, latestLedger: number): number {
+  return Math.max(
+    clampEventStartLedger(cursor, latestLedger),
+    latestLedger - RPC_EVENT_QUERY_LEDGERS,
+  );
+}
+
+export function mergeOptimisticEvents<T extends IndexerState>(
+  previous: T | undefined,
+  current: T,
+): T {
+  if (!previous) return current;
+  const currentHashes = new Set(current.events.map((event) => event.txHash));
+  const pending = previous.events.filter(
+    (event: IndexedEvent) =>
+      event.id.startsWith("optimistic-") && !currentHashes.has(event.txHash),
+  );
+  return pending.length === 0
+    ? current
+    : { ...current, events: [...pending, ...current.events] };
 }
 
 function topicFor(name: string): string[] {

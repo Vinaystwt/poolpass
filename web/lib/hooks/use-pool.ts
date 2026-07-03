@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getPoolInfo, getMockUsdcBalance, type PoolInfo } from "../stellar/client";
 import { fetchEvents, fetchPools, type PoolMarket } from "../api";
 import type { IndexerState } from "../indexer";
+import { mergeOptimisticEvents } from "../events-live";
 
 export function usePools() {
   return useQuery<PoolMarket[]>({
@@ -31,9 +32,15 @@ export function useMockUsdcBalance(address: string | null) {
 }
 
 export function useIndexer() {
-  return useQuery<IndexerState & { source?: string }>({
+  type IndexerQueryData = IndexerState & { source?: string };
+  return useQuery<IndexerQueryData>({
     queryKey: ["indexer"],
     queryFn: fetchEvents,
     refetchInterval: 8_000,
+    structuralSharing: (previous, current) =>
+      mergeOptimisticEvents(
+        previous as IndexerQueryData | undefined,
+        current as IndexerQueryData,
+      ),
   });
 }

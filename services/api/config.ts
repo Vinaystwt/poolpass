@@ -6,9 +6,11 @@ import { promisify } from "node:util";
 
 import { Address, nativeToScVal, xdr } from "@stellar/stellar-sdk";
 
-import { runStellar } from "../../src/stellar/process.js";
 import type { ApiDependencies } from "./server.js";
-import { createTestnetContractWriter } from "./stellar.js";
+import {
+  createTestnetContractReader,
+  createTestnetContractWriter,
+} from "./stellar.js";
 
 const exec = promisify(execFile);
 
@@ -60,11 +62,6 @@ interface PoolDescriptor {
   gateDescription: string;
 }
 
-async function invoke(id: string, source: string, send: "yes" | "no", fn: string, args: string[] = []): Promise<string> {
-  const result = await runStellar(["contract", "invoke", "--id", id, "--source", source, "--network", "testnet", "--send", send, "--", fn, ...args]);
-  return result.stdout.trim();
-}
-
 export async function createDependencies(): Promise<ApiDependencies> {
   const deployments = JSON.parse(await readFile("deployments.json", "utf8")) as Deployments;
   const writer = createTestnetContractWriter(
@@ -87,13 +84,17 @@ export async function createDependencies(): Promise<ApiDependencies> {
       },
     ];
   const defaultPool = pools[0];
-  const poolpass = defaultPool.contractId;
   const usdc = deployments.contracts.mockUsdc.contractId;
   const issuer = defaultPool.issuer;
   const issuerSource = Object.entries(deployments.accounts).find(([, account]) => account.publicKey === issuer)?.[0] ?? "test-issuer";
   const verificationKey = JSON.parse(await readFile("circuits/verification_key.json", "utf8")) as object;
+  const reader = createTestnetContractReader(
+    deployments.network.rpcUrl,
+    deployments.network.passphrase,
+    deployments.accounts.deployer.publicKey,
+  );
   const readPoolInfo = async (pool: PoolDescriptor) =>
-    JSON.parse(await invoke(pool.contractId, "deployer", "no", "get_pool_info")) as Record<string, unknown>;
+    (await reader.invoke(pool.contractId, "get_pool_info")) as Record<string, unknown>;
   const readIndexedEvents = async (): Promise<IndexedEvent[]> => {
     try {
       const path = process.env.INDEXER_STORE ?? "services/data/events.json";
@@ -118,7 +119,7 @@ export async function createDependencies(): Promise<ApiDependencies> {
     const stats = statsFor(pool, events);
     return {
       id: pool.id,
-      name: pool.name,
+      name: String(info.pool_name ?? pool.name),
       gateDescription: pool.gateDescription,
       contractId: pool.contractId,
       poolToken: pool.poolToken,
@@ -129,7 +130,10 @@ export async function createDependencies(): Promise<ApiDependencies> {
       perInvestorCapPublic: String(info.per_investor_cap_public ?? pool.perInvestorCapPublic),
       totalSubscribed: String(info.total_subscribed ?? "0"),
       epoch: Number(info.epoch ?? 0),
-      currentRoot: String(info.merkle_root ?? ""),
+      currentRoot:
+        info.merkle_root instanceof Uint8Array
+          ? Buffer.from(info.merkle_root).toString("hex")
+          : String(info.merkle_root ?? ""),
       subscriberCount: stats.subscriberCount,
       subscribedVolume: stats.subscribedVolume,
     };
@@ -159,7 +163,7 @@ export async function createDependencies(): Promise<ApiDependencies> {
           result.returnValue instanceof Uint8Array
             ? Buffer.from(result.returnValue).toString("hex")
             : String(result.returnValue ?? computedRoot);
-        const info = JSON.parse(await invoke(pool.contractId, "deployer", "no", "get_pool_info")) as { epoch: number };
+        const info = (await readPoolInfo(pool)) as { epoch: number };
         return {
           root: root || computedRoot,
           epoch: info.epoch,

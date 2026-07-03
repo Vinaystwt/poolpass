@@ -9,7 +9,7 @@ import { type RpcContractEvent } from "./events.js";
 import { PoolPassIndexer } from "./indexer.js";
 import { EventStore } from "./store.js";
 
-const RPC_RETENTION_LEDGERS = 17_000;
+const RPC_EVENT_QUERY_LEDGERS = 10_000;
 
 const deployments = JSON.parse(await readFile("deployments.json", "utf8")) as IndexerDeployments & {
   network: { rpcUrl: string };
@@ -26,7 +26,7 @@ const fetchPage = async (startLedger: number): Promise<{ events: RpcContractEven
   const latestBody = (await latestResponse.json()) as { result?: { sequence?: number } };
   const currentLedger = latestBody.result?.sequence;
   if (currentLedger === undefined) throw new Error("getLatestLedger failed");
-  const clampedStartLedger = Math.max(startLedger, currentLedger - RPC_RETENTION_LEDGERS);
+  const clampedStartLedger = Math.max(startLedger, currentLedger - RPC_EVENT_QUERY_LEDGERS);
   if (clampedStartLedger > currentLedger) return { events: [], latestLedger: currentLedger };
   const response = await fetch(deployments.network.rpcUrl, {
     method: "POST",

@@ -17,7 +17,7 @@ const CONTRACT_ERRORS: Record<number, { variant: string; message: string }> = {
   4: { variant: "EpochMismatch", message: "The subscription epoch changed; regenerate the nullifier and proof." },
   5: { variant: "NullifierUsed", message: "This investor already subscribed in the current epoch." },
   6: { variant: "AmountInvalid", message: "The amount is invalid or differs from the proof." },
-  7: { variant: "PaymentFailed", message: "Mock-USDC settlement failed; obtain faucet funds and retry." },
+  7: { variant: "PaymentFailed", message: "Testnet USDC settlement failed; obtain faucet funds and retry." },
   8: { variant: "NotInitialized", message: "Pool state is not initialized." },
 };
 
@@ -58,7 +58,7 @@ export function decodeError(error: unknown): FriendlyError {
     return { title: "Authorization failed", message: "The wallet authorization did not match what the contract expected. Reconnect and retry." };
   }
   if (lower.includes("insufficient") || lower.includes("underfunded")) {
-    return { title: "Insufficient balance", message: "Not enough XLM or Mock USDC. Use the faucet, then retry." };
+    return { title: "Insufficient balance", message: "Not enough XLM or Testnet USDC. Use the faucet, then retry." };
   }
   if (lower.includes("network") || lower.includes("fetch") || lower.includes("timeout")) {
     return { title: "Network error", message: "Could not reach the network. Check your connection and retry." };

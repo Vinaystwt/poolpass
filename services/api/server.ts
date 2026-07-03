@@ -14,6 +14,7 @@ export interface ApiDependencies {
   prover: { prove(input: unknown): Promise<object> };
   verifier: { verify(proof: unknown, publicSignals: string[]): Promise<boolean> };
   pool: { read(id: string): Promise<object>; list(): Promise<object[]> };
+  now?: () => number;
 }
 
 export function buildServer(dependencies: ApiDependencies): FastifyInstance {
@@ -30,7 +31,9 @@ export function buildServer(dependencies: ApiDependencies): FastifyInstance {
   for (const [poolId, cfg] of Object.entries(dependencies.accreditationByPool ?? {})) {
     accreditationByPool.set(poolId, new AccreditationService(cfg.file, cfg.chain));
   }
-  const faucetClaims = new Set<string>();
+  const faucetClaims = new Map<string, number>();
+  const faucetCooldownMs = 60_000;
+  const now = dependencies.now ?? Date.now;
 
   server.post("/accredit", async (request, reply) => {
     const parsed = z
@@ -52,14 +55,32 @@ export function buildServer(dependencies: ApiDependencies): FastifyInstance {
   });
 
   server.post("/faucet", async (request, reply) => {
-    const parsed = z.object({ address: addressSchema, amount: z.string().regex(/^\d+$/).default("10000000000") }).strict().safeParse(request.body);
+    const parsed = z.object({ address: addressSchema, amount: z.string().regex(/^\d+$/).default("100000000000") }).strict().safeParse(request.body);
     if (!parsed.success) return reply.code(400).send({ error: "Invalid faucet request" });
     const amount = BigInt(parsed.data.amount);
     if (amount <= 0n || amount > 100_000_000_000n) return reply.code(400).send({ error: "Amount exceeds the 10,000 mock-USDC limit" });
-    if (faucetClaims.has(parsed.data.address)) return reply.code(429).send({ error: "Faucet already claimed during this service window" });
-    const result = await dependencies.faucet.mint(parsed.data.address, parsed.data.amount);
-    faucetClaims.add(parsed.data.address);
-    return result;
+    const requestedAt = now();
+    const previousClaim = faucetClaims.get(parsed.data.address);
+    const retryAfterSeconds =
+      previousClaim === undefined
+        ? 0
+        : Math.max(0, Math.ceil((previousClaim + faucetCooldownMs - requestedAt) / 1000));
+    if (retryAfterSeconds > 0) {
+      return reply.code(429).send({
+        error: "faucet_cooldown",
+        message: `You can request more test funds in ${retryAfterSeconds} seconds`,
+        retryAfterSeconds,
+      });
+    }
+    faucetClaims.set(parsed.data.address, requestedAt);
+    try {
+      return await dependencies.faucet.mint(parsed.data.address, parsed.data.amount);
+    } catch (error) {
+      if (faucetClaims.get(parsed.data.address) === requestedAt) {
+        faucetClaims.delete(parsed.data.address);
+      }
+      throw error;
+    }
   });
 
   server.post("/prove", async (request, reply) => {

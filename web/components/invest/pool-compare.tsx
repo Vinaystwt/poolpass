@@ -9,8 +9,9 @@ export function PoolCompare({ pools, onInspect }: { pools: PoolMarket[]; onInspe
   const rows: { label: string; get: (p: PoolMarket) => string }[] = [
     { label: "Per-investor cap", get: (p) => `${formatMockUsdc(p.perInvestorCapPublic)} ${MOCK_USDC.ticker}` },
     { label: "Gate depth", get: (p) => `${p.merkleDepth} · ${p.leafCount} leaves` },
-    { label: "Subscribers", get: (p) => String(p.subscriberCount) },
-    { label: "Volume", get: (p) => `${formatMockUsdc(p.subscribedVolume)} ${MOCK_USDC.ticker}` },
+    { label: "On-chain total", get: (p) => `${formatMockUsdc(p.totalSubscribed)} ${MOCK_USDC.ticker}` },
+    { label: "Indexed subscribers", get: (p) => String(p.subscriberCount) },
+    { label: "Indexed volume", get: (p) => `${formatMockUsdc(p.subscribedVolume)} ${MOCK_USDC.ticker}` },
     { label: "Epoch", get: (p) => String(p.epoch) },
   ];
   return (

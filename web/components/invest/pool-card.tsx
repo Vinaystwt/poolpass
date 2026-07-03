@@ -63,14 +63,20 @@ export function PoolCard({
           </dd>
         </div>
         <div>
-          <dt className="text-ink-mute">Subscribers</dt>
+          <dt className="text-ink-mute">On-chain total</dt>
+          <dd className="tnum text-body-md text-ink">
+            {formatMockUsdc(pool.totalSubscribed)} {MOCK_USDC.ticker}
+          </dd>
+        </div>
+        <div>
+          <dt className="text-ink-mute">Indexed subscribers</dt>
           <dd className="tnum text-body-md text-ink">
             <Users className="mr-xxs inline h-3.5 w-3.5 text-ink-mute" />
             {pool.subscriberCount}
           </dd>
         </div>
         <div>
-          <dt className="text-ink-mute">Volume</dt>
+          <dt className="text-ink-mute">Indexed volume</dt>
           <dd className="tnum text-body-md text-ink">
             {formatMockUsdc(pool.subscribedVolume)} {MOCK_USDC.ticker}
           </dd>

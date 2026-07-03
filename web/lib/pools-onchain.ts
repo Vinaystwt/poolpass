@@ -27,7 +27,7 @@ export async function readPoolsOnChain(): Promise<PoolMarket[]> {
       const volume = subs.reduce((sum, e) => sum + BigInt(e.data?.amount ?? "0"), 0n);
       return {
         id: p.id,
-        name: p.name,
+        name: info.pool_name,
         gateDescription: p.gateDescription,
         contractId: p.contractId,
         poolToken: p.poolToken,
