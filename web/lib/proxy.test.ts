@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 
-import { proxyPost } from "./proxy.js";
+import { proxyGet, proxyPost } from "./proxy.js";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -20,5 +20,22 @@ describe("backend proxy errors", () => {
       error: "backend_unreachable",
       message: "The PoolPass API is temporarily unavailable.",
     });
+  });
+
+  test("does not cache live backend reads", async () => {
+    const fetchMock = vi.fn(async () =>
+      new Response(JSON.stringify({ pools: [] }), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await proxyGet("/pools");
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://api.usepoolpass.xyz/pools",
+      { cache: "no-store" },
+    );
   });
 });

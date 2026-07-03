@@ -25,7 +25,7 @@ export async function proxyPost(path: string, body: unknown) {
 
 export async function proxyGet(path: string) {
   try {
-    const res = await fetch(`${API_BASE}${path}`);
+    const res = await fetch(`${API_BASE}${path}`, { cache: "no-store" });
     const text = await res.text();
     const data = text ? JSON.parse(text) : {};
     return NextResponse.json(data, { status: res.status });
