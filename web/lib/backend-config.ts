@@ -128,7 +128,7 @@ export const ZK_ARTIFACTS = {
 // ── HTTP API (PoolPass services) ─────────────────────────────────────────────
 /** Backend services base URL; overridable for local dev via NEXT_PUBLIC_API_BASE. */
 export function resolveApiBase(value: string | undefined): string {
-  return value?.replace(/\/$/, "") || "https://api.usepoolpass.xyz";
+  return value?.replace(/\/$/, "") || "https://poolpass-vh80.onrender.com";
 }
 
 export const API_BASE = resolveApiBase(process.env.NEXT_PUBLIC_API_BASE);

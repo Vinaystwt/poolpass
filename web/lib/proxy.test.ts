@@ -34,7 +34,7 @@ describe("backend proxy errors", () => {
     await proxyGet("/pools");
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "https://api.usepoolpass.xyz/pools",
+      "https://poolpass-vh80.onrender.com/pools",
       { cache: "no-store" },
     );
   });

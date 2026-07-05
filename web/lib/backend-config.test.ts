@@ -4,7 +4,7 @@ import { resolveApiBase } from "./backend-config.js";
 
 describe("backend API base", () => {
   test("uses the public API when no deployment override is configured", () => {
-    expect(resolveApiBase(undefined)).toBe("https://api.usepoolpass.xyz");
+    expect(resolveApiBase(undefined)).toBe("https://poolpass-vh80.onrender.com");
   });
 
   test("normalizes an explicit local development override", () => {
